@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'body_avatar_page.dart';
 const _page = Color(0xFFF3F6F1);
 const _teal = Color(0xFF0E5C4B);
 const _ink = Color(0xFF1A1F1C);
@@ -145,24 +146,21 @@ class _BodyViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ---------------------------------------------------------------------------
-    // TODO(3D) — add the body model here
-    //
-    // Do not edit the Brief tab. This widget is the Body tab.
-    // Package:
-    //   flutter pub add model_viewer_plus
-    //
-    // Behaviour to build:
-    //   - drag to rotate the mannequin
-    //   - pinch to zoom
-    //   - mark injured regions (hip, knee, shoulder…) in red
-    //   - Android needs usesCleartextTraffic="true" on <application>
-    //     and INTERNET permission as a sibling of <application>, not inside it
-    //   - never put ModelViewer inside a ListView (it hangs on emulator)
-    //
-    // Swap this empty box for the viewer when the GLB is ready.
-    // ---------------------------------------------------------------------------
-    return const SizedBox.expand();
+    return Container(
+      height: 430,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        color: Colors.white.withOpacity(0.35),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.7),
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: const BodyAvatar(
+        height: 430,
+      ),
+    );
   }
 }
 class _GlassTabs extends StatelessWidget {

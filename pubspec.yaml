@@ -34,7 +34,13 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
+
   model_viewer_plus: ^1.10.0
+
+  webview_flutter: ^4.14.1
+  shelf: ^1.4.2
+  path_provider: ^2.1.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -51,12 +57,17 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class
   uses-material-design: true
   assets:
     - assets/images/logo.png
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+    - assets/3d_viewer/index.html
+    - assets/3d_viewer/human.glb
+    - assets/3d_viewer/assets/index-9RfH7Psc.js
 
   # To add assets to your application, add an assets section, like this:
   # assets:
