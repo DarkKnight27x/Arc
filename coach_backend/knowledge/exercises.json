@@ -1,0 +1,68 @@
+{
+  "core": [
+    {
+      "name": "Dead Bug",
+      "equipment": "bodyweight",
+      "difficulty": "beginner",
+      "primary_muscles": ["core"]
+    },
+    {
+      "name": "Bird Dog",
+      "equipment": "bodyweight",
+      "difficulty": "beginner",
+      "primary_muscles": ["core"]
+    },
+    {
+      "name": "Pallof Press",
+      "equipment": "resistance band",
+      "difficulty": "intermediate",
+      "primary_muscles": ["core"]
+    },
+    {
+      "name": "Side Plank",
+      "equipment": "bodyweight",
+      "difficulty": "intermediate",
+      "primary_muscles": ["core"]
+    },
+    {
+      "name": "Plank",
+      "equipment": "bodyweight",
+      "difficulty": "beginner",
+      "primary_muscles": ["core"]
+    }
+  ],
+  "upper_body": [
+    {
+      "name": "Dumbbell Row",
+      "equipment": "dumbbells",
+      "difficulty": "beginner",
+      "primary_muscles": ["back", "biceps"]
+    },
+    {
+      "name": "Dumbbell Shoulder Press",
+      "equipment": "dumbbells",
+      "difficulty": "intermediate",
+      "primary_muscles": ["shoulders", "triceps"]
+    },
+    {
+      "name": "Dumbbell Chest Press",
+      "equipment": "dumbbells",
+      "difficulty": "beginner",
+      "primary_muscles": ["chest", "triceps"]
+    }
+  ],
+  "lower_body": [
+    {
+      "name": "Bodyweight Squat",
+      "equipment": "bodyweight",
+      "difficulty": "beginner",
+      "primary_muscles": ["quadriceps", "glutes"]
+    },
+    {
+      "name": "Glute Bridge",
+      "equipment": "bodyweight",
+      "difficulty": "beginner",
+      "primary_muscles": ["glutes", "hamstrings"]
+    }
+  ]
+}

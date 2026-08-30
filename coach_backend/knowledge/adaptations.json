@@ -1,0 +1,27 @@
+{
+  "travel": [
+    "Replace gym-based exercises with bodyweight exercises or available equipment.",
+    "Reduce workout complexity when equipment is limited.",
+    "Consider reducing session duration when travel limits available time."
+  ],
+  "low_energy": [
+    "Reduce workout intensity.",
+    "Reduce session duration.",
+    "Prefer lower-intensity activity when appropriate."
+  ],
+  "missed_workout": [
+    "Avoid automatically doubling the next workout.",
+    "Consider moving the missed workout to another suitable day.",
+    "Consider the remaining weekly schedule before making changes."
+  ],
+  "injury": [
+    "Avoid exercises that aggravate the affected area.",
+    "Consider replacing exercises that involve the affected area.",
+    "Consider modifying the affected workout."
+  ],
+  "sickness": [
+    "Consider reducing training intensity.",
+    "Consider reducing or pausing training depending on severity.",
+    "Prioritize recovery when symptoms interfere with normal activity."
+  ]
+}

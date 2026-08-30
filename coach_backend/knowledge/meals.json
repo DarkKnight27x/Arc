@@ -1,0 +1,46 @@
+{
+  "british": [
+    {
+      "name": "Beans on Toast",
+      "type": "breakfast",
+      "diet": "eggetarian"
+    },
+    {
+      "name": "Vegetable Omelette",
+      "type": "breakfast",
+      "diet": "eggetarian"
+    },
+    {
+      "name": "Jacket Potato with Beans",
+      "type": "lunch",
+      "diet": "vegetarian"
+    },
+    {
+      "name": "Vegetable Soup with Whole Grain Bread",
+      "type": "lunch",
+      "diet": "vegetarian"
+    }
+  ],
+  "indian": [
+    {
+      "name": "Dal with Rice",
+      "type": "lunch",
+      "diet": "vegetarian"
+    },
+    {
+      "name": "Egg Bhurji with Roti",
+      "type": "breakfast",
+      "diet": "eggetarian"
+    },
+    {
+      "name": "Chana Masala with Roti",
+      "type": "lunch",
+      "diet": "vegetarian"
+    },
+    {
+      "name": "Vegetable Pulao",
+      "type": "lunch",
+      "diet": "vegetarian"
+    }
+  ]
+}
