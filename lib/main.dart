@@ -67,16 +67,17 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: index,
-        children: const [
-          TodayPage(),
-          TrainPage(),
-          EatPage(),
-          CoachPage(),
-          YouPage(),
-        ],
-      ),
+    backgroundColor: const Color(0xFFF3F6F1),
+    body: IndexedStack(
+    index: index,
+    children: const [
+    TodayPage(),
+    TrainPage(),
+    EatPage(),
+    CoachPage(),
+    YouPage(),
+    ],
+    ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (i) => setState(() => index = i),

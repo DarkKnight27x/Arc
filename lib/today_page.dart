@@ -28,21 +28,15 @@ class TodayPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  'Arc',
-                  style: text.titleMedium?.copyWith(
-                    color: _teal,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 28,
+                  filterQuality: FilterQuality.high,
                 ),
                 const Spacer(),
                 Text(
                   'Coach',
-                  style: text.bodyMedium?.copyWith(
-                    color: _muted,
-                    fontSize: 15,
-                  ),
+                  style: text.bodySmall?.copyWith(fontSize: 14),
                 ),
               ],
             ),

@@ -11,6 +11,19 @@ const _coolInk = Color(0xFF3D5A66);
 const _sand = Color(0xFFF3E6D4);
 const _sandInk = Color(0xFF8A5A28);
 
+class ArcLogo extends StatelessWidget {
+  const ArcLogo({super.key, this.height = 28});
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      'assets/images/logo.png',
+      height: height,
+      filterQuality: FilterQuality.high,
+    );
+  }
+}
 class YouPage extends StatefulWidget {
   const YouPage({super.key});
 
