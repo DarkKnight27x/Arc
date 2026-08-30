@@ -34,6 +34,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
+  model_viewer_plus: ^1.10.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -50,7 +51,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - assets/3dModels/anatomy_basemesh_human_male_body_model_sculpture.glb
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

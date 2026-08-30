@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 
 import 'today_page.dart';
 import 'train_page.dart';
+import 'eat_page.dart';
+import 'you_page.dart';
+import 'coach_page.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
@@ -64,11 +67,16 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: index == 0
-          ? const TodayPage()
-          :index==1
-            ?const TrainPage()
-              : const Center(child: Text('Next tab — later')),
+      body: IndexedStack(
+        index: index,
+        children: const [
+          TodayPage(),
+          TrainPage(),
+          EatPage(),
+          CoachPage(),
+          YouPage(),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (i) => setState(() => index = i),
