@@ -1,0 +1,95 @@
+{
+  "user": {
+    "id": "demo_user",
+    "name": "Saarthak",
+    "age": 20,
+    "fitness_level": "Intermediate",
+    "availability": {
+      "days_per_week": 4,
+      "session_duration": "30-45 minutes"
+    },
+    "equipment": [
+      "Dumbbells",
+      "Resistance bands"
+    ],
+    "location": [
+      "Home",
+      "Office"
+    ],
+    "nutrition_preference": "Eggetarian"
+  },
+  "goal_plan": {
+    "primary_goal": "Lose fat",
+    "approach": "Sustainable fat loss while maintaining strength"
+  },
+  "current_life_state": [
+    {
+      "type": "fat_loss",
+      "status": "active"
+    },
+    {
+      "type": "surgery_prep",
+      "status": "active",
+      "restrictions": [
+        "Avoid high-impact exercise"
+      ]
+    }
+  ],
+  "health_constraints": {
+    "active": true,
+    "restrictions": [
+      "Avoid high-impact exercise"
+    ]
+  },
+  "current_workout_plan": {
+    "today": {
+      "intent": "Low-impact strength",
+      "duration": "35 minutes",
+      "intensity": "Moderate"
+    },
+    "weekly_frequency": 4
+  },
+  "current_diet_plan": {
+    "preference": "Guidance-first",
+    "diet": "Eggetarian",
+    "style": "Indian meals"
+  },
+  "next_seven_days": [
+    {
+      "day": "Today",
+      "plan": "Low-impact strength"
+    },
+    {
+      "day": "Tomorrow",
+      "plan": "Strength"
+    },
+    {
+      "day": "Monday",
+      "plan": "Rest"
+    },
+    {
+      "day": "Tuesday",
+      "plan": "Strength"
+    },
+    {
+      "day": "Wednesday",
+      "plan": "Rest"
+    },
+    {
+      "day": "Thursday",
+      "plan": "Strength"
+    },
+    {
+      "day": "Friday",
+      "plan": "Rest"
+    }
+  ],
+  "engagement": {
+    "level": "Regular",
+    "xp": 340,
+    "show_up_streak": 6,
+    "streak_status": "Active"
+  },
+  "recent_adaptations": [],
+  "reported_conditions": []
+}

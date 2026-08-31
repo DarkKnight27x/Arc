@@ -1,106 +1,17 @@
+import json
+from pathlib import Path
 from typing import Any
 
 
-def get_mock_context() -> dict[str, Any]:
-    return {
-        "user": {
-            "name": "Saarthak",
-            "fitness_level": "Intermediate",
-            "availability": {
-                "days_per_week": 4,
-                "session_duration": "30-45 minutes",
-            },
-            "equipment": [
-                "Dumbbells",
-                "Resistance bands",
-            ],
-            "location": [
-                "Home",
-                "Office",
-            ],
-            "nutrition_preference": "Eggetarian",
-        },
+DATA_DIR = Path(__file__).parent / "data"
+DEMO_USER_FILE = DATA_DIR / "demo_user.json"
 
-        "goal_plan": {
-            "primary_goal": "Lose fat",
-            "approach": "Sustainable fat loss while maintaining strength",
-        },
 
-        "current_life_state": [
-    {
-        "type": "fat_loss",
-        "status": "active",
-    },
-    {
-        "type": "surgery_prep",
-        "status": "active",
-        "restrictions": [
-            "Avoid high-impact exercise",
-        ],
-    },
-],
+def get_user_context(user_id: str = "demo_user") -> dict[str, Any]:
+    with open(DEMO_USER_FILE, "r", encoding="utf-8") as file:
+        context = json.load(file)
 
-"health_constraints": {
-    "active": True,
-    "restrictions": [
-        "Avoid high-impact exercise",
-    ],
-},
+    if context["user"]["id"] != user_id:
+        raise ValueError(f"User '{user_id}' not found")
 
-        "current_workout_plan": {
-            "today": {
-                "intent": "Low-impact strength",
-                "duration": "35 minutes",
-                "intensity": "Moderate",
-            },
-            "weekly_frequency": 4,
-        },
-
-        "current_diet_plan": {
-            "preference": "Guidance-first",
-            "diet": "Eggetarian",
-            "style": "Indian meals",
-        },
-
-        "next_seven_days": [
-            {
-                "day": "Today",
-                "plan": "Low-impact strength",
-            },
-            {
-                "day": "Tomorrow",
-                "plan": "Strength",
-            },
-            {
-                "day": "Monday",
-                "plan": "Rest",
-            },
-            {
-                "day": "Tuesday",
-                "plan": "Strength",
-            },
-            {
-                "day": "Wednesday",
-                "plan": "Rest",
-            },
-            {
-                "day": "Thursday",
-                "plan": "Strength",
-            },
-            {
-                "day": "Friday",
-                "plan": "Rest",
-            },
-        ],
-
-        "engagement": {
-            "level": "Regular",
-            "xp": 340,
-            "show_up_streak": 6,
-            "streak_status": "Active",
-        },
-
-        "recent_adaptations": [],
-
-        "reported_conditions": [],
-    }
+    return context

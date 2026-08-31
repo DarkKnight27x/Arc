@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 from coach import ask_coach
-from context import get_mock_context
+from context import get_user_context
 
 
 app = FastAPI(title="Arc Coach API")
@@ -14,18 +14,21 @@ class ChatMessage(BaseModel):
 
 
 class CoachRequest(BaseModel):
+    user_id: str = "demo_user"
     message: str
     conversation: list[ChatMessage] = []
 
 
 @app.get("/")
 def root():
-    return {"status": "Arc Coach backend is running"}
+    return {
+        "status": "Arc Coach backend is running"
+    }
 
 
 @app.post("/coach/message")
 def coach_message(request: CoachRequest):
-    context = get_mock_context()
+    context = get_user_context(request.user_id)
 
     conversation = [
         {

@@ -1,46 +1,214 @@
 {
-  "british": [
+  "meals": [
     {
-      "name": "Beans on Toast",
-      "type": "breakfast",
-      "diet": "eggetarian"
+      "name": "Poha Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Poha", "Curd", "Banana"],
+      "dietary_tags": ["vegetarian"]
     },
     {
-      "name": "Vegetable Omelette",
-      "type": "breakfast",
-      "diet": "eggetarian"
+      "name": "Idli Sambar Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Idli", "Sambar", "Curd"],
+      "dietary_tags": ["vegetarian"]
     },
     {
-      "name": "Jacket Potato with Beans",
-      "type": "lunch",
-      "diet": "vegetarian"
+      "name": "Dosa Sambar Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Dosa", "Sambar", "Curd"],
+      "dietary_tags": ["vegetarian"]
     },
     {
-      "name": "Vegetable Soup with Whole Grain Bread",
-      "type": "lunch",
-      "diet": "vegetarian"
-    }
-  ],
-  "indian": [
-    {
-      "name": "Dal with Rice",
-      "type": "lunch",
-      "diet": "vegetarian"
+      "name": "Masala Dosa Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Masala Dosa", "Sambar", "Curd"],
+      "dietary_tags": ["vegetarian"]
     },
     {
-      "name": "Egg Bhurji with Roti",
-      "type": "breakfast",
-      "diet": "eggetarian"
+      "name": "Egg Bhurji Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Egg Bhurji", "Roti", "Curd"],
+      "dietary_tags": ["eggetarian", "high_protein"]
     },
     {
-      "name": "Chana Masala with Roti",
-      "type": "lunch",
-      "diet": "vegetarian"
+      "name": "Boiled Egg Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Boiled Eggs", "Roti", "Banana"],
+      "dietary_tags": ["eggetarian", "high_protein"]
     },
     {
-      "name": "Vegetable Pulao",
-      "type": "lunch",
-      "diet": "vegetarian"
+      "name": "Besan Chilla Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Besan Chilla", "Curd", "Apple"],
+      "dietary_tags": ["vegetarian"]
+    },
+    {
+      "name": "Moong Chilla Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Moong Dal Chilla", "Curd", "Banana"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Paneer Bhurji Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Paneer Bhurji", "Roti", "Buttermilk"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Upma Breakfast",
+      "meal_type": "breakfast",
+      "items": ["Upma", "Curd", "Apple"],
+      "dietary_tags": ["vegetarian"]
+    },
+    {
+      "name": "Dal Rice Lunch",
+      "meal_type": "lunch",
+      "items": ["Dal", "Rice", "Mixed Vegetable Sabzi", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Dal Roti Lunch",
+      "meal_type": "lunch",
+      "items": ["Dal", "Roti", "Aloo Gobi", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Rajma Rice Lunch",
+      "meal_type": "lunch",
+      "items": ["Rajma", "Rice", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Chole Roti Lunch",
+      "meal_type": "lunch",
+      "items": ["Chole", "Roti", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Paneer Roti Lunch",
+      "meal_type": "lunch",
+      "items": ["Paneer Curry", "Roti", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Palak Paneer Lunch",
+      "meal_type": "lunch",
+      "items": ["Palak Paneer", "Roti", "Mixed Vegetable Salad"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Chicken Curry Rice Lunch",
+      "meal_type": "lunch",
+      "items": ["Chicken Curry", "Rice", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
+    },
+    {
+      "name": "Chicken Curry Roti Lunch",
+      "meal_type": "lunch",
+      "items": ["Chicken Curry", "Roti", "Mixed Vegetable Sabzi", "Curd"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
+    },
+    {
+      "name": "Tandoori Chicken Lunch",
+      "meal_type": "lunch",
+      "items": ["Tandoori Chicken", "Roti", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
+    },
+    {
+      "name": "Fish Curry Rice Lunch",
+      "meal_type": "lunch",
+      "items": ["Fish Curry", "Rice", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
+    },
+    {
+      "name": "Dal Rice Dinner",
+      "meal_type": "dinner",
+      "items": ["Dal", "Rice", "Mixed Vegetable Sabzi", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Dal Roti Dinner",
+      "meal_type": "dinner",
+      "items": ["Dal", "Roti", "Bhindi Masala", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Rajma Roti Dinner",
+      "meal_type": "dinner",
+      "items": ["Rajma", "Roti", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Paneer Dinner",
+      "meal_type": "dinner",
+      "items": ["Paneer Curry", "Roti", "Mixed Vegetable Salad"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Palak Paneer Dinner",
+      "meal_type": "dinner",
+      "items": ["Palak Paneer", "Roti", "Curd"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Chicken Curry Dinner",
+      "meal_type": "dinner",
+      "items": ["Chicken Curry", "Roti", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
+    },
+    {
+      "name": "Chicken Tikka Dinner",
+      "meal_type": "dinner",
+      "items": ["Chicken Tikka", "Roti", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
+    },
+    {
+      "name": "Grilled Fish Dinner",
+      "meal_type": "dinner",
+      "items": ["Grilled Fish", "Brown Rice", "Mixed Vegetable Salad"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
+    },
+    {
+      "name": "Egg Bhurji Dinner",
+      "meal_type": "dinner",
+      "items": ["Egg Bhurji", "Roti", "Mixed Vegetable Salad", "Curd"],
+      "dietary_tags": ["eggetarian", "high_protein"]
+    },
+    {
+      "name": "Sprouts Chaat Snack",
+      "meal_type": "snack",
+      "items": ["Sprouts Chaat", "Buttermilk"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Roasted Chana Snack",
+      "meal_type": "snack",
+      "items": ["Roasted Chana", "Buttermilk"],
+      "dietary_tags": ["vegetarian", "high_protein"]
+    },
+    {
+      "name": "Fruit and Milk Snack",
+      "meal_type": "snack",
+      "items": ["Banana", "Milk"],
+      "dietary_tags": ["vegetarian"]
+    },
+    {
+      "name": "Apple and Peanuts Snack",
+      "meal_type": "snack",
+      "items": ["Apple", "Peanuts"],
+      "dietary_tags": ["vegetarian", "vegan"]
+    },
+    {
+      "name": "Boiled Egg Snack",
+      "meal_type": "snack",
+      "items": ["Boiled Eggs", "Apple"],
+      "dietary_tags": ["eggetarian", "high_protein"]
+    },
+    {
+      "name": "Chicken Tikka Snack",
+      "meal_type": "snack",
+      "items": ["Chicken Tikka", "Mixed Vegetable Salad"],
+      "dietary_tags": ["non_vegetarian", "high_protein"]
     }
   ]
 }
