@@ -30,7 +30,7 @@ class _CoachPageState extends State<CoachPage> {
         '$greet, Saarthak. Surgery-prep is on and energy looks low. Tell me what changed — I’ll move the plan, not just talk.',
       ),
       _Msg.receipt(
-        title: 'Plan set from your passport',
+        title: 'Built from your Thread',
         session: '4 days · 30–45 min',
         intensity: 'Low impact while surgery-prep is on',
       ),
