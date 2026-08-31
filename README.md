@@ -74,8 +74,3 @@ Shared files (Person 1 owns them, everyone else reads):
 | 5 | Person 4 | Passport + README structure |
 | 6 | Person 4 | XP / streak freeze on travel |
 
-### Branches
-
-## Folder structure
-
-![Arc folder structure](docs/folderStructure.png)
