@@ -3,12 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const _page = Color(0xFFF3F6F1);
-const _teal = Color(0xFF0E5C4B);
-const _ink = Color(0xFF1A1F1C);
-const _muted = Color(0xFF6B746E);
-const _coolBg = Color(0xFFE7EEF2);
-const _coolInk = Color(0xFF3D5A66);
+import 'arc_theme.dart';
 
 class TrainPage extends StatefulWidget {
   const TrainPage({super.key});
@@ -57,58 +52,70 @@ class _TrainPageState extends State<TrainPage> {
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
+    final p = ArcPalette.of(context);
+    final dark = Theme.of(context).brightness == Brightness.dark;
     final session = _sessions[selected];
     final day = _days[selected];
 
-    return ColoredBox(
-      color: _page,
+    return SizedBox.expand(
       child: Stack(
         children: [
-          const _Backdrop(),
-          SafeArea(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
-              children: [
-                Text('Your week', style: text.headlineLarge),
-                const SizedBox(height: 8),
-                const Text(
-                  'Four sessions. Impact stays off while surgery-prep is on.',
-                  style: TextStyle(fontSize: 14, height: 1.4, color: _muted),
-                ),
-                const SizedBox(height: 14),
-                const Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    _Chip(label: 'Lose fat'),
-                    _Chip(label: 'Surgery-prep caution'),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                _GlassDayRail(
-                  days: _days,
-                  selected: selected,
-                  onSelect: (i) => setState(() => selected = i),
-                ),
-                const SizedBox(height: 22),
-                if (session != null)
-                  _GlassSessionCard(
-                    session: session,
-                    featured: day.kind == _DayKind.today,
-                  )
-                else
-                  _GlassRestCard(dayLabel: day.name),
-                const SizedBox(height: 12),
-                for (final entry in _sessions.entries)
-                  if (entry.key != selected) ...[
-                    _GlassSessionCard(session: entry.value),
-                    const SizedBox(height: 12),
-                  ],
-                const Text(
-                  'Coaching, not a clinician. Stop any movement that hurts.',
-                  style: TextStyle(fontSize: 12.5, height: 1.4, color: _muted),
-                ),
-              ],
+          Positioned.fill(
+            child: Image.asset(
+              dark
+                  ? 'assets/images/darkBackground.png'
+                  : 'assets/images/lightBackground.jpeg',
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+            ),
+          ),
+          Positioned.fill(
+            child: SafeArea(
+              bottom: false,
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 120),
+                children: [
+                  Text('Your week', style: text.headlineLarge),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Four sessions. Impact stays off while surgery-prep is on.',
+                    style: TextStyle(fontSize: 14, height: 1.4, color: p.muted),
+                  ),
+                  const SizedBox(height: 14),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _Chip(label: 'Lose fat', bg: p.chip, fg: p.chipInk),
+                      _Chip(label: 'Surgery-prep caution', bg: p.chip, fg: p.chipInk),
+                    ],
+                  ),
+                  const SizedBox(height: 22),
+                  _GlassDayRail(
+                    days: _days,
+                    selected: selected,
+                    onSelect: (i) => setState(() => selected = i),
+                  ),
+                  const SizedBox(height: 22),
+                  if (session != null)
+                    _GlassSessionCard(
+                      session: session,
+                      featured: day.kind == _DayKind.today,
+                    )
+                  else
+                    _GlassRestCard(dayLabel: day.name),
+                  const SizedBox(height: 12),
+                  for (final entry in _sessions.entries)
+                    if (entry.key != selected) ...[
+                      _GlassSessionCard(session: entry.value),
+                      const SizedBox(height: 12),
+                    ],
+                  Text(
+                    'Coaching, not a clinician. Stop any movement that hurts.',
+                    style: TextStyle(fontSize: 12.5, height: 1.4, color: p.muted),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -139,41 +146,6 @@ class _Session {
   final bool play;
 }
 
-class _Backdrop extends StatelessWidget {
-  const _Backdrop();
-
-  @override
-  Widget build(BuildContext context) {
-    return const IgnorePointer(
-      child: Stack(
-        children: [
-          Positioned(top: -40, right: -60, child: _Blob(Color(0xFFB7D4C8), 220)),
-          Positioned(top: 220, left: -80, child: _Blob(Color(0xFFE8D7B8), 200)),
-          Positioned(bottom: 80, right: -40, child: _Blob(Color(0xFFD7E6DF), 180)),
-        ],
-      ),
-    );
-  }
-}
-
-class _Blob extends StatelessWidget {
-  const _Blob(this.color, this.size);
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color.withOpacity(0.55),
-      ),
-    );
-  }
-}
-
 class _GlassDayRail extends StatefulWidget {
   const _GlassDayRail({
     required this.days,
@@ -199,6 +171,9 @@ class _GlassDayRailState extends State<_GlassDayRail> {
 
   @override
   Widget build(BuildContext context) {
+    final p = ArcPalette.of(context);
+    final dark = Theme.of(context).brightness == Brightness.dark;
+
     return LayoutBuilder(
       builder: (context, box) {
         const pad = 6.0;
@@ -224,27 +199,26 @@ class _GlassDayRailState extends State<_GlassDayRail> {
             _snap(i);
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(30),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
+              filter: ImageFilter.blur(sigmaX: 36, sigmaY: 36),
               child: Container(
-                height: 56,
+                height: 58,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(28),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.white.withOpacity(0.62),
-                      Colors.white.withOpacity(0.28),
-                    ],
-                  ),
-                  border: Border.all(color: Colors.white.withOpacity(0.72)),
+                  color: dark ? const Color(0xFF141A24) : const Color(0xFFF4F6FA),
+                  borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: _teal.withOpacity(0.08),
-                      blurRadius: 24,
-                      offset: const Offset(0, 10),
+                      color: dark
+                          ? Colors.black.withOpacity(0.55)
+                          : const Color(0xFFC8D0DC),
+                      offset: const Offset(6, 6),
+                      blurRadius: 14,
+                    ),
+                    BoxShadow(
+                      color: dark ? Colors.white.withOpacity(0.07) : Colors.white,
+                      offset: const Offset(-5, -5),
+                      blurRadius: 12,
                     ),
                   ],
                 ),
@@ -256,8 +230,36 @@ class _GlassDayRailState extends State<_GlassDayRail> {
                           : Duration.zero,
                       curve: Curves.easeOutCubic,
                       left: left,
-                      top: 6,
-                      child: const _GlassThumb(size: thumb),
+                      top: 7,
+                      child: ClipOval(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                          child: Container(
+                            width: thumb,
+                            height: thumb,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: dark ? const Color(0xFF1A2433) : Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: dark
+                                      ? Colors.black.withOpacity(0.5)
+                                      : const Color(0xFFC8D0DC),
+                                  offset: const Offset(3, 3),
+                                  blurRadius: 6,
+                                ),
+                                BoxShadow(
+                                  color: dark
+                                      ? Colors.white.withOpacity(0.08)
+                                      : Colors.white,
+                                  offset: const Offset(-3, -3),
+                                  blurRadius: 6,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     Row(
                       children: [
@@ -267,18 +269,17 @@ class _GlassDayRailState extends State<_GlassDayRail> {
                               behavior: HitTestBehavior.opaque,
                               onTap: () => _snap(i),
                               child: Center(
-                                child: AnimatedDefaultTextStyle(
-                                  duration: const Duration(milliseconds: 200),
+                                child: Text(
+                                  widget.days[i].letter,
                                   style: TextStyle(
                                     fontSize: i == widget.selected ? 16 : 14,
                                     fontWeight: FontWeight.w600,
                                     color: i == widget.selected
-                                        ? _teal
+                                        ? p.accent
                                         : (widget.days[i].kind == _DayKind.rest
-                                        ? _muted.withOpacity(0.7)
-                                        : _ink),
+                                        ? p.muted
+                                        : p.ink),
                                   ),
-                                  child: Text(widget.days[i].letter),
                                 ),
                               ),
                             ),
@@ -296,81 +297,6 @@ class _GlassDayRailState extends State<_GlassDayRail> {
   }
 }
 
-class _GlassThumb extends StatelessWidget {
-  const _GlassThumb({required this.size});
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipOval(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white.withOpacity(0.92),
-                const Color(0xFFDCEDE4).withOpacity(0.55),
-              ],
-            ),
-            border: Border.all(color: Colors.white.withOpacity(0.95), width: 1.2),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 16,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GlassPanel extends StatelessWidget {
-  const _GlassPanel({required this.child, this.emphasized = false});
-  final Widget child;
-  final bool emphasized;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: emphasized
-                  ? [
-                const Color(0xFFDCEDE4).withOpacity(0.72),
-                Colors.white.withOpacity(0.38),
-              ]
-                  : [
-                Colors.white.withOpacity(0.58),
-                Colors.white.withOpacity(0.24),
-              ],
-            ),
-            border: Border.all(color: Colors.white.withOpacity(0.7)),
-          ),
-          child: child,
-        ),
-      ),
-    );
-  }
-}
-
 class _GlassSessionCard extends StatelessWidget {
   const _GlassSessionCard({required this.session, this.featured = false});
   final _Session session;
@@ -378,8 +304,9 @@ class _GlassSessionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _GlassPanel(
-      emphasized: featured,
+    final p = ArcPalette.of(context);
+    return ArcCard(
+      selected: featured,
       child: Row(
         children: [
           Expanded(
@@ -388,38 +315,36 @@ class _GlassSessionCard extends StatelessWidget {
               children: [
                 Text(
                   session.eyebrow,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
                     letterSpacing: 0.9,
                     fontWeight: FontWeight.w600,
-                    color: _muted,
+                    color: p.muted,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   session.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: _ink,
+                    color: p.ink,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   session.meta,
-                  style: const TextStyle(fontSize: 13, color: _muted, height: 1.35),
+                  style: TextStyle(fontSize: 13, color: p.muted, height: 1.35),
                 ),
               ],
             ),
           ),
           if (session.play)
-            const SizedBox(
+            Container(
               width: 44,
               height: 44,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: _teal, shape: BoxShape.circle),
-                child: Icon(Icons.play_arrow_rounded, color: Colors.white),
-              ),
+              decoration: BoxDecoration(color: p.accent, shape: BoxShape.circle),
+              child: Icon(Icons.play_arrow_rounded, color: p.onAccent),
             ),
         ],
       ),
@@ -433,65 +358,69 @@ class _GlassRestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _GlassPanel(
+    final p = ArcPalette.of(context);
+    return ArcCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'REST',
             style: TextStyle(
               fontSize: 11,
               letterSpacing: 0.9,
               fontWeight: FontWeight.w600,
-              color: _muted,
+              color: p.muted,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             '$dayLabel is a rest day',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: _ink,
+              color: p.ink,
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             'Walk if you want. No session to protect the week.',
-            style: TextStyle(fontSize: 13, color: _muted, height: 1.35),
+            style: TextStyle(fontSize: 13, color: p.muted, height: 1.35),
           ),
         ],
       ),
     );
   }
 }
-
 class _Chip extends StatelessWidget {
-  const _Chip({required this.label});
+  const _Chip({required this.label, required this.bg, required this.fg});
   final String label;
+  final Color bg;
+  final Color fg;
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-          decoration: BoxDecoration(
-            color: _coolBg.withOpacity(0.72),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.6)),
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: dark ? Colors.black.withOpacity(0.45) : const Color(0xFFC8D0DC),
+            offset: const Offset(3, 3),
+            blurRadius: 6,
           ),
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: _coolInk,
-            ),
+          BoxShadow(
+            color: dark ? Colors.white.withOpacity(0.06) : Colors.white,
+            offset: const Offset(-3, -3),
+            blurRadius: 6,
           ),
-        ),
+        ],
+      ),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: fg),
       ),
     );
   }

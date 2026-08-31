@@ -1,12 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const _page = Color(0xFFF3F6F1);
-const _teal = Color(0xFF0E5C4B);
-const _ink = Color(0xFF1A1F1C);
-const _muted = Color(0xFF6B746E);
+import 'arc_theme.dart';
 
 class CoachPage extends StatefulWidget {
   const CoachPage({super.key});
@@ -18,15 +13,21 @@ class CoachPage extends StatefulWidget {
 class _CoachPageState extends State<CoachPage> {
   final _input = TextEditingController();
   final _scroll = ScrollController();
-
   late List<_Msg> _msgs;
 
   @override
   void initState() {
     super.initState();
+    final hour = DateTime.now().hour;
+    final greet = hour < 12
+        ? 'Morning'
+        : hour < 17
+        ? 'Afternoon'
+        : 'Evening';
+
     _msgs = [
       _Msg.coach(
-        'Morning, Saarthak. Surgery-prep is on and energy looks low. Tell me what changed — I’ll move the plan, not just talk.',
+        '$greet, Saarthak. Surgery-prep is on and energy looks low. Tell me what changed — I’ll move the plan, not just talk.',
       ),
       _Msg.receipt(
         title: 'Plan set from your passport',
@@ -86,67 +87,159 @@ class _CoachPageState extends State<CoachPage> {
     _jump();
   }
 
+  List<BoxShadow> _neu(bool dark) => [
+    BoxShadow(
+      color: dark ? Colors.black.withOpacity(0.5) : const Color(0xFFC8D0DC),
+      offset: const Offset(4, 4),
+      blurRadius: 8,
+    ),
+    BoxShadow(
+      color: dark ? Colors.white.withOpacity(0.07) : Colors.white,
+      offset: const Offset(-3, -3),
+      blurRadius: 8,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
+    final p = ArcPalette.of(context);
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final fill = dark ? const Color(0xFF141A24) : const Color(0xFFF4F6FA);
 
-    return ColoredBox(
-      color: _page,
+    return SizedBox.expand(
       child: Stack(
         children: [
-          const _Backdrop(),
-          SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Coach', style: text.headlineLarge),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Tell it what changed. Today and Train will move.',
-                        style: TextStyle(fontSize: 14, height: 1.4, color: _muted),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Expanded(
-                  child: ListView.separated(
-                    controller: _scroll,
-                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
-                    itemCount: _msgs.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
-                    itemBuilder: (_, i) => _Bubble(msg: _msgs[i]),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
+          Positioned.fill(
+            child: Image.asset(
+              dark
+                  ? 'assets/images/darkBackground.png'
+                  : 'assets/images/lightBackground.jpeg',
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+            ),
+          ),
+          Positioned.fill(
+            child: SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (final a in _ChipAction.all) ...[
-                          _GlassChip(
-                            label: a.label,
-                            onTap: () => _sendChip(a),
-                          ),
-                          const SizedBox(width: 8),
-                        ],
+                        Text('Coach', style: text.headlineLarge),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Tell it what changed. Today and Train will move.',
+                          style: TextStyle(fontSize: 14, height: 1.4, color: p.muted),
+                        ),
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                  child: _GlassComposer(
-                    controller: _input,
-                    onSend: _sendText,
+                  const SizedBox(height: 12),
+                  Expanded(
+                    child: ListView.separated(
+                      controller: _scroll,
+                      padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+                      itemCount: _msgs.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemBuilder: (_, i) => _Bubble(msg: _msgs[i]),
+                    ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              for (final a in _ChipAction.all) ...[
+                                GestureDetector(
+                                  onTap: () => _sendChip(a),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 9,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: fill,
+                                      borderRadius: BorderRadius.circular(22),
+                                      boxShadow: _neu(dark),
+                                    ),
+                                    child: Text(
+                                      a.label,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                        color: p.ink,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                              ],
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(16, 6, 6, 6),
+                          decoration: BoxDecoration(
+                            color: fill,
+                            borderRadius: BorderRadius.circular(28),
+                            boxShadow: _neu(dark),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _input,
+                                  cursorColor: p.accent,
+                                  minLines: 1,
+                                  maxLines: 4,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: p.ink,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Tell the coach what changed…',
+                                    hintStyle: TextStyle(color: p.muted),
+                                    border: InputBorder.none,
+                                    isCollapsed: true,
+                                  ),
+                                  onSubmitted: (_) => _sendText(),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              GestureDetector(
+                                onTap: _sendText,
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: p.accent,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.arrow_upward_rounded,
+                                    color: p.onAccent,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -238,128 +331,44 @@ class _ChipAction {
   ];
 }
 
-class _Backdrop extends StatelessWidget {
-  const _Backdrop();
-
-  @override
-  Widget build(BuildContext context) {
-    return const IgnorePointer(
-      child: Stack(
-        children: [
-          Positioned(top: -20, right: -40, child: _Blob(Color(0xFFB7D4C8), 220)),
-          Positioned(top: 280, left: -80, child: _Blob(Color(0xFFE8D7B8), 200)),
-          Positioned(bottom: 120, right: -30, child: _Blob(Color(0xFFD7E6DF), 180)),
-        ],
-      ),
-    );
-  }
-}
-
-class _Blob extends StatelessWidget {
-  const _Blob(this.color, this.size);
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color.withOpacity(0.5),
-      ),
-    );
-  }
-}
-
-class _Glass extends StatelessWidget {
-  const _Glass({
-    required this.child,
-    this.radius = 22,
-    this.padding = const EdgeInsets.all(14),
-    this.mint = false,
-    this.teal = false,
-  });
-
-  final Widget child;
-  final double radius;
-  final EdgeInsets padding;
-  final bool mint;
-  final bool teal;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = teal
-        ? [_teal.withOpacity(0.92), _teal.withOpacity(0.78)]
-        : mint
-        ? [
-      const Color(0xFFDCEDE4).withOpacity(0.78),
-      Colors.white.withOpacity(0.32),
-    ]
-        : [
-      Colors.white.withOpacity(0.6),
-      Colors.white.withOpacity(0.24),
-    ];
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-        child: Container(
-          padding: padding,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(radius),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: colors,
-            ),
-            border: Border.all(
-              color: teal ? _teal.withOpacity(0.2) : Colors.white.withOpacity(0.72),
-            ),
-          ),
-          child: child,
-        ),
-      ),
-    );
-  }
-}
-
 class _Bubble extends StatelessWidget {
   const _Bubble({required this.msg});
   final _Msg msg;
 
   @override
   Widget build(BuildContext context) {
+    final p = ArcPalette.of(context);
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final fill = dark ? const Color(0xFF141A24) : const Color(0xFFF4F6FA);
+
     if (msg.kind == _Kind.receipt) {
-      return _Glass(
-        mint: true,
+      return ArcCard(
+        selected: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'RECEIPT',
               style: TextStyle(
                 fontSize: 11,
                 letterSpacing: 0.9,
                 fontWeight: FontWeight.w600,
-                color: _muted,
+                color: p.muted,
               ),
             ),
             const SizedBox(height: 6),
             Text(
               msg.title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: _ink,
+                color: p.ink,
               ),
             ),
             const SizedBox(height: 10),
-            _kv('Session', msg.session),
-            const Divider(color: Color(0x66E3E8E3), height: 16),
-            _kv('Intensity', msg.intensity),
+            _kv(p, 'Session', msg.session),
+            Divider(color: p.line, height: 16),
+            _kv(p, 'Intensity', msg.intensity),
           ],
         ),
       );
@@ -370,15 +379,31 @@ class _Bubble extends StatelessWidget {
       alignment: mine ? Alignment.centerRight : Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 320),
-        child: _Glass(
-          teal: mine,
-          radius: mine ? 22 : 24,
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: mine ? p.accent : fill,
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: dark ? Colors.black.withOpacity(0.5) : const Color(0xFFC8D0DC),
+                offset: const Offset(4, 4),
+                blurRadius: 8,
+              ),
+              if (!mine)
+                BoxShadow(
+                  color: dark ? Colors.white.withOpacity(0.07) : Colors.white,
+                  offset: const Offset(-3, -3),
+                  blurRadius: 8,
+                ),
+            ],
+          ),
           child: Text(
             msg.body,
             style: TextStyle(
               fontSize: 14.5,
               height: 1.4,
-              color: mine ? Colors.white : _ink,
+              color: mine ? p.onAccent : p.ink,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -387,15 +412,15 @@ class _Bubble extends StatelessWidget {
     );
   }
 
-  Widget _kv(String k, String v) {
+  Widget _kv(ArcPalette p, String k, String v) {
     return Row(
       children: [
         Text(
           k.toUpperCase(),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 11,
             letterSpacing: 0.8,
-            color: _muted,
+            color: p.muted,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -404,90 +429,14 @@ class _Bubble extends StatelessWidget {
           child: Text(
             v,
             textAlign: TextAlign.right,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: _ink,
+              color: p.ink,
             ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _GlassChip extends StatelessWidget {
-  const _GlassChip({required this.label, required this.onTap});
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: _Glass(
-        radius: 22,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-        child: Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: _ink,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GlassComposer extends StatelessWidget {
-  const _GlassComposer({required this.controller, required this.onSend});
-  final TextEditingController controller;
-  final VoidCallback onSend;
-
-  @override
-  Widget build(BuildContext context) {
-    return _Glass(
-      radius: 28,
-      padding: const EdgeInsets.fromLTRB(16, 6, 6, 6),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: controller,
-              cursorColor: _teal,
-              minLines: 1,
-              maxLines: 4,
-              style: const TextStyle(
-                fontSize: 15,
-                color: _ink,
-                fontWeight: FontWeight.w500,
-              ),
-              decoration: const InputDecoration(
-                hintText: 'Tell the coach what changed…',
-                hintStyle: TextStyle(color: _muted, fontWeight: FontWeight.w400),
-                border: InputBorder.none,
-                isCollapsed: true,
-              ),
-              onSubmitted: (_) => onSend(),
-            ),
-          ),
-          const SizedBox(width: 8),
-          GestureDetector(
-            onTap: onSend,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                color: _teal,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.arrow_upward_rounded, color: Colors.white, size: 20),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
