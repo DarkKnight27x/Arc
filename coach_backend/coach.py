@@ -180,7 +180,10 @@ def ask_coach(
     conversation: list[dict],
 ) -> CoachResponse:
 
-    knowledge = get_relevant_knowledge(message)
+    knowledge = get_relevant_knowledge(
+    message,
+    context,
+)
 
     messages = [
         {

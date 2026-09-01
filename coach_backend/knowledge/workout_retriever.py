@@ -1,16 +1,10 @@
-import json
-from pathlib import Path
 from typing import Any
 
-
-KNOWLEDGE_DIR = Path(__file__).parent
+from .loader import load_knowledge
 
 
 def load_exercises() -> dict[str, list[dict[str, Any]]]:
-    path = KNOWLEDGE_DIR / "exercises.json"
-
-    with open(path, "r", encoding="utf-8") as file:
-        return json.load(file)
+    return load_knowledge("exercises.json")
 
 
 def get_all_exercises() -> list[dict[str, Any]]:
@@ -21,118 +15,131 @@ def get_all_exercises() -> list[dict[str, Any]]:
     for category, category_exercises in data.items():
         for exercise in category_exercises:
             exercise_copy = exercise.copy()
-
-            # Preserve the JSON category as searchable information.
             exercise_copy["category"] = category
-
             exercises.append(exercise_copy)
 
     return exercises
 
-def matches_difficulty(
-    exercise: dict[str, Any],
-    difficulty: str | None,
+
+def _contains(
+    value: str | None,
+    query: str | None,
 ) -> bool:
+    if not value or not query:
+        return False
 
-    if not difficulty:
-        return True
+    return query.lower() in value.lower()
 
-    return (
-        exercise.get("difficulty", "").lower()
-        == difficulty.lower()
+
+def _list_contains(
+    values: list[str],
+    query: str | None,
+) -> bool:
+    if not query:
+        return False
+
+    query = query.lower()
+
+    return any(
+        query in value.lower()
+        for value in values
     )
 
 
-def matches_category(
+def _calculate_score(
     exercise: dict[str, Any],
     category: str | None,
-) -> bool:
-
-    if not category:
-        return True
-
-    category = category.lower()
-
-    exercise_category = exercise.get(
-        "category",
-        ""
-    ).lower()
-
-    if exercise_category == category:
-        return True
-
-    tags = [
-        tag.lower()
-        for tag in exercise.get("tags", [])
-    ]
-
-    return category in tags
-
-
-def matches_muscle(
-    exercise: dict[str, Any],
     muscle: str | None,
-) -> bool:
-
-    if not muscle:
-        return True
-
-    muscle = muscle.lower()
-
-    muscles = []
-
-    muscles.extend(
-        exercise.get("primary_muscles", [])
-    )
-
-    muscles.extend(
-        exercise.get("secondary_muscles", [])
-    )
-
-    muscles = [
-        item.lower()
-        for item in muscles
-    ]
-
-    return muscle in muscles
-
-
-def matches_impact(
-    exercise: dict[str, Any],
+    difficulty: str | None,
+    equipment: list[str] | None,
     impact_level: str | None,
-) -> bool:
+    movement_pattern: str | None,
+) -> int:
 
-    if not impact_level:
-        return True
+    score = 0
 
-    return (
-        exercise.get("impact_level", "").lower()
-        == impact_level.lower()
-    )
+    if category:
+        if exercise["category"].lower() == category.lower():
+            score += 5
 
+    if muscle:
+        primary_muscles = exercise.get(
+            "primary_muscles",
+            [],
+        )
 
-def matches_equipment_constraint(
-    exercise: dict[str, Any],
-    available_equipment: list[str] | None,
-) -> bool:
+        secondary_muscles = exercise.get(
+            "secondary_muscles",
+            [],
+        )
 
-    if not available_equipment:
-        return True
+        if _list_contains(
+            primary_muscles,
+            muscle,
+        ):
+            score += 4
 
-    exercise_equipment = (
-        exercise.get("equipment", "")
-        .lower()
-    )
+        elif _list_contains(
+            secondary_muscles,
+            muscle,
+        ):
+            score += 2
 
-    available = [
-        item.lower()
-        for item in available_equipment
-    ]
+    if difficulty:
+        if _contains(
+            exercise.get("difficulty"),
+            difficulty,
+        ):
+            score += 3
 
-    if exercise_equipment == "bodyweight":
-        return True
+    if equipment:
+        exercise_equipment = exercise.get(
+            "equipment",
+            "",
+        ).lower()
 
-    return exercise_equipment in available
+        available_equipment = [
+            item.lower()
+            for item in equipment
+        ]
+
+        if exercise_equipment in available_equipment:
+            score += 3
+
+        elif exercise_equipment == "bodyweight":
+            score += 1
+
+    if impact_level:
+        if _contains(
+            exercise.get("impact_level"),
+            impact_level,
+        ):
+            score += 3
+
+    if movement_pattern:
+        if _contains(
+            exercise.get("movement_pattern"),
+            movement_pattern,
+        ):
+            score += 2
+
+    tags = exercise.get("tags", [])
+
+    if category:
+        if _list_contains(tags, category):
+            score += 1
+
+    if difficulty:
+        if _list_contains(tags, difficulty):
+            score += 1
+
+    if impact_level:
+        impact_tag = f"{impact_level}_impact"
+
+        if _list_contains(tags, impact_tag):
+            score += 1
+
+    return score
 
 
 def retrieve_workouts(
@@ -141,48 +148,74 @@ def retrieve_workouts(
     difficulty: str | None = None,
     equipment: list[str] | None = None,
     impact_level: str | None = None,
-    limit: int = 10,
+    movement_pattern: str | None = None,
+    limit: int = 5,
 ) -> list[dict[str, Any]]:
 
     exercises = get_all_exercises()
+    candidates = []
 
-    results = []
+    normalized_equipment = [
+        item.lower()
+        for item in (equipment or [])
+    ]
 
     for exercise in exercises:
 
-        if not matches_category(
-            exercise,
-            category
-        ):
-            continue
+        # Hard filter: category
+        if category:
+            if exercise["category"].lower() != category.lower():
+                continue
 
-        if not matches_muscle(
-            exercise,
-            muscle
-        ):
-            continue
+        # Hard filter: difficulty
+        if difficulty:
+            if exercise.get(
+                "difficulty",
+                "",
+            ).lower() != difficulty.lower():
+                continue
 
-        if not matches_difficulty(
-            exercise,
-            difficulty
-        ):
-            continue
+        # Hard filter: impact
+        if impact_level:
+            if exercise.get(
+                "impact_level",
+                "",
+            ).lower() != impact_level.lower():
+                continue
 
-        if not matches_equipment_constraint(
-            exercise,
-            equipment
-        ):
-            continue
+        # Hard filter: equipment
+        if equipment:
+            exercise_equipment = exercise.get(
+                "equipment",
+                "",
+            ).lower()
 
-        if not matches_impact(
-            exercise,
-            impact_level
-        ):
-            continue
+            # Bodyweight exercises require no equipment.
+            if exercise_equipment != "bodyweight":
+                if exercise_equipment not in normalized_equipment:
+                    continue
 
-        results.append(exercise)
+        score = _calculate_score(
+            exercise=exercise,
+            category=category,
+            muscle=muscle,
+            difficulty=difficulty,
+            equipment=equipment,
+            impact_level=impact_level,
+            movement_pattern=movement_pattern,
+        )
 
-    return results[:limit]
+        exercise_with_score = exercise.copy()
+        exercise_with_score["_relevance_score"] = score
+
+        candidates.append(exercise_with_score)
+
+    candidates.sort(
+        key=lambda exercise: exercise["_relevance_score"],
+        reverse=True,
+    )
+
+    return candidates[:limit]
 
 
 def retrieve_low_impact_workouts(
@@ -190,7 +223,7 @@ def retrieve_low_impact_workouts(
     muscle: str | None = None,
     difficulty: str | None = None,
     equipment: list[str] | None = None,
-    limit: int = 10,
+    limit: int = 5,
 ) -> list[dict[str, Any]]:
 
     return retrieve_workouts(
@@ -204,42 +237,33 @@ def retrieve_low_impact_workouts(
 
 
 def format_workout_results(
-    exercises: list[dict[str, Any]]
+    exercises: list[dict[str, Any]],
 ) -> dict[str, Any]:
 
     return {
         "exercises": [
             {
-                "name": exercise["name"],
-                "category": exercise.get("category"),
+                "name": exercise.get("name"),
                 "equipment": exercise.get("equipment"),
                 "difficulty": exercise.get("difficulty"),
                 "primary_muscles": exercise.get(
                     "primary_muscles",
-                    []
+                    [],
                 ),
                 "secondary_muscles": exercise.get(
                     "secondary_muscles",
-                    []
+                    [],
                 ),
                 "movement_pattern": exercise.get(
-                    "movement_pattern"
+                    "movement_pattern",
                 ),
                 "impact_level": exercise.get(
-                    "impact_level"
-                ),
-                "regressions": exercise.get(
-                    "regressions",
-                    []
-                ),
-                "progressions": exercise.get(
-                    "progressions",
-                    []
+                    "impact_level",
                 ),
                 "tags": exercise.get(
                     "tags",
-                    []
-                )
+                    [],
+                ),
             }
             for exercise in exercises
         ]
