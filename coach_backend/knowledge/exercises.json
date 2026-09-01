@@ -4,65 +4,804 @@
       "name": "Dead Bug",
       "equipment": "bodyweight",
       "difficulty": "beginner",
-      "primary_muscles": ["core"]
+      "primary_muscles": ["core"],
+      "secondary_muscles": [],
+      "movement_pattern": "anti_extension",
+      "impact_level": "low",
+      "position": "lying",
+      "instructions": [
+        "Lie on your back with your arms extended upward.",
+        "Lift your legs with knees bent.",
+        "Slowly lower the opposite arm and leg while keeping your trunk controlled.",
+        "Return to the starting position and alternate sides."
+      ],
+      "common_mistakes": [
+        "Arching the lower back",
+        "Moving too quickly",
+        "Holding the breath"
+      ],
+      "regressions": [
+        "Heel Taps"
+      ],
+      "progressions": [
+        "Weighted Dead Bug"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "core",
+        "beginner",
+        "bodyweight",
+        "low_impact",
+        "anti_extension"
+      ]
     },
     {
       "name": "Bird Dog",
       "equipment": "bodyweight",
       "difficulty": "beginner",
-      "primary_muscles": ["core"]
+      "primary_muscles": ["core"],
+      "secondary_muscles": ["glutes", "shoulders"],
+      "movement_pattern": "anti_rotation",
+      "impact_level": "low",
+      "position": "quadruped",
+      "instructions": [
+        "Start on your hands and knees.",
+        "Extend one arm and the opposite leg.",
+        "Keep your hips and shoulders controlled.",
+        "Return to the starting position and alternate sides."
+      ],
+      "common_mistakes": [
+        "Rotating the hips",
+        "Arching the lower back",
+        "Moving too quickly"
+      ],
+      "regressions": [
+        "Bird Dog Arm Only",
+        "Bird Dog Leg Only"
+      ],
+      "progressions": [
+        "Weighted Bird Dog"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "core",
+        "beginner",
+        "bodyweight",
+        "low_impact",
+        "anti_rotation"
+      ]
     },
     {
       "name": "Pallof Press",
       "equipment": "resistance band",
       "difficulty": "intermediate",
-      "primary_muscles": ["core"]
+      "primary_muscles": ["core"],
+      "secondary_muscles": ["shoulders"],
+      "movement_pattern": "anti_rotation",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Anchor a resistance band at approximately chest height.",
+        "Stand sideways to the anchor and hold the band with both hands.",
+        "Bring the band to your chest.",
+        "Press your hands forward while resisting rotation.",
+        "Return the hands to your chest and repeat."
+      ],
+      "common_mistakes": [
+        "Rotating toward the anchor",
+        "Using excessive resistance",
+        "Leaning away from the anchor"
+      ],
+      "regressions": [
+        "Pallof Hold"
+      ],
+      "progressions": [
+        "Pallof Press With Step"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "core",
+        "intermediate",
+        "resistance_band",
+        "low_impact",
+        "anti_rotation"
+      ]
     },
     {
       "name": "Side Plank",
       "equipment": "bodyweight",
       "difficulty": "intermediate",
-      "primary_muscles": ["core"]
+      "primary_muscles": ["core"],
+      "secondary_muscles": ["obliques", "shoulders"],
+      "movement_pattern": "anti_lateral_flexion",
+      "impact_level": "low",
+      "position": "side_lying",
+      "instructions": [
+        "Lie on your side with your elbow beneath your shoulder.",
+        "Lift your hips from the floor.",
+        "Keep your body aligned from head to feet.",
+        "Hold the position while maintaining controlled breathing."
+      ],
+      "common_mistakes": [
+        "Dropping the hips",
+        "Rotating the torso",
+        "Placing the elbow too far from the shoulder"
+      ],
+      "regressions": [
+        "Bent Knee Side Plank"
+      ],
+      "progressions": [
+        "Side Plank With Leg Raise"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "core",
+        "intermediate",
+        "bodyweight",
+        "low_impact",
+        "obliques"
+      ]
     },
     {
       "name": "Plank",
       "equipment": "bodyweight",
       "difficulty": "beginner",
-      "primary_muscles": ["core"]
+      "primary_muscles": ["core"],
+      "secondary_muscles": ["shoulders", "glutes"],
+      "movement_pattern": "anti_extension",
+      "impact_level": "low",
+      "position": "prone",
+      "instructions": [
+        "Start with your forearms and toes on the floor.",
+        "Keep your body in a straight line.",
+        "Brace your core and maintain the position.",
+        "Breathe steadily while holding the plank."
+      ],
+      "common_mistakes": [
+        "Dropping the hips",
+        "Raising the hips too high",
+        "Holding the breath"
+      ],
+      "regressions": [
+        "Knee Plank"
+      ],
+      "progressions": [
+        "Long Lever Plank"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "core",
+        "beginner",
+        "bodyweight",
+        "low_impact",
+        "anti_extension"
+      ]
+    },
+    {
+      "name": "Heel Taps",
+      "equipment": "bodyweight",
+      "difficulty": "beginner",
+      "primary_muscles": ["core"],
+      "secondary_muscles": ["obliques"],
+      "movement_pattern": "trunk_stability",
+      "impact_level": "low",
+      "position": "lying",
+      "instructions": [
+        "Lie on your back with your knees bent.",
+        "Brace your core.",
+        "Lower one heel toward the floor.",
+        "Return to the starting position and alternate sides."
+      ],
+      "common_mistakes": [
+        "Arching the lower back",
+        "Moving too quickly"
+      ],
+      "regressions": [],
+      "progressions": [
+        "Dead Bug"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "core",
+        "beginner",
+        "bodyweight",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Reverse Crunch",
+      "equipment": "bodyweight",
+      "difficulty": "intermediate",
+      "primary_muscles": ["core"],
+      "secondary_muscles": [],
+      "movement_pattern": "trunk_flexion",
+      "impact_level": "low",
+      "position": "lying",
+      "instructions": [
+        "Lie on your back with your knees bent.",
+        "Brace your core.",
+        "Curl your knees toward your chest using controlled trunk movement.",
+        "Lower your legs slowly."
+      ],
+      "common_mistakes": [
+        "Swinging the legs",
+        "Using momentum",
+        "Lowering the legs too quickly"
+      ],
+      "regressions": [
+        "Bent Knee Leg Raise"
+      ],
+      "progressions": [
+        "Weighted Reverse Crunch"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "core",
+        "intermediate",
+        "bodyweight",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Mountain Climber",
+      "equipment": "bodyweight",
+      "difficulty": "intermediate",
+      "primary_muscles": ["core"],
+      "secondary_muscles": ["shoulders", "hip_flexors"],
+      "movement_pattern": "dynamic_core",
+      "impact_level": "medium",
+      "position": "plank",
+      "instructions": [
+        "Start in a high plank position.",
+        "Bring one knee toward your chest.",
+        "Return the leg and alternate sides.",
+        "Maintain a controlled plank position."
+      ],
+      "common_mistakes": [
+        "Raising the hips",
+        "Losing trunk control",
+        "Moving faster than you can control"
+      ],
+      "regressions": [
+        "Slow Mountain Climber"
+      ],
+      "progressions": [
+        "Fast Mountain Climber"
+      ],
+      "avoid_with": [
+        "high_impact_restriction"
+      ],
+      "tags": [
+        "core",
+        "intermediate",
+        "bodyweight",
+        "dynamic",
+        "cardio"
+      ]
     }
   ],
+
   "upper_body": [
     {
       "name": "Dumbbell Row",
       "equipment": "dumbbells",
       "difficulty": "beginner",
-      "primary_muscles": ["back", "biceps"]
+      "primary_muscles": ["back"],
+      "secondary_muscles": ["biceps", "rear_deltoids"],
+      "movement_pattern": "horizontal_pull",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Hold a dumbbell in one hand.",
+        "Hinge forward while keeping your back controlled.",
+        "Pull the dumbbell toward your torso.",
+        "Lower the weight with control."
+      ],
+      "common_mistakes": [
+        "Rounding the back",
+        "Using momentum",
+        "Rotating the torso"
+      ],
+      "regressions": [
+        "Supported Dumbbell Row"
+      ],
+      "progressions": [
+        "Heavy Dumbbell Row"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "back",
+        "beginner",
+        "dumbbells",
+        "low_impact"
+      ]
     },
     {
       "name": "Dumbbell Shoulder Press",
       "equipment": "dumbbells",
       "difficulty": "intermediate",
-      "primary_muscles": ["shoulders", "triceps"]
+      "primary_muscles": ["shoulders"],
+      "secondary_muscles": ["triceps"],
+      "movement_pattern": "vertical_push",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Hold dumbbells at shoulder height.",
+        "Brace your trunk.",
+        "Press the dumbbells overhead.",
+        "Lower them under control."
+      ],
+      "common_mistakes": [
+        "Arching the lower back",
+        "Using momentum",
+        "Lowering the weights too quickly"
+      ],
+      "regressions": [
+        "Seated Dumbbell Shoulder Press"
+      ],
+      "progressions": [
+        "Single Arm Dumbbell Press"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "shoulders",
+        "intermediate",
+        "dumbbells",
+        "low_impact"
+      ]
     },
     {
       "name": "Dumbbell Chest Press",
       "equipment": "dumbbells",
       "difficulty": "beginner",
-      "primary_muscles": ["chest", "triceps"]
+      "primary_muscles": ["chest"],
+      "secondary_muscles": ["triceps", "shoulders"],
+      "movement_pattern": "horizontal_push",
+      "impact_level": "low",
+      "position": "lying",
+      "instructions": [
+        "Lie on a stable surface with a dumbbell in each hand.",
+        "Position the dumbbells near your chest.",
+        "Press them upward.",
+        "Lower them slowly."
+      ],
+      "common_mistakes": [
+        "Flaring the elbows excessively",
+        "Using excessive weight",
+        "Dropping the weights quickly"
+      ],
+      "regressions": [
+        "Dumbbell Floor Press"
+      ],
+      "progressions": [
+        "Incline Dumbbell Press"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "chest",
+        "beginner",
+        "dumbbells",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Dumbbell Biceps Curl",
+      "equipment": "dumbbells",
+      "difficulty": "beginner",
+      "primary_muscles": ["biceps"],
+      "secondary_muscles": ["forearms"],
+      "movement_pattern": "elbow_flexion",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Hold dumbbells with your palms facing forward.",
+        "Keep your elbows close to your sides.",
+        "Curl the dumbbells toward your shoulders.",
+        "Lower them slowly."
+      ],
+      "common_mistakes": [
+        "Swinging the torso",
+        "Moving the elbows forward",
+        "Using excessive weight"
+      ],
+      "regressions": [],
+      "progressions": [
+        "Alternating Dumbbell Curl"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "biceps",
+        "beginner",
+        "dumbbells",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Dumbbell Lateral Raise",
+      "equipment": "dumbbells",
+      "difficulty": "beginner",
+      "primary_muscles": ["shoulders"],
+      "secondary_muscles": [],
+      "movement_pattern": "shoulder_abduction",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Hold light dumbbells by your sides.",
+        "Raise your arms outward to approximately shoulder height.",
+        "Lower them slowly."
+      ],
+      "common_mistakes": [
+        "Using excessive weight",
+        "Shrugging the shoulders",
+        "Swinging the arms"
+      ],
+      "regressions": [],
+      "progressions": [
+        "Cable Lateral Raise"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "shoulders",
+        "beginner",
+        "dumbbells",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Resistance Band Row",
+      "equipment": "resistance band",
+      "difficulty": "beginner",
+      "primary_muscles": ["back"],
+      "secondary_muscles": ["biceps", "rear_deltoids"],
+      "movement_pattern": "horizontal_pull",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Anchor the resistance band securely.",
+        "Hold the handles or band ends.",
+        "Pull toward your torso while keeping your shoulders controlled.",
+        "Return slowly."
+      ],
+      "common_mistakes": [
+        "Rounding the back",
+        "Shrugging the shoulders",
+        "Using momentum"
+      ],
+      "regressions": [
+        "Lighter Resistance Band Row"
+      ],
+      "progressions": [
+        "Single Arm Band Row"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "back",
+        "beginner",
+        "resistance_band",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Resistance Band Chest Press",
+      "equipment": "resistance band",
+      "difficulty": "beginner",
+      "primary_muscles": ["chest"],
+      "secondary_muscles": ["triceps", "shoulders"],
+      "movement_pattern": "horizontal_push",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Secure the band behind you.",
+        "Hold the band at chest height.",
+        "Press your hands forward.",
+        "Return slowly while maintaining control."
+      ],
+      "common_mistakes": [
+        "Arching the lower back",
+        "Using excessive resistance",
+        "Letting the band pull the arms back too quickly"
+      ],
+      "regressions": [],
+      "progressions": [
+        "Single Arm Band Chest Press"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "chest",
+        "beginner",
+        "resistance_band",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Dumbbell Chest Fly",
+      "equipment": "dumbbells",
+      "difficulty": "intermediate",
+      "primary_muscles": ["chest"],
+      "secondary_muscles": ["shoulders"],
+      "movement_pattern": "horizontal_adduction",
+      "impact_level": "low",
+      "position": "lying",
+      "instructions": [
+        "Lie on a stable surface with dumbbells above your chest.",
+        "Lower the weights outward with slightly bent elbows.",
+        "Bring the dumbbells back together under control."
+      ],
+      "common_mistakes": [
+        "Using excessive weight",
+        "Overextending the shoulders",
+        "Dropping the weights quickly"
+      ],
+      "regressions": [
+        "Dumbbell Floor Fly"
+      ],
+      "progressions": [],
+      "avoid_with": [],
+      "tags": [
+        "upper_body",
+        "chest",
+        "intermediate",
+        "dumbbells",
+        "low_impact"
+      ]
     }
   ],
+
   "lower_body": [
     {
       "name": "Bodyweight Squat",
       "equipment": "bodyweight",
       "difficulty": "beginner",
-      "primary_muscles": ["quadriceps", "glutes"]
+      "primary_muscles": ["quadriceps", "glutes"],
+      "secondary_muscles": ["hamstrings"],
+      "movement_pattern": "squat",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Stand with your feet approximately shoulder width apart.",
+        "Bend your knees and hips while keeping your torso controlled.",
+        "Lower to a comfortable depth.",
+        "Push through your feet to return to standing."
+      ],
+      "common_mistakes": [
+        "Knees collapsing inward",
+        "Losing control of the descent",
+        "Rounding the lower back"
+      ],
+      "regressions": [
+        "Chair Squat"
+      ],
+      "progressions": [
+        "Goblet Squat"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "lower_body",
+        "quadriceps",
+        "glutes",
+        "beginner",
+        "bodyweight",
+        "low_impact"
+      ]
     },
     {
       "name": "Glute Bridge",
       "equipment": "bodyweight",
       "difficulty": "beginner",
-      "primary_muscles": ["glutes", "hamstrings"]
+      "primary_muscles": ["glutes"],
+      "secondary_muscles": ["hamstrings", "core"],
+      "movement_pattern": "hip_extension",
+      "impact_level": "low",
+      "position": "lying",
+      "instructions": [
+        "Lie on your back with your knees bent.",
+        "Place your feet on the floor.",
+        "Drive through your feet and raise your hips.",
+        "Pause briefly and lower your hips under control."
+      ],
+      "common_mistakes": [
+        "Overarching the lower back",
+        "Pushing mainly through the toes",
+        "Moving too quickly"
+      ],
+      "regressions": [
+        "Glute Bridge Hold"
+      ],
+      "progressions": [
+        "Single Leg Glute Bridge"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "lower_body",
+        "glutes",
+        "beginner",
+        "bodyweight",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Goblet Squat",
+      "equipment": "dumbbells",
+      "difficulty": "beginner",
+      "primary_muscles": ["quadriceps", "glutes"],
+      "secondary_muscles": ["core", "hamstrings"],
+      "movement_pattern": "squat",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Hold one dumbbell close to your chest.",
+        "Lower into a controlled squat.",
+        "Keep the weight close to your body.",
+        "Push through your feet to stand."
+      ],
+      "common_mistakes": [
+        "Rounding the back",
+        "Allowing the knees to collapse inward",
+        "Using excessive weight"
+      ],
+      "regressions": [
+        "Bodyweight Squat"
+      ],
+      "progressions": [
+        "Tempo Goblet Squat"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "lower_body",
+        "quadriceps",
+        "glutes",
+        "beginner",
+        "dumbbells",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Reverse Lunge",
+      "equipment": "bodyweight",
+      "difficulty": "intermediate",
+      "primary_muscles": ["quadriceps", "glutes"],
+      "secondary_muscles": ["hamstrings"],
+      "movement_pattern": "lunge",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Stand upright with your feet together.",
+        "Step one foot backward.",
+        "Lower your body under control.",
+        "Push through the front foot to return to standing."
+      ],
+      "common_mistakes": [
+        "Losing balance",
+        "Taking an excessively long step",
+        "Dropping too quickly"
+      ],
+      "regressions": [
+        "Supported Reverse Lunge"
+      ],
+      "progressions": [
+        "Dumbbell Reverse Lunge"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "lower_body",
+        "quadriceps",
+        "glutes",
+        "intermediate",
+        "bodyweight",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Dumbbell Romanian Deadlift",
+      "equipment": "dumbbells",
+      "difficulty": "intermediate",
+      "primary_muscles": ["hamstrings", "glutes"],
+      "secondary_muscles": ["back", "core"],
+      "movement_pattern": "hip_hinge",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Hold dumbbells in front of your thighs.",
+        "Push your hips backward while keeping the dumbbells close to your legs.",
+        "Lower until you feel controlled tension in your hamstrings.",
+        "Drive your hips forward to return to standing."
+      ],
+      "common_mistakes": [
+        "Rounding the back",
+        "Bending the knees excessively",
+        "Moving the weights away from the body"
+      ],
+      "regressions": [
+        "Hip Hinge Drill"
+      ],
+      "progressions": [
+        "Single Leg Romanian Deadlift"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "lower_body",
+        "hamstrings",
+        "glutes",
+        "intermediate",
+        "dumbbells",
+        "low_impact",
+        "hip_hinge"
+      ]
+    },
+    {
+      "name": "Resistance Band Glute Kickback",
+      "equipment": "resistance band",
+      "difficulty": "beginner",
+      "primary_muscles": ["glutes"],
+      "secondary_muscles": ["hamstrings"],
+      "movement_pattern": "hip_extension",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Secure a resistance band around your legs.",
+        "Hold onto a stable support.",
+        "Move one leg backward against the band.",
+        "Return slowly and repeat."
+      ],
+      "common_mistakes": [
+        "Arching the lower back",
+        "Swinging the leg",
+        "Rotating the hips"
+      ],
+      "regressions": [
+        "Bodyweight Glute Kickback"
+      ],
+      "progressions": [
+        "Heavier Band Glute Kickback"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "lower_body",
+        "glutes",
+        "beginner",
+        "resistance_band",
+        "low_impact"
+      ]
+    },
+    {
+      "name": "Calf Raise",
+      "equipment": "bodyweight",
+      "difficulty": "beginner",
+      "primary_muscles": ["calves"],
+      "secondary_muscles": [],
+      "movement_pattern": "ankle_plantarflexion",
+      "impact_level": "low",
+      "position": "standing",
+      "instructions": [
+        "Stand upright with your feet hip width apart.",
+        "Raise your heels from the floor.",
+        "Pause briefly at the top.",
+        "Lower your heels slowly."
+      ],
+      "common_mistakes": [
+        "Bouncing through the movement",
+        "Rolling the ankles outward",
+        "Using momentum"
+      ],
+      "regressions": [],
+      "progressions": [
+        "Single Leg Calf Raise"
+      ],
+      "avoid_with": [],
+      "tags": [
+        "lower_body",
+        "calves",
+        "beginner",
+        "bodyweight",
+        "low_impact"
+      ]
     }
   ]
 }
