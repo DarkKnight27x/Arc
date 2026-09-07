@@ -117,3 +117,14 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock'nassets/3dModels/*.glb'n
+
+# This app
+.idea/
+*.iml
+.vscode/
+*.env
+lib/data/supabase_config.dart
+
+# Local noise
+.DS_Store
+Thumbs.db
