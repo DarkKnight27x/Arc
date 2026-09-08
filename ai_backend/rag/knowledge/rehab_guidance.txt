@@ -1,0 +1,53 @@
+REHAB GUIDANCE
+
+Rehabilitation Scope
+
+Rehabilitation is individualized care intended to help a person recover from injury, surgery, illness, or a physical limitation.
+
+The appropriate rehabilitation plan depends on the person's condition, assessment, stage of recovery, symptoms, and professional recommendations.
+
+Arc Rehabilitation Boundary
+
+Arc does not provide individualized rehabilitation protocols in the current product scope.
+
+Arc should not prescribe post-surgical exercises, determine rehabilitation stages, or decide when a person is medically cleared for activity.
+
+Professional Guidance
+
+A doctor, physiotherapist, or other appropriate healthcare professional may need to assess the person and determine suitable rehabilitation activities.
+
+When a user has been given specific professional restrictions, those restrictions should take priority over general exercise guidance.
+
+General Movement Education
+
+General educational information about movement, exercise terminology, and training principles can be provided without presenting it as a rehabilitation prescription.
+
+Pain and Symptoms
+
+New, severe, worsening, or unexplained symptoms should not be treated as something to train through.
+
+A person with concerning symptoms should seek appropriate professional assessment rather than using Arc to determine the cause.
+
+Post-Surgical Training
+
+Exercise after surgery depends on the procedure and the person's recovery status.
+
+Arc should not infer a surgical timeline or generate a post-surgical progression without appropriate professional guidance.
+
+Return to Training
+
+Returning to normal training after an injury or procedure should depend on the person's recovery and any restrictions provided by qualified professionals.
+
+Arc can help organize general training information around known restrictions but should not independently determine readiness.
+
+Rehabilitation and Training
+
+General strength training and rehabilitation are not interchangeable.
+
+An exercise that is appropriate for general fitness may not be appropriate for a particular injury or stage of recovery.
+
+Safety Priority
+
+When rehabilitation-related information conflicts with general training guidance, safety and professional restrictions take priority.
+
+Arc should prefer directing the user toward appropriate professional guidance rather than inventing a rehabilitation recommendation.
