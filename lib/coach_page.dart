@@ -3,14 +3,27 @@ import 'theme_ctrl.dart';
 
 class CoachPage extends StatefulWidget {
   const CoachPage({super.key});
-
   @override
   State<CoachPage> createState() => _CoachPageState();
 }
 
+class _Msg {
+  const _Msg(this.mine, this.text);
+  final bool mine;
+  final String text;
+}
+
 class _CoachPageState extends State<CoachPage> {
-  int tab = 0; // 0 recover  1 rehab  2 physio
+  int tab = 0;
   final search = TextEditingController();
+  final input = TextEditingController();
+  final lines = <_Msg>[
+    const _Msg(false,
+        'Keep today’s plan steady. If something feels off, stay in the region and change the machine.\n\nARC does not diagnose injuries.'),
+    const _Msg(true, 'Can you make this a shorter day?'),
+    const _Msg(false,
+        'Keep the first three movements and leave one set in reserve. Ten minutes is enough to stay consistent.'),
+  ];
 
   static const physios = [
     ('Motion Lab Physio', 'Thane West · 1.2 km', 'Sports + shoulder'),
@@ -22,7 +35,21 @@ class _CoachPageState extends State<CoachPage> {
   @override
   void dispose() {
     search.dispose();
+    input.dispose();
     super.dispose();
+  }
+
+  void _send([String? raw]) {
+    final t = (raw ?? input.text).trim();
+    if (t.isEmpty) return;
+    input.clear();
+    setState(() {
+      lines.add(_Msg(true, t));
+      lines.add(const _Msg(
+        false,
+        'Noted. Same region, different machine. Stop the set if pain rises.',
+      ));
+    });
   }
 
   @override
@@ -44,37 +71,75 @@ class _CoachPageState extends State<CoachPage> {
           color: c.page,
           child: SafeArea(
             bottom: false,
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+            child: Column(
               children: [
-                const ArcLogo(),
-                const SizedBox(height: 16),
-                Text('RECOVER',
-                    style: TextStyle(
-                        fontSize: 11,
-                        letterSpacing: 1.1,
-                        color: c.faint,
-                        fontWeight: FontWeight.w600)),
-                const SizedBox(height: 6),
-                Text('A little more margin.',
-                    style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w500,
-                        color: c.ink)),
-                const SizedBox(height: 14),
-                Row(
-                  children: [
-                    _Seg('Signal', tab == 0, c, () => setState(() => tab = 0)),
-                    const SizedBox(width: 8),
-                    _Seg('Rehab', tab == 1, c, () => setState(() => tab = 1)),
-                    const SizedBox(width: 8),
-                    _Seg('Physio', tab == 2, c, () => setState(() => tab = 2)),
-                  ],
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
+                    children: [
+                      Row(
+                        children: [
+                          const ArcLogo(),
+                          const Spacer(),
+                          Text('THANE',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  letterSpacing: 0.8,
+                                  fontWeight: FontWeight.w600,
+                                  color: c.faint)),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text('RECOVER  ·  LIVE CONTEXT',
+                          style: TextStyle(
+                              fontSize: 11,
+                              letterSpacing: 1.1,
+                              color: c.faint,
+                              fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 8),
+                      Text.rich(TextSpan(children: [
+                        TextSpan(
+                            text: 'Coach\n',
+                            style: TextStyle(
+                                fontSize: 36,
+                                height: 1.02,
+                                fontWeight: FontWeight.w500,
+                                color: c.ink)),
+                        TextSpan(
+                            text: 'for today.',
+                            style: TextStyle(
+                                fontSize: 36,
+                                height: 1.02,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w500,
+                                color: c.ink)),
+                      ])),
+                      const SizedBox(height: 6),
+                      Text('Training · food · recovery',
+                          style: TextStyle(fontSize: 14, color: c.muted)),
+                      const SizedBox(height: 14),
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: metalWell(c),
+                        child: Row(
+                          children: [
+                            _Seg('Coach', tab == 0, c,
+                                    () => setState(() => tab = 0)),
+                            _Seg('Rehab', tab == 1, c,
+                                    () => setState(() => tab = 1)),
+                            _Seg('Physio', tab == 2, c,
+                                    () => setState(() => tab = 2)),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      if (tab == 0) _coach(c),
+                      if (tab == 1) _rehab(c),
+                      if (tab == 2) _physio(c, list),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
-                if (tab == 0) _signal(c),
-                if (tab == 1) _rehab(c),
-                if (tab == 2) _physio(c, list),
+                if (tab == 0) _composer(c),
               ],
             ),
           ),
@@ -83,47 +148,74 @@ class _CoachPageState extends State<CoachPage> {
     );
   }
 
-  Widget _signal(ArcColors c) {
+  Widget _coach(ArcColors c) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _Card(
-          c: c,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('READINESS',
-                  style: TextStyle(
-                      fontSize: 11, letterSpacing: 1.0, color: c.faint)),
-              Text('7.4',
-                  style: TextStyle(
-                      fontSize: 28, fontWeight: FontWeight.w600, color: c.ink)),
-              Text('Ready with room',
-                  style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w600, color: c.ink)),
-              Text('Sleep 7h 12m / 8h target',
-                  style: TextStyle(fontSize: 13, color: c.muted)),
-            ],
-          ),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _Hint(c, 'Swap this machine', () => _send('Swap this machine')),
+            _Hint(c, '10-min cut', () => _send('Give me a 10-min cut')),
+            _Hint(c, 'Shoulder feels off', () => _send('Shoulder feels off')),
+          ],
         ),
-        const SizedBox(height: 12),
-        _Card(
-          c: c,
-          child: Row(
-            children: [
-              Icon(Icons.self_improvement, color: c.ice),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text('Yoga · 20 min · shoulders + hips',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: c.ink)),
-              ),
-            ],
-          ),
-        ),
+        const SizedBox(height: 14),
+        for (final m in lines) _Bubble(c: c, msg: m),
       ],
+    );
+  }
+
+  Widget _composer(ArcColors c) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: metalWell(c),
+        child: Row(
+          children: [
+            PressScale(
+              onTap: () => _send('Attached a note'),
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: c.raised,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: c.line),
+                ),
+                child: Icon(Icons.add, color: c.ink, size: 18),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: TextField(
+                controller: input,
+                style: TextStyle(color: c.ink),
+                onSubmitted: (_) => _send(),
+                decoration: InputDecoration(
+                  hintText: 'Ask anything about today…',
+                  hintStyle: TextStyle(color: c.faint, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                ),
+              ),
+            ),
+            PressScale(
+              onTap: _send,
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: metalPrimary(c).copyWith(
+                  borderRadius: BorderRadius.circular(99),
+                ),
+                child: Icon(Icons.arrow_forward, color: c.ctaInk, size: 16),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -136,8 +228,10 @@ class _CoachPageState extends State<CoachPage> {
           style: TextStyle(fontSize: 13, height: 1.4, color: c.muted),
         ),
         const SizedBox(height: 12),
-        _Card(
-          c: c,
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: metalPanel(c),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -154,62 +248,28 @@ class _CoachPageState extends State<CoachPage> {
           ),
         ),
         const SizedBox(height: 10),
-        _Card(
-          c: c,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('What to do in the gym',
-                  style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
-              const SizedBox(height: 8),
-              Text('• Keep pressing, drop overhead load if it pinches',
-                  style: TextStyle(fontSize: 14, color: c.muted)),
-              Text('• Prefer supported machines over free-weight flyes',
-                  style: TextStyle(fontSize: 14, color: c.muted)),
-              Text('• Stop the set if pain rises, not just fatigue',
-                  style: TextStyle(fontSize: 14, color: c.muted)),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        _Card(
-          c: c,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Check-in',
-                  style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
-              const SizedBox(height: 8),
-              Text('Same / better / worse than last session?',
-                  style: TextStyle(fontSize: 14, color: c.muted)),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 8,
-                children: [
-                  _Chip(c, 'Better'),
-                  _Chip(c, 'Same'),
-                  _Chip(c, 'Worse'),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
+        Container(
           width: double.infinity,
-          height: 52,
-          child: FilledButton(
-            onPressed: () => setState(() => tab = 2),
-            style: FilledButton.styleFrom(
-              backgroundColor: c.cta,
-              foregroundColor: Colors.white,
-              shape: const StadiumBorder(),
-            ),
-            child: const Text('Find a physiotherapist',
-                style: TextStyle(fontWeight: FontWeight.w700)),
+          padding: const EdgeInsets.all(16),
+          decoration: metalPanel(c),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('In the gym',
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
+              const SizedBox(height: 8),
+              Text('Keep pressing. Drop overhead if it pinches.',
+                  style: TextStyle(fontSize: 14, color: c.muted)),
+              Text('Prefer supported machines.',
+                  style: TextStyle(fontSize: 14, color: c.muted)),
+            ],
           ),
+        ),
+        const SizedBox(height: 12),
+        MetalBtn(
+          label: 'Find a physiotherapist',
+          onTap: () => setState(() => tab = 2),
         ),
       ],
     );
@@ -223,7 +283,7 @@ class _CoachPageState extends State<CoachPage> {
             style: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
         const SizedBox(height: 6),
-        Text('Thane / Mumbai · listings will later come from bookings.',
+        Text('Thane / Mumbai · sample until bookings are live.',
             style: TextStyle(fontSize: 13, color: c.muted)),
         const SizedBox(height: 12),
         TextField(
@@ -242,7 +302,7 @@ class _CoachPageState extends State<CoachPage> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: c.cta),
+              borderSide: BorderSide(color: c.line),
             ),
           ),
         ),
@@ -250,34 +310,27 @@ class _CoachPageState extends State<CoachPage> {
         for (final p in list)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: _Card(
-              c: c,
-              child: Row(
-                children: [
-                  Icon(Icons.favorite_border, color: c.ice),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(p.$1,
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: c.ink)),
-                        Text(p.$2, style: TextStyle(fontSize: 13, color: c.muted)),
-                        Text(p.$3, style: TextStyle(fontSize: 12, color: c.faint)),
-                      ],
-                    ),
-                  ),
-                  Icon(Icons.chevron_right, color: c.faint),
-                ],
+            child: PressScale(
+              onTap: () {},
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: metalPanel(c),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(p.$1,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: c.ink)),
+                    Text(p.$2, style: TextStyle(fontSize: 13, color: c.muted)),
+                    Text(p.$3, style: TextStyle(fontSize: 12, color: c.faint)),
+                  ],
+                ),
               ),
             ),
           ),
-        if (list.isEmpty)
-          Text('No match. Try “Thane” or “shoulder”.',
-              style: TextStyle(color: c.muted)),
       ],
     );
   }
@@ -293,15 +346,15 @@ class _Seg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
+      child: PressScale(
         onTap: tap,
-        child: Container(
+        child: AnimatedContainer(
+          duration: ArcMotion.base,
           height: 40,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: c.chip,
+            color: on ? c.raised : Colors.transparent,
             borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: on ? c.cta : c.line),
           ),
           child: Text(label,
               style: TextStyle(
@@ -313,39 +366,44 @@ class _Seg extends StatelessWidget {
   }
 }
 
-class _Card extends StatelessWidget {
-  const _Card({required this.c, required this.child});
+class _Hint extends StatelessWidget {
+  const _Hint(this.c, this.label, this.onTap);
   final ArcColors c;
-  final Widget child;
+  final String label;
+  final VoidCallback onTap;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: c.line),
+    return PressScale(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: metalWell(c),
+        child: Text(label,
+            style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w600, color: c.ink)),
       ),
-      child: child,
     );
   }
 }
 
-class _Chip extends StatelessWidget {
-  const _Chip(this.c, this.label);
+class _Bubble extends StatelessWidget {
+  const _Bubble({required this.c, required this.msg});
   final ArcColors c;
-  final String label;
+  final _Msg msg;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: c.chip,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: c.line),
+    return Align(
+      alignment: msg.mine ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        constraints: const BoxConstraints(maxWidth: 300),
+        padding: const EdgeInsets.all(14),
+        decoration: metalPanel(c),
+        child: Text(msg.text,
+            style: TextStyle(fontSize: 14, height: 1.4, color: c.ink)),
       ),
-      child: Text(label, style: TextStyle(color: c.ink, fontWeight: FontWeight.w600)),
     );
   }
 }

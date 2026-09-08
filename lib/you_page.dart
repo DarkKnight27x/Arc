@@ -15,67 +15,131 @@ class _YouPageState extends State<YouPage> {
   int tab = 0;
 
   @override
-  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeCtrl,
-      builder: (_, __, ___) {
+      builder: (_, mode, __) {
         final c = ArcColors.of(context);
+        final dark = mode == ThemeMode.dark;
         return ColoredBox(
           color: c.page,
           child: SafeArea(
             bottom: false,
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 28),
               children: [
-                _Bar(c: c),
-                const SizedBox(height: 18),
-                Text(
-                  'YOU  ·  YOUR OPERATING CONTEXT',
-                  style: TextStyle(
-                    fontSize: 11,
-                    letterSpacing: 1.1,
-                    color: c.faint,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Keep it yours',
-                  style: TextStyle(
-                    fontSize: 34,
-                    height: 1.08,
-                    color: c.ink,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 16),
                 Row(
                   children: [
-                    Expanded(
-                      child: _Seg(
-                        'Brief',
-                        tab == 0,
-                        c,
-                            () {
-                          HapticFeedback.selectionClick();
-                          setState(() => tab = 0);
-                        },
+                    Text(
+                      'YOU  ·  YOUR OPERATING CONTEXT',
+                      style: TextStyle(
+                        fontSize: 10,
+                        letterSpacing: 1.2,
+                        fontWeight: FontWeight.w600,
+                        color: c.faint,
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _Seg(
-                        'Body',
-                        tab == 1,
-                        c,
-                            () {
-                          HapticFeedback.selectionClick();
-                          setState(() => tab = 1);
-                        },
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: toggleArcTheme,
+                      child: Container(
+                        height: 32,
+                        padding: const EdgeInsets.fromLTRB(10, 0, 4, 0),
+                        decoration: BoxDecoration(
+                          color: c.chip,
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(color: c.line),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              dark ? 'Dark metal' : 'Champagne',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: c.muted,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              width: 22,
+                              height: 22,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: c.ink.withValues(alpha: 0.65)),
+                                gradient: const RadialGradient(
+                                  center: Alignment(-0.4, -0.5),
+                                  colors: [
+                                    Color(0xFFF2F5F8),
+                                    Color(0xFF8A939C),
+                                    Color(0xFF2A2E33),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 14),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Keep it ',
+                        style: TextStyle(
+                          fontSize: 40,
+                          height: 1.02,
+                          fontWeight: FontWeight.w500,
+                          color: c.ink,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'yours.',
+                        style: TextStyle(
+                          fontSize: 40,
+                          height: 1.02,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w500,
+                          color: c.ink,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: metalWell(c),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _Seg(
+                          'Brief',
+                          tab == 0,
+                          c,
+                              () {
+                            HapticFeedback.selectionClick();
+                            setState(() => tab = 0);
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: _Seg(
+                          'Body',
+                          tab == 1,
+                          c,
+                              () {
+                            HapticFeedback.selectionClick();
+                            setState(() => tab = 1);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 16),
                 if (tab == 0) _Brief(c: c) else _Body(c: c),
@@ -84,49 +148,6 @@ class _YouPageState extends State<YouPage> {
           ),
         );
       },
-    );
-  }
-}
-
-class _Bar extends StatelessWidget {
-  const _Bar({required this.c});
-  final ArcColors c;
-
-  @override
-  Widget build(BuildContext context) {
-    final dark = themeCtrl.value == ThemeMode.dark;
-    return Row(
-      children: [
-        const ArcLogo(),
-        const Spacer(),
-        Text(
-          'THANE',
-          style: TextStyle(
-            fontSize: 11,
-            letterSpacing: 0.8,
-            fontWeight: FontWeight.w600,
-            color: c.faint,
-          ),
-        ),
-        const Spacer(),
-        GestureDetector(
-          onTap: toggleArcTheme,
-          child: Container(
-            width: 34,
-            height: 34,
-            decoration: BoxDecoration(
-              color: c.chip,
-              shape: BoxShape.circle,
-              border: Border.all(color: c.line),
-            ),
-            child: Icon(
-              dark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
-              size: 16,
-              color: c.muted,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -143,13 +164,15 @@ class _Seg extends StatelessWidget {
     return GestureDetector(
       onTap: tap,
       child: Container(
-        height: 42,
+        height: 40,
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: c.chip,
+        decoration: on
+            ? BoxDecoration(
+          color: c.raised,
           borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: on ? c.cta : c.line),
-        ),
+          border: Border.all(color: c.line),
+        )
+            : null,
         child: Text(
           label,
           style: TextStyle(
@@ -171,71 +194,78 @@ class _Brief extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _Box(
-          c: c,
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(18),
+          decoration: metalPanel(c),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'SAARTHAK  ·  THANE',
-                style: TextStyle(
-                  fontSize: 11,
-                  letterSpacing: 1.0,
-                  color: c.faint,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'SAARTHAK  ·  THANE',
+                    style: TextStyle(
+                      fontSize: 11,
+                      letterSpacing: 1.0,
+                      color: c.faint,
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    width: 34,
+                    height: 34,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: c.chip,
+                      border: Border.all(color: c.line),
+                    ),
+                    child: Icon(Icons.person_outline, size: 16, color: c.muted),
+                  ),
+                ],
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
               Text(
                 'The useful brief',
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 26,
                   fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w500,
                   color: c.ink,
                 ),
               ),
               const SizedBox(height: 14),
-              _KV('Age band', '25–34', c),
-              _KV('Training', 'Recreational lifter', c),
-              _KV('Goal', 'Lose fat', c),
-              _KV('XP / streak', '340  ·  6 days', c),
+              _KV(c, 'Age band', '25–34'),
+              _KV(c, 'Training', 'Recreational lifter'),
+              _KV(c, 'Goal', 'Lose fat'),
+              _KV(c, 'XP / streak', '340  ·  6 days'),
             ],
           ),
         ),
-        const SizedBox(height: 16),
-        Text(
-          'Life state',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: c.ink,
-          ),
-        ),
+        const SizedBox(height: 20),
+        Text('Life state',
+            style: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
         const SizedBox(height: 8),
-        _Box(
-          c: c,
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: metalPanel(c),
           child: Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'CURRENT NOTE',
-                      style: TextStyle(
-                        fontSize: 11,
-                        letterSpacing: 1.0,
-                        color: c.faint,
-                      ),
-                    ),
+                    Text('CURRENT NOTE',
+                        style: TextStyle(
+                            fontSize: 11, letterSpacing: 1.0, color: c.faint)),
                     const SizedBox(height: 4),
-                    Text(
-                      'Regular, travelling this week',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: c.ink,
-                      ),
-                    ),
+                    Text('Regular, travelling this week',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: c.ink)),
                   ],
                 ),
               ),
@@ -243,26 +273,38 @@ class _Brief extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 16),
-        Text(
-          'Preferences',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: c.ink,
-          ),
-        ),
+        const SizedBox(height: 20),
+        Text('Preferences',
+            style: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
         const SizedBox(height: 8),
-        _Box(
-          c: c,
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          decoration: metalPanel(c),
           child: Column(
             children: [
-              _KV('Gym', 'Cult Fit Thane', c),
-              _KV('Food', 'Eggetarian · ₹250/day', c),
-              _KV('Sleep', 'Target 8 hours', c),
-              _KV('Plan', 'PPL · Intermediate', c),
+              _KV(c, 'Gym', 'Cult Fit Thane', line: false),
+              _KV(c, 'Food', 'Eggetarian · ₹250/day'),
+              _KV(c, 'Sleep', 'Target 8 hours'),
+              _KV(c, 'Plan', 'PPL · Intermediate'),
             ],
           ),
+        ),
+        const SizedBox(height: 20),
+        Text('Life folds',
+            style: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
+        const SizedBox(height: 8),
+        _Fold(c, 'Travel week', 'Active', ok: true),
+        const SizedBox(height: 8),
+        _Fold(c, 'Injury / rehab', 'Soon'),
+        const SizedBox(height: 8),
+        _Fold(c, 'Surgery recovery', 'Soon'),
+        const SizedBox(height: 16),
+        MetalBtn(
+          label: 'Open body view  →',
+          onTap: () {},
         ),
       ],
     );
@@ -277,59 +319,84 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 430,
-      decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: c.line),
-      ),
+      decoration: metalPanel(c),
       clipBehavior: Clip.antiAlias,
       child: const BodyAvatar(height: 430),
     );
   }
 }
 
-class _Box extends StatelessWidget {
-  const _Box({required this.c, required this.child});
+class _Fold extends StatelessWidget {
+  const _Fold(this.c, this.title, this.tag, {this.ok = false});
   final ArcColors c;
-  final Widget child;
+  final String title;
+  final String tag;
+  final bool ok;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: c.line),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: metalPanel(c),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: c.ink)),
+                if (ok)
+                  Text('Active',
+                      style: TextStyle(fontSize: 13, color: c.ok)),
+              ],
+            ),
+          ),
+          if (ok)
+            Icon(Icons.check, color: c.ok, size: 18)
+          else
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: c.chip,
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(color: c.line),
+              ),
+              child: Text(tag,
+                  style: TextStyle(fontSize: 12, color: c.muted)),
+            ),
+        ],
       ),
-      child: child,
     );
   }
 }
 
 class _KV extends StatelessWidget {
-  const _KV(this.k, this.v, this.c);
-  final String k;
-  final String v;
+  const _KV(this.c, this.k, this.v, {this.line = true});
   final ArcColors c;
+  final String k, v;
+  final bool line;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: line
+          ? BoxDecoration(
+        border: Border(top: BorderSide(color: c.line.withValues(alpha: 0.6))),
+      )
+          : null,
       child: Row(
         children: [
           Text(k, style: TextStyle(fontSize: 14, color: c.muted)),
           const Spacer(),
-          Text(
-            v,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: c.ink,
-            ),
-          ),
+          Text(v,
+              style: TextStyle(
+                  fontSize: 14, fontWeight: FontWeight.w600, color: c.ink)),
         ],
       ),
     );

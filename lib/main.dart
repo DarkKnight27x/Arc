@@ -7,6 +7,7 @@ import 'home_page.dart';
 import 'theme_ctrl.dart';
 import 'train_page.dart';
 import 'you_page.dart';
+import 'rehab_sheet.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,15 +19,13 @@ class ArcApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-      ),
-    );
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeCtrl,
       builder: (_, mode, __) {
+        final dark = mode == ThemeMode.dark;
+        SystemChrome.setSystemUIOverlayStyle(
+          dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+        );
         return MaterialApp(
           title: 'Arc',
           debugShowCheckedModeBanner: false,
@@ -49,7 +48,6 @@ class HomeShell extends StatefulWidget {
 
 class _HomeShellState extends State<HomeShell> {
   int index = 0;
-
   void _go(int i) => setState(() => index = i);
 
   @override
@@ -69,6 +67,7 @@ class _HomeShellState extends State<HomeShell> {
                 onOpenRecover: () => _go(3),
                 onOpenYou: () => _go(4),
                 onStartSession: () => _go(1),
+                onOpenRehab: () => showRehabSheet(context),
               ),
               const TrainPage(),
               const EatPage(),
@@ -76,43 +75,45 @@ class _HomeShellState extends State<HomeShell> {
               const YouPage(),
             ],
           ),
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: index,
-            onDestinationSelected: _go,
-            backgroundColor: c.surface,
-            surfaceTintColor: Colors.transparent,
-            indicatorColor: c.chip,
-            height: 64,
-            destinations: [
-              NavigationDestination(
-                icon: Icon(Icons.home_outlined, color: c.muted),
-                selectedIcon: Icon(Icons.home_rounded, color: c.cta),
-                label: 'Home',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.fitness_center_outlined, color: c.muted),
-                selectedIcon: Icon(Icons.fitness_center, color: c.cta),
-                label: 'Train',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.restaurant_outlined, color: c.muted),
-                selectedIcon: Icon(Icons.restaurant, color: c.cta),
-                label: 'Eat',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.favorite_border, color: c.muted),
-                selectedIcon: Icon(Icons.favorite, color: c.cta),
-                label: 'Recover',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.person_outline, color: c.muted),
-                selectedIcon: Icon(Icons.person, color: c.cta),
-                label: 'You',
-              ),
-            ],
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: c.shell,
+              border: Border(top: BorderSide(color: c.line)),
+            ),
+            child: NavigationBar(
+              selectedIndex: index,
+              onDestinationSelected: _go,
+              backgroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              indicatorColor: c.raised,
+              height: 68,
+              destinations: [
+                _dest(c, Icons.home_outlined, Icons.home_rounded, 'Home', 0),
+                _dest(c, Icons.fitness_center_outlined, Icons.fitness_center,
+                    'Train', 1),
+                _dest(c, Icons.restaurant_outlined, Icons.restaurant, 'Eat', 2),
+                _dest(c, Icons.favorite_border, Icons.favorite, 'Recover', 3),
+                _dest(c, Icons.person_outline, Icons.person, 'You', 4),
+              ],
+            ),
           ),
         );
       },
+    );
+  }
+
+  NavigationDestination _dest(
+      ArcColors c,
+      IconData off,
+      IconData on,
+      String label,
+      int i,
+      ) {
+    final sel = index == i;
+    return NavigationDestination(
+      icon: Icon(off, color: c.muted),
+      selectedIcon: Icon(on, color: sel ? c.ink : c.muted),
+      label: label,
     );
   }
 }
