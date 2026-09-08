@@ -155,10 +155,14 @@ BoxDecoration metalPrimary(ArcColors c) {
   return BoxDecoration(
     borderRadius: BorderRadius.circular(999),
     gradient: const LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [Color(0xFF54585F), Color(0xFF1A1C20), Color(0xFF09090B)],
-      stops: [0.0, 0.55, 1.0],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Color(0xFF4A555B),
+        Color(0xFF252B2F),
+        Color(0xFF3A4449),
+      ],
+      stops: [0.0, 0.35, 1.25],
     ),
     boxShadow: [
       BoxShadow(
@@ -172,7 +176,19 @@ BoxDecoration metalPrimary(ArcColors c) {
         blurRadius: 0,
         offset: const Offset(0, 1),
       ),
+      BoxShadow(
+        color: const Color(0xFF8FA7B2).withOpacity(0.22),
+        blurRadius: 12,
+        spreadRadius: 0,
+        offset: const Offset(0, 6),
+      ),
+      BoxShadow(
+        color: const Color(0xFF6F858F).withOpacity(0.12),
+        blurRadius: 30,
+        spreadRadius: 2,
+      ),
     ],
+
     border: Border.all(color: Colors.white.withOpacity(0.10), width: 1),
   );
 }
@@ -372,6 +388,8 @@ ThemeData arcDarkTheme() {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+    textTheme: GoogleFonts.spaceGroteskTextTheme(),
+    primaryTextTheme: GoogleFonts.spaceGroteskTextTheme(),
     scaffoldBackgroundColor: ArcColors.dark.page,
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
@@ -386,6 +404,8 @@ ThemeData arcCreamTheme() {
   return ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    textTheme: GoogleFonts.spaceGroteskTextTheme(),
+    primaryTextTheme: GoogleFonts.spaceGroteskTextTheme(),
     scaffoldBackgroundColor: ArcColors.cream.page,
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {

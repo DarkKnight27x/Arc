@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../data/auth_service.dart';
 import 'login_page.dart';
 
 class ForgotPage extends StatefulWidget {
-  const ForgotPage({super.key, required this.auth, required this.onBack});
+  const ForgotPage({
+    super.key,
+    required this.onBack,
+  });
 
-  final AuthService auth;
   final VoidCallback onBack;
 
   @override
@@ -15,6 +16,7 @@ class ForgotPage extends StatefulWidget {
 
 class _ForgotPageState extends State<ForgotPage> {
   final email = TextEditingController();
+
   String? note;
 
   @override
@@ -23,21 +25,24 @@ class _ForgotPageState extends State<ForgotPage> {
     super.dispose();
   }
 
-  Future<void> _send() async {
-    if (email.text.trim().isEmpty) return;
-    try {
-      await widget.auth.sendReset(email.text);
-    } catch (_) {}
+  void _send() {
+    if (email.text.trim().isEmpty) {
+      setState(() {
+        note = 'Enter your email first.';
+      });
+      return;
+    }
+
     setState(() {
-      note = 'If that inbox exists, a reset mail is on the way.';
+      note = 'Password reset will be available soon.';
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: LoginPage.page,
-      child: SafeArea(
+    return Scaffold(
+      backgroundColor: LoginPage.page,
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
           child: Column(
@@ -47,7 +52,9 @@ class _ForgotPageState extends State<ForgotPage> {
                 onPressed: widget.onBack,
                 child: const Text('Back'),
               ),
+
               const SizedBox(height: 24),
+
               const Text(
                 'Reset the password.',
                 style: TextStyle(
@@ -56,47 +63,115 @@ class _ForgotPageState extends State<ForgotPage> {
                   color: LoginPage.ink,
                 ),
               ),
+
               const SizedBox(height: 8),
+
               const Text(
                 'If that inbox exists, a reset mail is on the way.',
-                style: TextStyle(color: LoginPage.muted),
+                style: TextStyle(
+                  color: LoginPage.muted,
+                ),
               ),
+
               const SizedBox(height: 20),
+
               TextField(
                 controller: email,
-                style: const TextStyle(color: LoginPage.ink),
+                style: const TextStyle(
+                  color: LoginPage.ink,
+                ),
                 decoration: InputDecoration(
                   hintText: 'you@example.com',
-                  hintStyle: const TextStyle(color: LoginPage.faint),
+                  hintStyle: const TextStyle(
+                    color: LoginPage.faint,
+                  ),
                   filled: true,
                   fillColor: LoginPage.chip,
+
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: LoginPage.line),
+                    borderSide: const BorderSide(
+                      color: LoginPage.line,
+                    ),
                   ),
+
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: LoginPage.cta),
+                    borderSide: const BorderSide(
+                      color: LoginPage.ctaTop,
+                    ),
+                  ),
+
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 14,
                   ),
                 ),
               ),
+
               const SizedBox(height: 16),
-              SizedBox(
+
+              // ------------------------------------------
+              // PRIMARY CTA
+              // ------------------------------------------
+
+              Container(
                 width: double.infinity,
                 height: 52,
-                child: FilledButton(
-                  onPressed: _send,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: LoginPage.cta,
-                    foregroundColor: Colors.white,
-                    shape: const StadiumBorder(),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      LoginPage.ctaTop,
+                      LoginPage.ctaMid,
+                      LoginPage.ctaBottom,
+                    ],
+                    stops: [
+                      0.0,
+                      0.35,
+                      1.0,
+                    ],
                   ),
-                  child: const Text('Send reset link'),
+                  borderRadius: BorderRadius.circular(999),
+
+                  // Subtle premium glow
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8FA7B2).withOpacity(0.16),
+                      blurRadius: 18,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(999),
+                    onTap: _send,
+                    child: const Center(
+                      child: Text(
+                        'Send reset link',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: LoginPage.ink,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
+
               if (note != null) ...[
                 const SizedBox(height: 12),
-                Text(note!, style: const TextStyle(color: LoginPage.muted)),
+
+                Text(
+                  note!,
+                  style: const TextStyle(
+                    color: LoginPage.muted,
+                  ),
+                ),
               ],
             ],
           ),

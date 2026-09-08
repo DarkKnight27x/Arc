@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-import '../data/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
     super.key,
-    required this.auth,
     required this.onLoggedIn,
     required this.onCreateAccount,
     required this.onForgot,
   });
 
-  final AuthService auth;
   final VoidCallback onLoggedIn;
   final VoidCallback onCreateAccount;
   final VoidCallback onForgot;
@@ -25,7 +20,11 @@ class LoginPage extends StatefulWidget {
   static const ink = Color(0xFFE8EEF8);
   static const muted = Color(0xFF8B97AB);
   static const faint = Color(0xFF5C6B82);
-  static const cta = Color(0xFF3B82F6);
+
+  // ARC CTA gradient
+  static const ctaTop = Color(0xFF4A555B);
+  static const ctaMid = Color(0xFF252B2F);
+  static const ctaBottom = Color(0xFF3A4449);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -34,6 +33,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final email = TextEditingController();
   final password = TextEditingController();
+
   bool hide = true;
   bool busy = false;
   String? error;
@@ -45,43 +45,45 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _submit() async {
+  void _submit() {
     final e = email.text.trim();
     final p = password.text;
+
     if (e.isEmpty || p.isEmpty) {
-      setState(() => error = 'Email and password are required.');
+      setState(() {
+        error = 'Email and password are required.';
+      });
       return;
     }
-    setState(() {
-      busy = true;
-      error = null;
-    });
-    try {
-      await widget.auth.login(e, p);
-      widget.onLoggedIn();
-    } on AuthException catch (ex) {
-      setState(() => error = _friendly(ex.message));
-    } catch (_) {
-      setState(() => error = 'Could not reach ARC. Try again.');
-    } finally {
-      if (mounted) setState(() => busy = false);
-    }
-  }
 
-  String _friendly(String raw) {
-    if (raw.toLowerCase().contains('confirm')) {
-      return 'Check your inbox and confirm the email first.';
+    // --------------------------------------------------
+    // TEMPORARY LOCAL TEST ACCOUNT
+    // --------------------------------------------------
+
+    const testEmail = 'test@arc.com';
+    const testPassword = 'arc123456';
+
+    if (e == testEmail && p == testPassword) {
+      setState(() {
+        error = null;
+      });
+
+      widget.onLoggedIn();
+      return;
     }
-    return 'That email or password doesn’t match.';
+
+    setState(() {
+      error = 'That email or password doesn’t match.';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: ColoredBox(
-        color: LoginPage.page,
-        child: SafeArea(
+      child: Scaffold(
+        backgroundColor: LoginPage.page,
+        body: SafeArea(
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
             children: [
@@ -110,7 +112,9 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(width: 28),
                 ],
               ),
+
               const SizedBox(height: 72),
+
               const Text(
                 'ARC',
                 style: TextStyle(
@@ -120,7 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                   color: LoginPage.faint,
                 ),
               ),
+
               const SizedBox(height: 10),
+
               const Text.rich(
                 TextSpan(
                   children: [
@@ -146,46 +152,73 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
+
               const SizedBox(height: 10),
+
               const Text(
                 'You choose the goal. ARC builds the path.',
-                style: TextStyle(fontSize: 15, color: LoginPage.muted),
+                style: TextStyle(
+                  fontSize: 15,
+                  color: LoginPage.muted,
+                ),
               ),
+
               const SizedBox(height: 24),
+
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: LoginPage.surface,
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: Color(0x14FFFFFF)),
+                  border: Border.all(
+                    color: const Color(0x14FFFFFF),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Email',
-                      style: TextStyle(fontSize: 13, color: LoginPage.muted),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: LoginPage.muted,
+                      ),
                     ),
+
                     const SizedBox(height: 6),
+
                     _Field(
                       controller: email,
                       hint: 'you@example.com',
                       keyboard: TextInputType.emailAddress,
                     ),
+
                     const SizedBox(height: 14),
+
                     const Text(
                       'Password',
-                      style: TextStyle(fontSize: 13, color: LoginPage.muted),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: LoginPage.muted,
+                      ),
                     ),
+
                     const SizedBox(height: 6),
+
                     _Field(
                       controller: password,
                       hint: 'Your ARC password',
                       obscure: hide,
-                      onToggle: () => setState(() => hide = !hide),
+                      onToggle: () {
+                        setState(() {
+                          hide = !hide;
+                        });
+                      },
                     ),
+
                     if (error != null) ...[
                       const SizedBox(height: 12),
+
                       Text(
                         error!,
                         style: const TextStyle(
@@ -194,27 +227,70 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ],
+
                     const SizedBox(height: 16),
-                    SizedBox(
+
+                    // ------------------------------------------
+                    // PRIMARY CTA
+                    // ------------------------------------------
+
+                    Container(
                       width: double.infinity,
                       height: 52,
-                      child: FilledButton(
-                        onPressed: busy ? null : _submit,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: LoginPage.cta,
-                          foregroundColor: Colors.white,
-                          shape: const StadiumBorder(),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            LoginPage.ctaTop,
+                            LoginPage.ctaMid,
+                            LoginPage.ctaBottom,
+                          ],
+                          stops: [
+                            0.0,
+                            0.35,
+                            1.0,
+                          ],
                         ),
-                        child: Text(
-                          busy ? 'Signing in…' : 'Continue  →',
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        borderRadius: BorderRadius.circular(999),
+
+                        // Subtle premium glow
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF8FA7B2).withOpacity(0.16),
+                            blurRadius: 18,
+                            spreadRadius: 0,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(999),
+                          onTap: busy ? null : _submit,
+                          child: Center(
+                            child: Text(
+                              busy ? 'Signing in…' : 'Continue  →',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: LoginPage.ink,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
+
               const SizedBox(height: 12),
+
+              // ------------------------------------------
+              // SECONDARY CTA
+              // ------------------------------------------
+
               SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -222,31 +298,43 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: widget.onCreateAccount,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: LoginPage.ink,
-                    side: const BorderSide(color: LoginPage.line),
+                    side: const BorderSide(
+                      color: LoginPage.line,
+                    ),
                     backgroundColor: LoginPage.chip,
                     shape: const StadiumBorder(),
                   ),
                   child: const Text(
                     'Create an account',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
+
               const SizedBox(height: 16),
+
               Center(
                 child: TextButton(
                   onPressed: widget.onForgot,
                   child: const Text(
                     'Forgot password?',
-                    style: TextStyle(color: LoginPage.muted),
+                    style: TextStyle(
+                      color: LoginPage.muted,
+                    ),
                   ),
                 ),
               ),
+
               const Center(
                 child: Text(
                   'ARC does not diagnose injuries. Your choices stay yours.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: LoginPage.faint),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: LoginPage.faint,
+                  ),
                 ),
               ),
             ],
@@ -278,12 +366,17 @@ class _Field extends StatelessWidget {
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboard,
-      style: const TextStyle(color: LoginPage.ink),
+      style: const TextStyle(
+        color: LoginPage.ink,
+      ),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(color: LoginPage.faint),
+        hintStyle: const TextStyle(
+          color: LoginPage.faint,
+        ),
         filled: true,
         fillColor: LoginPage.chip,
+
         suffixIcon: onToggle == null
             ? null
             : IconButton(
@@ -296,14 +389,24 @@ class _Field extends StatelessWidget {
             size: 20,
           ),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 14,
+        ),
+
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: LoginPage.line),
+          borderSide: const BorderSide(
+            color: LoginPage.line,
+          ),
         ),
+
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: LoginPage.cta),
+          borderSide: const BorderSide(
+            color: LoginPage.ctaTop,
+          ),
         ),
       ),
     );
