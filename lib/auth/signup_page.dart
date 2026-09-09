@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'login_page.dart';
 
@@ -35,22 +36,27 @@ class _SignupPageState extends State<SignupPage> {
     super.dispose();
   }
 
-  void _submit() {
-    if (name.text.trim().isEmpty || email.text.trim().isEmpty) {
+  Future<void> _submit() async {
+    final userName = name.text.trim();
+    final userEmail = email.text.trim();
+    final userPassword = password.text;
+    final userConfirm = confirm.text;
+
+    if (userName.isEmpty || userEmail.isEmpty) {
       setState(() {
         error = 'Name and email are required.';
       });
       return;
     }
 
-    if (password.text.length < 8) {
+    if (userPassword.length < 8) {
       setState(() {
         error = 'Use at least 8 characters.';
       });
       return;
     }
 
-    if (password.text != confirm.text) {
+    if (userPassword != userConfirm) {
       setState(() {
         error = 'Passwords don’t match.';
       });
@@ -58,8 +64,47 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     setState(() {
-      error = 'Account creation will be available soon.';
+      busy = true;
+      error = null;
     });
+
+    try {
+      final response =
+      await Supabase.instance.client.auth.signUp(
+        email: userEmail,
+        password: userPassword,
+        data: {
+          'display_name': userName,
+        },
+      );
+
+      if (!mounted) return;
+
+      if (response.session != null) {
+        // Email confirmation is disabled.
+        // Supabase has already logged the user in.
+        return;
+      }
+
+      setState(() {
+        error =
+        'Account created. Check your email to verify your account.';
+      });
+    } on AuthException catch (err) {
+      setState(() {
+        error = err.message;
+      });
+    } catch (_) {
+      setState(() {
+        error = 'Something went wrong. Please try again.';
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          busy = false;
+        });
+      }
+    }
   }
 
   @override

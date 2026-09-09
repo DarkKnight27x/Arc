@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'forgot_page.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
 
-class AuthGate extends StatefulWidget {
+class AuthGate extends StatelessWidget {
   const AuthGate({
     super.key,
     required this.app,
@@ -13,18 +14,32 @@ class AuthGate extends StatefulWidget {
   final Widget app;
 
   @override
-  State<AuthGate> createState() => _AuthGateState();
+  Widget build(BuildContext context) {
+    return StreamBuilder<AuthState>(
+      stream: Supabase.instance.client.auth.onAuthStateChange,
+      builder: (context, snapshot) {
+        final session =
+            Supabase.instance.client.auth.currentSession;
+
+        if (session != null) {
+          return app;
+        }
+
+        return const _AuthPage();
+      },
+    );
+  }
 }
 
-class _AuthGateState extends State<AuthGate> {
-  bool loggedIn = false;
-  String screen = 'login';
+class _AuthPage extends StatefulWidget {
+  const _AuthPage();
 
-  void _login() {
-    setState(() {
-      loggedIn = true;
-    });
-  }
+  @override
+  State<_AuthPage> createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<_AuthPage> {
+  String screen = 'login';
 
   void _showLogin() {
     setState(() {
@@ -46,12 +61,6 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
-    // User is logged in → show the actual ARC app.
-    if (loggedIn) {
-      return widget.app;
-    }
-
-    // Signup
     if (screen == 'signup') {
       return SignupPage(
         onDone: _showLogin,
@@ -59,16 +68,14 @@ class _AuthGateState extends State<AuthGate> {
       );
     }
 
-    // Forgot password
     if (screen == 'forgot') {
       return ForgotPage(
         onBack: _showLogin,
       );
     }
 
-    // Login
     return LoginPage(
-      onLoggedIn: _login,
+      onLoggedIn: () {},
       onCreateAccount: _showSignup,
       onForgot: _showForgot,
     );

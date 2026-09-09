@@ -9,9 +9,16 @@ import 'theme_ctrl.dart';
 import 'train_page.dart';
 import 'you_page.dart';
 import 'rehab_sheet.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: 'https://nbojicqbpqgotdmdayku.supabase.co',
+    publishableKey: 'sb_publishable_Ies5q2ep0It3CJPUoPYf0A_0J4O2azG',
+  );
+
   runApp(const ArcApp());
 }
 

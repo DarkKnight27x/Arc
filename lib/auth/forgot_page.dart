@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'login_page.dart';
 
@@ -25,17 +26,36 @@ class _ForgotPageState extends State<ForgotPage> {
     super.dispose();
   }
 
-  void _send() {
-    if (email.text.trim().isEmpty) {
+  Future<void> _send() async {
+    final userEmail = email.text.trim();
+
+    if (userEmail.isEmpty) {
       setState(() {
         note = 'Enter your email first.';
       });
       return;
     }
 
-    setState(() {
-      note = 'Password reset will be available soon.';
-    });
+    try {
+      await Supabase.instance.client.auth.resetPasswordForEmail(
+        userEmail,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        note =
+        'If that email exists, a reset link has been sent.';
+      });
+    } on AuthException catch (err) {
+      setState(() {
+        note = err.message;
+      });
+    } catch (_) {
+      setState(() {
+        note = 'Something went wrong. Please try again.';
+      });
+    }
   }
 
   @override

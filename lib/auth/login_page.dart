@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -45,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     final e = email.text.trim();
     final p = password.text;
 
@@ -56,26 +58,39 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
+    setState(() {
+      busy = true;
+      error = null;
+    });
+
+    try {
+      await Supabase.instance.client.auth.signInWithPassword(
+        email: e,
+        password: p,
+      );
+
+      widget.onLoggedIn();
+    } on AuthException catch (err) {
+      setState(() {
+        error = err.message;
+      });
+    } catch (_) {
+      setState(() {
+        error = 'Something went wrong. Please try again.';
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          busy = false;
+        });
+      }
+    }
+  }
+
     // --------------------------------------------------
     // TEMPORARY LOCAL TEST ACCOUNT
     // --------------------------------------------------
 
-    const testEmail = 'test@arc.com';
-    const testPassword = 'arc123456';
-
-    if (e == testEmail && p == testPassword) {
-      setState(() {
-        error = null;
-      });
-
-      widget.onLoggedIn();
-      return;
-    }
-
-    setState(() {
-      error = 'That email or password doesn’t match.';
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
