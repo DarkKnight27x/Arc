@@ -437,3 +437,143 @@ class _SleepPoolPainter extends CustomPainter {
   bool shouldRepaint(_SleepPoolPainter oldDelegate) =>
       oldDelegate.phase != phase || oldDelegate.c != c;
 }
+
+class LiquidMetalTimer extends StatefulWidget {
+  const LiquidMetalTimer({
+    super.key,
+    required this.duration,
+    this.onComplete,
+    this.size = 200,
+  });
+
+  final Duration duration;
+  final VoidCallback? onComplete;
+  final double size;
+
+  @override
+  State<LiquidMetalTimer> createState() => _LiquidMetalTimerState();
+}
+
+class _LiquidMetalTimerState extends State<LiquidMetalTimer>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+    _controller.reverse(from: 1.0).then((_) {
+      if (mounted) widget.onComplete?.call();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = ArcColors.of(context);
+    return SizedBox(
+      width: widget.size,
+      height: widget.size,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          final remaining = widget.duration.inSeconds * _controller.value;
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              CustomPaint(
+                size: Size(widget.size, widget.size),
+                painter: _TimerPainter(
+                  progress: _controller.value,
+                  c: c,
+                ),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    remaining.ceil().toString(),
+                    style: TextStyle(
+                      fontFamily: 'SpaceGrotesk',
+                      fontSize: 64,
+                      fontWeight: FontWeight.w600,
+                      color: c.ink,
+                      height: 1.0,
+                    ),
+                  ),
+                  Text(
+                    'SECONDS',
+                    style: TextStyle(
+                      fontSize: 12,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.w700,
+                      color: c.faint,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _TimerPainter extends CustomPainter {
+  _TimerPainter({required this.progress, required this.c});
+  final double progress;
+  final ArcColors c;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+    final strokeWidth = 16.0;
+
+    final trackPaint = Paint()
+      ..color = c.chip
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth;
+    canvas.drawCircle(center, radius - strokeWidth / 2, trackPaint);
+
+    if (progress <= 0) return;
+
+    final rect = Rect.fromCircle(center: center, radius: radius - strokeWidth / 2);
+    final startAngle = -math.pi / 2;
+    final sweepAngle = 2 * math.pi * progress;
+
+    final liquidPaint = Paint()
+      ..shader = SweepGradient(
+        startAngle: startAngle,
+        endAngle: startAngle + sweepAngle,
+        colors: [c.brand, c.ice, c.brand],
+        stops: const [0.0, 0.5, 1.0],
+        transform: GradientRotation(startAngle),
+      ).createShader(rect)
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = strokeWidth;
+
+    canvas.drawArc(rect, startAngle, sweepAngle, false, liquidPaint);
+
+    // Inner glow
+    final glowPaint = Paint()
+      ..color = c.brand.withOpacity(0.2)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth;
+    canvas.drawArc(rect, startAngle, sweepAngle, false, glowPaint);
+  }
+
+  @override
+  bool shouldRepaint(_TimerPainter oldDelegate) => oldDelegate.progress != progress || oldDelegate.c != c;
+}

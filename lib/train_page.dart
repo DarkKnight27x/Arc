@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'data/workout_models.dart';
 import 'data/workout_service.dart';
+import 'session_player.dart';
 import 'theme_ctrl.dart';
 
 class TrainPage extends StatefulWidget {
@@ -44,6 +45,20 @@ class _TrainPageState extends State<TrainPage> {
     const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     if (weekday < 1 || weekday > 7) return 'Day';
     return names[weekday - 1];
+  }
+
+  void _startSession(WorkoutDay d) {
+    final allMoves = d.regions.expand((r) => r.moves).toList();
+    if (allMoves.isEmpty) return;
+
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => SessionPlayer(
+          dayTitle: d.title,
+          exercises: allMoves,
+        ),
+      ),
+    );
   }
 
   @override
@@ -313,13 +328,13 @@ class _TrainPageState extends State<TrainPage> {
                 MetalBtn(
                   label: 'Start session',
                   icon: Icons.play_arrow_rounded,
-                  onTap: () {},
+                  onTap: () => _startSession(d),
                 ),
                 const SizedBox(height: 10),
                 MetalBtn(
                   label: 'Use 10-minute version',
                   ghost: true,
-                  onTap: () {},
+                  onTap: () => _startSession(d),
                 ),
               ],
             ),
