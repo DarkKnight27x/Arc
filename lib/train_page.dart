@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'data/workout_models.dart';
+import 'data/workout_service.dart';
 import 'theme_ctrl.dart';
 
 class TrainPage extends StatefulWidget {
@@ -7,177 +9,30 @@ class TrainPage extends StatefulWidget {
   State<TrainPage> createState() => _TrainPageState();
 }
 
-class _Move {
-  const _Move({required this.name, required this.machine, this.scheme = '3 × 10'});
-  final String name, machine, scheme;
-}
-
-class _Region {
-  const _Region(this.label, this.moves);
-  final String label;
-  final List<_Move> moves;
-}
-
-class _Day {
-  const _Day(this.weekday, this.short, this.muscles, this.regions);
-  final String weekday, short, muscles;
-  final List<_Region> regions;
-}
-
 class _TrainPageState extends State<TrainPage> {
-  int day = 2;
+  List<WorkoutDay> _days = [];
+  int _dayIndex = 0;
   int? open = 0;
+  bool _loading = true;
 
-  static const days = <_Day>[
-    _Day('Mon', 'Back', 'Back + Biceps', [
-      _Region('Lats', [
-        _Move(name: 'Lat pulldown', machine: 'Pulldown stack'),
-        _Move(name: 'Assisted pull-up', machine: 'Assist station'),
-        _Move(name: 'Straight-arm pulldown', machine: 'High cable'),
-      ]),
-      _Region('Mid back', [
-        _Move(name: 'Seated row', machine: 'Cable row'),
-        _Move(name: 'Chest-supported row', machine: 'Supported row'),
-        _Move(name: 'Machine row', machine: 'Plate row'),
-      ]),
-      _Region('Traps', [
-        _Move(name: 'Shrug', machine: 'Smith'),
-        _Move(name: 'DB shrug', machine: 'Dumbbells'),
-        _Move(name: 'Face pull', machine: 'Rope cable'),
-      ]),
-      _Region('Biceps · long head', [
-        _Move(name: 'Incline DB curl', machine: 'Incline bench'),
-        _Move(name: 'Bayesian cable curl', machine: 'Low cable behind'),
-        _Move(name: 'Drag curl', machine: 'Barbell / smith'),
-      ]),
-      _Region('Biceps · short head', [
-        _Move(name: 'Preacher curl', machine: 'Preacher pad'),
-        _Move(name: 'Concentration curl', machine: 'Dumbbell + bench'),
-        _Move(name: 'Spider curl', machine: 'Incline face-down'),
-      ]),
-      _Region('Brachialis', [
-        _Move(name: 'Hammer curl', machine: 'Dumbbells'),
-        _Move(name: 'Reverse curl', machine: 'EZ bar'),
-        _Move(name: 'Rope hammer cable', machine: 'Low pulley'),
-      ]),
-    ]),
-    _Day('Tue', 'Legs', 'Legs', [
-      _Region('Quads', [
-        _Move(name: 'Leg press', machine: '45° press'),
-        _Move(name: 'Hack squat', machine: 'Hack sled'),
-        _Move(name: 'Leg extension', machine: 'Ext. stack'),
-      ]),
-      _Region('Hamstrings', [
-        _Move(name: 'Lying curl', machine: 'Curl stack'),
-        _Move(name: 'Seated curl', machine: 'Seated curl'),
-        _Move(name: 'RDL', machine: 'Barbell / DB'),
-      ]),
-      _Region('Glutes', [
-        _Move(name: 'Hip thrust', machine: 'Thrust bench'),
-        _Move(name: 'Glute kickback', machine: 'Cable ankle'),
-        _Move(name: 'Abductor', machine: 'Abductor stack'),
-      ]),
-      _Region('Calves', [
-        _Move(name: 'Standing calf', machine: 'Calf stack'),
-        _Move(name: 'Seated calf', machine: 'Seated calf'),
-        _Move(name: 'Leg-press calf', machine: 'Press plate'),
-      ]),
-    ]),
-    _Day('Wed', 'Chest', 'Chest + Biceps', [
-      _Region('Upper chest', [
-        _Move(name: 'Incline machine press', machine: 'Machine'),
-        _Move(name: 'Incline smith', machine: 'Alternative'),
-        _Move(name: 'Low-to-high cable fly', machine: 'Alternative'),
-      ]),
-      _Region('Mid chest', [
-        _Move(name: 'Chest press', machine: 'Seated press'),
-        _Move(name: 'Pec deck', machine: 'Pec deck'),
-        _Move(name: 'Flat DB press', machine: 'Flat bench'),
-      ]),
-      _Region('Lower chest', [
-        _Move(name: 'Decline machine press', machine: 'Decline press'),
-        _Move(name: 'High-to-low cable fly', machine: 'Dual cable'),
-        _Move(name: 'Dip assist', machine: 'Assist station'),
-      ]),
-      _Region('Biceps · long head', [
-        _Move(name: 'Incline DB curl', machine: 'Incline bench'),
-        _Move(name: 'Bayesian cable curl', machine: 'Low cable behind'),
-        _Move(name: 'Drag curl', machine: 'Smith / bar'),
-      ]),
-      _Region('Biceps · short head', [
-        _Move(name: 'Preacher curl', machine: 'Preacher pad'),
-        _Move(name: 'Spider curl', machine: 'Incline face-down'),
-        _Move(name: 'Cable preacher', machine: 'Low pulley + pad'),
-      ]),
-      _Region('Brachialis', [
-        _Move(name: 'Hammer curl', machine: 'Dumbbells'),
-        _Move(name: 'Rope hammer cable', machine: 'Low pulley'),
-        _Move(name: 'Reverse curl', machine: 'EZ bar'),
-      ]),
-    ]),
-    _Day('Thu', 'Shoulders', 'Shoulders + Triceps', [
-      _Region('Front delt', [
-        _Move(name: 'Seated shoulder press', machine: 'OHP stack'),
-        _Move(name: 'Smith press', machine: 'Smith'),
-        _Move(name: 'Front raise cable', machine: 'Low cable'),
-      ]),
-      _Region('Side delt', [
-        _Move(name: 'Lateral raise machine', machine: 'Fly stack'),
-        _Move(name: 'Cable lateral', machine: 'Low cable'),
-        _Move(name: 'DB lateral', machine: 'Dumbbells'),
-      ]),
-      _Region('Rear delt', [
-        _Move(name: 'Reverse pec deck', machine: 'Pec deck'),
-        _Move(name: 'Face pull', machine: 'Rope cable'),
-        _Move(name: 'Rear DB fly', machine: 'Dumbbells'),
-      ]),
-      _Region('Triceps · long head', [
-        _Move(name: 'Overhead cable ext', machine: 'Rope cable'),
-        _Move(name: 'Overhead DB ext', machine: 'Dumbbell'),
-        _Move(name: 'Incline skull crusher', machine: 'EZ + bench'),
-      ]),
-      _Region('Triceps · lateral head', [
-        _Move(name: 'Cable pressdown', machine: 'High pulley'),
-        _Move(name: 'V-bar pressdown', machine: 'High pulley'),
-        _Move(name: 'Kickback cable', machine: 'Low cable'),
-      ]),
-      _Region('Triceps · medial', [
-        _Move(name: 'Reverse pressdown', machine: 'Straight bar'),
-        _Move(name: 'Close-grip press', machine: 'Smith / press'),
-        _Move(name: 'Machine dip', machine: 'Dip stack'),
-      ]),
-    ]),
-    _Day('Fri', 'Arms', 'Back + Arms', [
-      _Region('Lats', [
-        _Move(name: 'Neutral pulldown', machine: 'Pulldown'),
-        _Move(name: 'Single-arm pulldown', machine: 'High cable'),
-        _Move(name: 'DB pullover', machine: 'Bench + DB'),
-      ]),
-      _Region('Biceps · long head', [
-        _Move(name: 'Incline DB curl', machine: 'Incline bench'),
-        _Move(name: 'Bayesian cable curl', machine: 'Low cable behind'),
-        _Move(name: 'Drag curl', machine: 'Smith'),
-      ]),
-      _Region('Biceps · short head', [
-        _Move(name: 'Preacher curl', machine: 'Preacher pad'),
-        _Move(name: 'Spider curl', machine: 'Incline face-down'),
-        _Move(name: 'Concentration curl', machine: 'Dumbbell'),
-      ]),
-      _Region('Brachialis', [
-        _Move(name: 'Hammer curl', machine: 'Dumbbells'),
-        _Move(name: 'Rope hammer cable', machine: 'Low pulley'),
-        _Move(name: 'Reverse curl', machine: 'EZ bar'),
-      ]),
-      _Region('Triceps · long head', [
-        _Move(name: 'Overhead cable ext', machine: 'Rope cable'),
-        _Move(name: 'Overhead DB ext', machine: 'Dumbbell'),
-        _Move(name: 'Incline skull crusher', machine: 'EZ + bench'),
-      ]),
-    ]),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadWorkout();
+  }
+
+  Future<void> _loadWorkout() async {
+    final data = await WorkoutService.instance.fetchWorkoutPlan();
+    if (!mounted) return;
+    setState(() {
+      _days = data;
+      _loading = false;
+    });
+  }
 
   void _openCoach() {
-    final session = days[day].muscles;
+    if (_days.isEmpty) return;
+    final session = _days[_dayIndex].title;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => TrainCoachPage(session: session),
@@ -185,13 +40,44 @@ class _TrainPageState extends State<TrainPage> {
     );
   }
 
+  String _weekdayName(int weekday) {
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    if (weekday < 1 || weekday > 7) return 'Day';
+    return names[weekday - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final d = days[day];
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeCtrl,
       builder: (_, __, ___) {
         final c = ArcColors.of(context);
+        
+        if (_loading) {
+          return Center(child: CircularProgressIndicator(color: c.brand));
+        }
+
+        if (_days.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'No workout plan found.',
+                  style: TextStyle(color: c.muted, fontSize: 16),
+                ),
+                const SizedBox(height: 12),
+                MetalBtn(
+                  label: 'Refresh',
+                  onTap: _loadWorkout,
+                ),
+              ],
+            ),
+          );
+        }
+
+        final d = _days[_dayIndex];
+
         return ColoredBox(
           color: c.page,
           child: SafeArea(
@@ -226,7 +112,7 @@ class _TrainPageState extends State<TrainPage> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  d.muscles,
+                  d.title,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w500,
@@ -235,7 +121,7 @@ class _TrainPageState extends State<TrainPage> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '3 options per part · use the machine in front of you',
+                  '${d.estimatedMinutes} min estimated · machines first',
                   style: TextStyle(fontSize: 13, color: c.muted),
                 ),
                 const SizedBox(height: 14),
@@ -250,13 +136,13 @@ class _TrainPageState extends State<TrainPage> {
                   height: 58,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemCount: days.length,
+                    itemCount: _days.length,
                     separatorBuilder: (_, __) => const SizedBox(width: 8),
                     itemBuilder: (_, i) {
-                      final on = i == day;
+                      final on = i == _dayIndex;
                       return PressScale(
                         onTap: () => setState(() {
-                          day = i;
+                          _dayIndex = i;
                           open = 0;
                         }),
                         child: AnimatedContainer(
@@ -300,9 +186,9 @@ class _TrainPageState extends State<TrainPage> {
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700,
                                     color: on ? c.ink : c.muted),
-                                child: Text(days[i].weekday),
+                                child: Text(_weekdayName(_days[i].weekday)),
                               ),
-                              Text(days[i].short,
+                              Text(_days[i].muscles.isNotEmpty ? _days[i].muscles : 'Plan',
                                   style: TextStyle(fontSize: 11, color: c.faint)),
                             ],
                           ),
@@ -370,7 +256,7 @@ class _TrainPageState extends State<TrainPage> {
                 AnimatedSwitcher(
                   duration: ArcMotion.base,
                   child: Column(
-                    key: ValueKey(day),
+                    key: ValueKey(_dayIndex),
                     children: [
                       for (var i = 0; i < d.regions.length; i++)
                         FadeSlideIn(
@@ -444,9 +330,6 @@ class _TrainPageState extends State<TrainPage> {
   }
 }
 
-/// A pill segmented control with a sliding highlight, replacing the old
-/// flat-border toggle. index 0 is always "active" here since Coach pushes
-/// away from this page rather than switching state on it.
 class _SegBar extends StatelessWidget {
   const _SegBar({
     required this.c,
@@ -509,7 +392,7 @@ class _RegionTile extends StatelessWidget {
     required this.onTap,
   });
   final ArcColors c;
-  final _Region region;
+  final WorkoutRegion region;
   final bool expanded;
   final VoidCallback onTap;
 
@@ -539,7 +422,7 @@ class _RegionTile extends StatelessWidget {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: c.ink)),
-                          Text('3 options · machine first',
+                          Text('${region.moves.length} options · machine first',
                               style: TextStyle(fontSize: 12, color: c.faint)),
                         ],
                       ),
@@ -584,7 +467,69 @@ class _RegionTile extends StatelessWidget {
 class _MoveRow extends StatelessWidget {
   const _MoveRow({required this.c, required this.move});
   final ArcColors c;
-  final _Move move;
+  final WorkoutMove move;
+
+  void _showGif(BuildContext context) {
+    if (move.gifUrl == null) return;
+    
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(4),
+          decoration: metalPanel(c, radius: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  move.gifUrl!,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (_, child, progress) {
+                    if (progress == null) return child;
+                    return Container(
+                      height: 200,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(color: c.brand),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      move.name,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: c.ink,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      move.machine,
+                      style: TextStyle(color: c.muted),
+                    ),
+                    const SizedBox(height: 16),
+                    MetalBtn(
+                      label: 'Close',
+                      ghost: true,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -594,25 +539,32 @@ class _MoveRow extends StatelessWidget {
       decoration: metalWell(c),
       child: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [c.raised, Color.lerp(c.raised, Colors.black, 0.2)!],
-              ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
+          PressScale(
+            onTap: () => _showGif(context),
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [c.raised, Color.lerp(c.raised, Colors.black, 0.2)!],
                 ),
-              ],
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(
+                move.gifUrl != null ? Icons.play_arrow_rounded : Icons.info_outline,
+                color: c.ink,
+                size: 18,
+              ),
             ),
-            child: Icon(Icons.play_arrow_rounded, color: c.ink, size: 18),
           ),
           const SizedBox(width: 10),
           Expanded(

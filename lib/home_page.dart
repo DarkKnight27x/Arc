@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                               style: arcDisplay(
                                 c,
                                 size: 28,
-                              ),
+                              ).copyWith(color: c.ink),
                             ),
                             TextSpan(
                               text: ' Saarthak.',
@@ -193,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                                 c,
                                 size: 28,
                                 italic: true,
-                              ),
+                              ).copyWith(color: c.ink),
                             ),
                           ],
                         ),
@@ -441,7 +441,7 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 9,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.5,
-                      color: c.brand,
+                      color: isArcDark ? c.brand : c.brand.withOpacity(0.8),
                     ),
                   ),
                 ),
@@ -482,7 +482,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 child: Icon(
                   Icons.favorite_border,
-                  color: c.ice,
+                  color: isArcDark ? c.ice : c.ink,
                 ),
               ),
               const SizedBox(width: 12),
@@ -683,19 +683,19 @@ class _SnapshotRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          width: 34,
-          height: 34,
-          decoration: metalWell(
-            c,
-            radius: 11,
+          Container(
+            width: 34,
+            height: 34,
+            decoration: metalWell(
+              c,
+              radius: 11,
+            ),
+            child: Icon(
+              icon,
+              size: 17,
+              color: isArcDark ? c.ice : c.ink,
+            ),
           ),
-          child: Icon(
-            icon,
-            size: 17,
-            color: c.ice,
-          ),
-        ),
         const SizedBox(width: 12),
         Expanded(
           child: Text(

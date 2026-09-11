@@ -68,13 +68,19 @@ class _YouPageState extends State<YouPage> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     color: c.ink.withValues(alpha: 0.65)),
-                                gradient: const RadialGradient(
-                                  center: Alignment(-0.4, -0.5),
-                                  colors: [
-                                    Color(0xFFF2F5F8),
-                                    Color(0xFF8A939C),
-                                    Color(0xFF2A2E33),
-                                  ],
+                                gradient: RadialGradient(
+                                  center: const Alignment(-0.4, -0.5),
+                                  colors: dark
+                                      ? const [
+                                          Color(0xFFF2F5F8),
+                                          Color(0xFF8A939C),
+                                          Color(0xFF2A2E33),
+                                        ]
+                                      : const [
+                                          Color(0xFFFDEEE9),
+                                          Color(0xFFE8C1B5),
+                                          Color(0xFFC78474),
+                                        ],
                                 ),
                               ),
                             ),

@@ -65,7 +65,7 @@ class HealthMetricCard extends StatelessWidget {
                     child: Icon(
                       icon,
                       size: 17,
-                      color: c.ice,
+                      color: isArcDark ? c.ice : c.ink,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -183,7 +183,7 @@ class HealthSleepCard extends StatelessWidget {
                 child: Icon(
                   Icons.nightlight_round,
                   size: 17,
-                  color: c.ice,
+                  color: isArcDark ? c.ice : c.ink,
                 ),
               ),
               const SizedBox(width: 10),
@@ -205,7 +205,7 @@ class HealthSleepCard extends StatelessWidget {
                   fontSize: 10,
                   letterSpacing: 0.8,
                   fontWeight: FontWeight.w700,
-                  color: c.brand,
+                  color: isArcDark ? c.brand : c.brand.withOpacity(0.9),
                 ),
               ),
             ],

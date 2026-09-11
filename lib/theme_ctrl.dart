@@ -79,10 +79,10 @@ class ArcColors {
     ink: Color(0xFF1A1814),
     muted: Color(0xFF6F675C),
     faint: Color(0xFF9A9184),
-    cta: Color(0xFF141518),
-    ctaInk: Color(0xFFF3F6F8),
-    ice: Color(0xFF3A5A8A),
-    brand: Color(0xFF3B82F6),
+    cta: Color(0xFFD4A396),
+    ctaInk: Color(0xFFFFFFFF),
+    ice: Color(0xFFE8C1B5),
+    brand: Color(0xFFC78474),
     ok: Color(0xFF2F8F64),
   );
 
@@ -152,44 +152,54 @@ BoxDecoration metalWell(ArcColors c, {double radius = 18}) {
 }
 
 BoxDecoration metalPrimary(ArcColors c) {
+  final isDark = themeCtrl.value == ThemeMode.dark;
+
   return BoxDecoration(
     borderRadius: BorderRadius.circular(999),
-    gradient: const LinearGradient(
+    gradient: LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
-      colors: [
-        Color(0xFF4A555B),
-        Color(0xFF252B2F),
-        Color(0xFF3A4449),
-      ],
-      stops: [0.0, 0.35, 1.25],
+      colors: isDark
+          ? [
+              const Color(0xFF4A555B),
+              const Color(0xFF252B2F),
+              const Color(0xFF3A4449),
+            ]
+          : [
+              const Color(0xFFE8C1B5), // Rose Gold Light
+              const Color(0xFFC78474), // Rose Gold Mid
+              const Color(0xFFD4A396), // Rose Gold Base
+            ],
+      stops: const [0.0, 0.35, 1.25],
     ),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withOpacity(0.45),
+        color: Colors.black.withOpacity(isDark ? 0.45 : 0.25),
         blurRadius: 18,
         offset: const Offset(0, 8),
         spreadRadius: -2,
       ),
       BoxShadow(
-        color: Colors.white.withOpacity(0.06),
+        color: Colors.white.withOpacity(isDark ? 0.06 : 0.4),
         blurRadius: 0,
         offset: const Offset(0, 1),
       ),
       BoxShadow(
-        color: const Color(0xFF8FA7B2).withOpacity(0.22),
+        color: (isDark ? const Color(0xFF8FA7B2) : const Color(0xFFE8C1B5))
+            .withOpacity(isDark ? 0.22 : 0.4),
         blurRadius: 12,
         spreadRadius: 0,
         offset: const Offset(0, 6),
       ),
       BoxShadow(
-        color: const Color(0xFF6F858F).withOpacity(0.12),
+        color: (isDark ? const Color(0xFF6F858F) : const Color(0xFFC78474))
+            .withOpacity(isDark ? 0.12 : 0.2),
         blurRadius: 30,
         spreadRadius: 2,
       ),
     ],
-
-    border: Border.all(color: Colors.white.withOpacity(0.10), width: 1),
+    border: Border.all(
+        color: Colors.white.withOpacity(isDark ? 0.10 : 0.6), width: 1),
   );
 }
 
@@ -305,22 +315,28 @@ class ArcLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = ArcColors.of(context);
-    return Image.asset(
-      themeCtrl.value == ThemeMode.dark
-          ? 'assets/images/logo_white.png'
-          : 'assets/images/logo.png',
-      height: height,
-      filterQuality: FilterQuality.high,
-      errorBuilder: (_, __, ___) => Text(
-        'ARC',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.4,
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeCtrl,
+      builder: (_, mode, __) {
+        final c = ArcColors.of(context);
+        final isDark = mode == ThemeMode.dark;
+        return Image.asset(
+          isDark ? 'assets/images/logo_white.png' : 'assets/images/logo.png',
+          height: height,
+          filterQuality: FilterQuality.high,
           color: c.ink,
-        ),
-      ),
+          colorBlendMode: BlendMode.srcIn,
+          errorBuilder: (_, __, ___) => Text(
+            'ARC',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.4,
+              color: c.ink,
+            ),
+          ),
+        );
+      },
     );
   }
 }
