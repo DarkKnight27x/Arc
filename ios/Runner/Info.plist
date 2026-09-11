@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Arc needs access to your health data (steps, calories, heart rate, sleep, and activity) to provide a complete picture of your fitness and recovery.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Arc uses your health data to personalize your fitness experience and track your progress.</string>
 </dict>
 </plist>
