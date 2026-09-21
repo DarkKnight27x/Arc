@@ -20,6 +20,9 @@
     <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION"/>
     <uses-permission android:name="android.permission.health.READ_WEIGHT"/>
     <uses-permission android:name="android.permission.health.READ_BODY_FAT"/>
+    <uses-permission android:name="android.permission.health.READ_ACTIVITY_INTENSITY"/>
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY"/>
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
 
     <!-- Android 13 and below permissions (Compatibility) -->
     <uses-permission android:name="androidx.health.permission.READ_STEPS"/>
@@ -37,6 +40,7 @@
     <uses-permission android:name="androidx.health.permission.READ_OXYGEN_SATURATION"/>
     <uses-permission android:name="androidx.health.permission.READ_WEIGHT"/>
     <uses-permission android:name="androidx.health.permission.READ_BODY_FAT"/>
+    <uses-permission android:name="androidx.health.permission.READ_ACTIVITY_INTENSITY"/>
 
     <!-- Required for activity/fitness data such as steps -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
