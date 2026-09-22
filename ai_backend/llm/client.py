@@ -23,9 +23,12 @@ class LLMClient:
         tools: list[dict[str, Any]] | None = None,
     ) -> LLMResponse:
         request: dict[str, Any] = {
-            "model": MODEL_NAME,
-            "messages": messages,
-        }
+    "model": MODEL_NAME,
+    "messages": messages,
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "parallel_tool_calls": False,
+}
 
         if tools:
             request["tools"] = tools

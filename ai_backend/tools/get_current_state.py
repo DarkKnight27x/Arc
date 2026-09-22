@@ -17,8 +17,11 @@ class GetCurrentStateTool(Tool):
         user_id: str,
         arguments: dict[str, Any],
     ) -> dict[str, Any]:
+
         if not user_id:
-            raise ValueError("get_current_state requires a user_id")
+            raise ValueError(
+                "get_current_state requires a user_id"
+            )
 
         supabase = get_supabase_client()
 
@@ -44,7 +47,16 @@ class GetCurrentStateTool(Tool):
                 "description": self.description,
                 "parameters": {
                     "type": "object",
-                    "properties": {},
+                    "properties": {
+                        "include_details": {
+                            "type": "boolean",
+                            "description": (
+                                "Whether to include the full current "
+                                "health state."
+                            ),
+                            "default": True,
+                        }
+                    },
                     "additionalProperties": False,
                 },
             },

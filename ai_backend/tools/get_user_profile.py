@@ -6,6 +6,7 @@ from ai_backend.tools.base import Tool
 
 class GetUserProfileTool(Tool):
     name = "get_user_profile"
+
     description = (
         "Get the user's basic profile information, including display name, "
         "account type, and onboarding status."
@@ -16,8 +17,11 @@ class GetUserProfileTool(Tool):
         user_id: str,
         arguments: dict[str, Any],
     ) -> dict[str, Any] | None:
+
         if not user_id:
-            raise ValueError("get_user_profile requires a user_id")
+            raise ValueError(
+                "get_user_profile requires a user_id"
+            )
 
         supabase = get_supabase_client()
 
@@ -45,7 +49,16 @@ class GetUserProfileTool(Tool):
                 "description": self.description,
                 "parameters": {
                     "type": "object",
-                    "properties": {},
+                    "properties": {
+                        "include_details": {
+                            "type": "boolean",
+                            "description": (
+                                "Whether to include the available "
+                                "profile details."
+                            ),
+                            "default": True,
+                        }
+                    },
                     "additionalProperties": False,
                 },
             },

@@ -17,10 +17,19 @@ class ToolResult(BaseModel):
 
 class FinalResponse(BaseModel):
     message: str
+
     needs_follow_up: bool = False
+
     follow_up_question: str | None = None
+
+    action: dict[str, Any] | None = None
+
+    confirmation_required: bool = False
 
 
 class OrchestratorResponse(BaseModel):
     response: FinalResponse
-    tool_calls_made: list[ToolResult] = Field(default_factory=list)
+
+    tool_calls_made: list[ToolResult] = Field(
+        default_factory=list
+    )
