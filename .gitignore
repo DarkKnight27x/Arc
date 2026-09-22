@@ -128,3 +128,8 @@ lib/data/supabase_config.dart
 # Local noise
 .DS_Store
 Thumbs.db
+
+# Python / AI backend
+.env
+.venv/
+__pycache__/
