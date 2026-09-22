@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'body_avatar_page.dart';
+import 'data/profile_service.dart';
 import 'theme_ctrl.dart';
 
 class YouPage extends StatefulWidget {
@@ -13,6 +15,29 @@ class YouPage extends StatefulWidget {
 
 class _YouPageState extends State<YouPage> {
   int tab = 0;
+  ProfileRow? _profile;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    setState(() {
+      _loading = true;
+    });
+
+    final profile = await ProfileService(Supabase.instance.client).fetchCurrentUser();
+
+    if (!mounted) return;
+
+    setState(() {
+      _profile = profile;
+      _loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +173,7 @@ class _YouPageState extends State<YouPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                if (tab == 0) _Brief(c: c) else _Body(c: c),
+                if (tab == 0) _Brief(c: c, profile: _profile) else _Body(c: c),
               ],
             ),
           ),
@@ -192,11 +217,20 @@ class _Seg extends StatelessWidget {
 }
 
 class _Brief extends StatelessWidget {
-  const _Brief({required this.c});
+  const _Brief({required this.c, required this.profile});
   final ArcColors c;
+  final ProfileRow? profile;
 
   @override
   Widget build(BuildContext context) {
+    final displayName = (profile?.displayName ?? '').trim();
+    final goal = profile?.fitnessGoal ?? 'Not set';
+    final experience = profile?.experienceLevel ?? 'Not set';
+    final location = profile?.workoutLocation ?? 'Not set';
+    final diet = profile?.dietType ?? 'Not set';
+    final height = profile?.heightCm == null ? 'Not set' : '${profile!.heightCm!.round()} cm';
+    final weight = profile?.weightKg == null ? 'Not set' : '${profile!.weightKg!.round()} kg';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -210,7 +244,7 @@ class _Brief extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'SAARTHAK  ·  THANE',
+                    (displayName.isEmpty ? 'YOUR PROFILE' : displayName.toUpperCase()),
                     style: TextStyle(
                       fontSize: 11,
                       letterSpacing: 1.0,
@@ -241,10 +275,12 @@ class _Brief extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 14),
-              _KV(c, 'Age band', '25–34'),
-              _KV(c, 'Training', 'Recreational lifter'),
-              _KV(c, 'Goal', 'Lose fat'),
-              _KV(c, 'XP / streak', '340  ·  6 days'),
+              _KV(c, 'Goal', goal),
+              _KV(c, 'Experience', experience),
+              _KV(c, 'Location', location),
+              _KV(c, 'Diet', diet),
+              _KV(c, 'Height', height),
+              _KV(c, 'Weight', weight),
             ],
           ),
         ),
@@ -290,10 +326,10 @@ class _Brief extends StatelessWidget {
           decoration: metalPanel(c),
           child: Column(
             children: [
-              _KV(c, 'Gym', 'Cult Fit Thane', line: false),
-              _KV(c, 'Food', 'Eggetarian · ₹250/day'),
-              _KV(c, 'Sleep', 'Target 8 hours'),
-              _KV(c, 'Plan', 'PPL · Intermediate'),
+              _KV(c, 'Gym', location, line: false),
+              _KV(c, 'Food', diet),
+              _KV(c, 'Level', experience),
+              _KV(c, 'Plan', goal),
             ],
           ),
         ),

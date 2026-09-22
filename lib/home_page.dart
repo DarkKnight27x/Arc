@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'data/health_models.dart';
 import 'data/health_service.dart';
+import 'data/profile_service.dart';
 import 'theme_ctrl.dart';
 import 'widgets/health_metric_card.dart';
 import 'widgets/health_visuals.dart';
@@ -37,11 +39,29 @@ class _HomePageState extends State<HomePage> {
 
   bool _loading = true;
   bool _hasHealthAccess = false;
+  ProfileRow? _profile;
+  bool _profileLoading = true;
 
   @override
   void initState() {
     super.initState();
     _loadHealth();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    setState(() {
+      _profileLoading = true;
+    });
+
+    final profile = await ProfileService(Supabase.instance.client).fetchCurrentUser();
+
+    if (!mounted) return;
+
+    setState(() {
+      _profile = profile;
+      _profileLoading = false;
+    });
   }
 
   Future<void> _loadHealth() async {
@@ -188,7 +208,9 @@ class _HomePageState extends State<HomePage> {
                               ).copyWith(color: c.ink),
                             ),
                             TextSpan(
-                              text: ' Saarthak.',
+                              text: _profileLoading || (_profile?.displayName ?? '').trim().isEmpty
+                                  ? ' Your profile.'
+                                  : ' ${_profile!.displayName!.trim()}.',
                               style: arcDisplay(
                                 c,
                                 size: 28,

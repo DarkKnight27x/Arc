@@ -148,7 +148,7 @@ class _TrainPageState extends State<TrainPage> {
                 ),
                 const SizedBox(height: 14),
                 SizedBox(
-                  height: 58,
+                  height: 64,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: _days.length,
@@ -203,8 +203,13 @@ class _TrainPageState extends State<TrainPage> {
                                     color: on ? c.ink : c.muted),
                                 child: Text(_weekdayName(_days[i].weekday)),
                               ),
-                              Text(_days[i].muscles.isNotEmpty ? _days[i].muscles : 'Plan',
-                                  style: TextStyle(fontSize: 11, color: c.faint)),
+                              Text(
+                                _days[i].muscles.isNotEmpty ? _days[i].muscles : 'Plan',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 11, color: c.faint),
+                              ),
                             ],
                           ),
                         ),
