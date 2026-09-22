@@ -43,6 +43,8 @@ dependencies:
   shelf: ^1.4.2
   path_provider: ^2.1.6
   health: ^13.3.2
+  geolocator: ^14.0.3
+  geocoding: ^5.0.0
 
 dev_dependencies:
   flutter_test:

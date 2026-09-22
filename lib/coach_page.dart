@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'theme_ctrl.dart';
+import 'widgets/location_label.dart';
 
 class CoachPage extends StatefulWidget {
-  const CoachPage({super.key});
+  const CoachPage({super.key, this.coachOnly = false, this.session});
+
+  final bool coachOnly;
+  final String? session;
+
   @override
   State<CoachPage> createState() => _CoachPageState();
 }
@@ -67,9 +72,10 @@ class _CoachPageState extends State<CoachPage> {
             p.$3.toLowerCase().contains(q))
             .toList();
 
-        return ColoredBox(
-          color: c.page,
-          child: SafeArea(
+        return Scaffold(
+          backgroundColor: c.page,
+          resizeToAvoidBottomInset: true,
+          body: SafeArea(
             bottom: false,
             child: Column(
               children: [
@@ -79,18 +85,24 @@ class _CoachPageState extends State<CoachPage> {
                     children: [
                       Row(
                         children: [
+                          if (widget.coachOnly)
+                            IconButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              icon: Icon(Icons.arrow_back, color: c.ink),
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                          if (widget.coachOnly) const SizedBox(width: 12),
                           const ArcLogo(),
                           const Spacer(),
-                          Text('THANE',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  letterSpacing: 0.8,
-                                  fontWeight: FontWeight.w600,
-                                  color: c.faint)),
+                            LocationLabel(c: c),
                         ],
                       ),
                       const SizedBox(height: 16),
-                      Text('RECOVER  ·  LIVE CONTEXT',
+                        Text(
+                          widget.coachOnly
+                            ? 'COACH  ·  LIVE CONTEXT'
+                            : 'RECOVER  ·  LIVE CONTEXT',
                           style: TextStyle(
                               fontSize: 11,
                               letterSpacing: 1.1,
@@ -99,7 +111,7 @@ class _CoachPageState extends State<CoachPage> {
                       const SizedBox(height: 8),
                       Text.rich(TextSpan(children: [
                         TextSpan(
-                            text: 'Coach\n',
+                            text: widget.coachOnly ? 'Coach\n' : 'Recover\n',
                             style: TextStyle(
                                 fontSize: 36,
                                 height: 1.02,
@@ -115,31 +127,33 @@ class _CoachPageState extends State<CoachPage> {
                                 color: c.ink)),
                       ])),
                       const SizedBox(height: 6),
-                      Text('Training · food · recovery',
+                      Text(
+                          widget.coachOnly
+                              ? (widget.session ?? 'Training context')
+                              : 'Training · food · recovery',
                           style: TextStyle(fontSize: 14, color: c.muted)),
                       const SizedBox(height: 14),
-                      Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: metalWell(c),
-                        child: Row(
-                          children: [
-                            _Seg('Coach', tab == 0, c,
-                                    () => setState(() => tab = 0)),
-                            _Seg('Rehab', tab == 1, c,
-                                    () => setState(() => tab = 1)),
-                            _Seg('Physio', tab == 2, c,
-                                    () => setState(() => tab = 2)),
-                          ],
+                      if (!widget.coachOnly)
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: metalWell(c),
+                          child: Row(
+                            children: [
+                              _Seg('Rehab', tab == 0, c,
+                                  () => setState(() => tab = 0)),
+                              _Seg('Physio', tab == 1, c,
+                                  () => setState(() => tab = 1)),
+                            ],
+                          ),
                         ),
-                      ),
                       const SizedBox(height: 16),
-                      if (tab == 0) _coach(c),
-                      if (tab == 1) _rehab(c),
-                      if (tab == 2) _physio(c, list),
+                      if (widget.coachOnly) _coach(c),
+                      if (!widget.coachOnly && tab == 0) _rehab(c),
+                      if (!widget.coachOnly && tab == 1) _physio(c, list),
                     ],
                   ),
                 ),
-                if (tab == 0) _composer(c),
+                if (widget.coachOnly) _composer(c),
               ],
             ),
           ),
@@ -193,11 +207,25 @@ class _CoachPageState extends State<CoachPage> {
               child: TextField(
                 controller: input,
                 style: TextStyle(color: c.ink),
+                cursorColor: c.ice,
                 onSubmitted: (_) => _send(),
                 decoration: InputDecoration(
                   hintText: 'Ask anything about today…',
                   hintStyle: TextStyle(color: c.faint, fontSize: 14),
-                  border: InputBorder.none,
+                  filled: true,
+                  fillColor: c.chip,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: c.line),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: c.ice),
+                  ),
                   isDense: true,
                 ),
               ),
@@ -269,7 +297,7 @@ class _CoachPageState extends State<CoachPage> {
         const SizedBox(height: 12),
         MetalBtn(
           label: 'Find a physiotherapist',
-          onTap: () => setState(() => tab = 2),
+          onTap: () => setState(() => tab = 1),
         ),
       ],
     );

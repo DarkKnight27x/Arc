@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'data/workout_models.dart';
 import 'data/workout_service.dart';
+import 'coach_page.dart';
 import 'session_player.dart';
 import 'theme_ctrl.dart';
+import 'widgets/location_label.dart';
 
 class TrainPage extends StatefulWidget {
   const TrainPage({super.key});
@@ -36,7 +38,7 @@ class _TrainPageState extends State<TrainPage> {
     final session = _days[_dayIndex].title;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => TrainCoachPage(session: session),
+        builder: (_) => CoachPage(coachOnly: true, session: session),
       ),
     );
   }
@@ -104,15 +106,7 @@ class _TrainPageState extends State<TrainPage> {
                   children: [
                     const ArcLogo(),
                     const Spacer(),
-                    Text(
-                      'THANE',
-                      style: TextStyle(
-                        fontSize: 11,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w600,
-                        color: c.faint,
-                      ),
-                    ),
+                    LocationLabel(c: c),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -607,51 +601,3 @@ class _MoveRow extends StatelessWidget {
   }
 }
 
-class TrainCoachPage extends StatelessWidget {
-  const TrainCoachPage({super.key, required this.session});
-  final String session;
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: themeCtrl,
-      builder: (_, __, ___) {
-        final c = ArcColors.of(context);
-        return Scaffold(
-          backgroundColor: c.page,
-          appBar: AppBar(
-            backgroundColor: c.page,
-            surfaceTintColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: c.ink),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            title: Text('Coach',
-                style: TextStyle(
-                    color: c.ink, fontSize: 16, fontWeight: FontWeight.w600)),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-            child: FadeSlideIn(
-              index: 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(session,
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          color: c.ink)),
-                  const SizedBox(height: 8),
-                  Text('Keep the region. Change the machine. I don’t diagnose.',
-                      style: TextStyle(fontSize: 14, color: c.muted)),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}

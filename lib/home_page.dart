@@ -6,6 +6,7 @@ import 'data/health_models.dart';
 import 'data/health_service.dart';
 import 'data/profile_service.dart';
 import 'theme_ctrl.dart';
+import 'widgets/location_label.dart';
 import 'widgets/health_metric_card.dart';
 import 'widgets/health_visuals.dart';
 
@@ -377,15 +378,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         const ArcLogo(),
         const Spacer(),
-        Text(
-          'THANE',
-          style: TextStyle(
-            fontSize: 11,
-            letterSpacing: 0.8,
-            fontWeight: FontWeight.w600,
-            color: c.faint,
-          ),
-        ),
+        LocationLabel(c: c),
       ],
     );
   }

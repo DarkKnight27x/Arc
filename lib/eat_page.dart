@@ -8,6 +8,7 @@ import 'data/models/meal.dart';
 import 'data/models/meal_nutrition.dart';
 import 'features/eat/eat_setup_page.dart';
 import 'features/eat/meal_detail_page.dart';
+import 'widgets/location_label.dart';
 
 class EatPage extends StatefulWidget {
   const EatPage({super.key});
@@ -110,15 +111,7 @@ class _EatPageState extends State<EatPage> {
                       children: [
                         const ArcLogo(),
                         const Spacer(),
-                        Text(
-                          'THANE',
-                          style: TextStyle(
-                            fontSize: 11,
-                            letterSpacing: 0.8,
-                            fontWeight: FontWeight.w600,
-                            color: c.faint,
-                          ),
-                        ),
+                        LocationLabel(c: c),
                       ],
                     ),
                     const SizedBox(height: 18),
@@ -528,80 +521,57 @@ class _DishCard extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: c.surface,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: c.line),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          clipBehavior: Clip.antiAlias,
+          child: Column(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+              SizedBox(
+                width: double.infinity,
+                height: 176,
                 child: imageUrl == null
                     ? Container(
-                  width: 72,
-                  height: 72,
-                  color: c.chip,
-                  child: Icon(Icons.restaurant, color: c.faint),
-                )
+                        color: c.chip,
+                        child: Icon(Icons.restaurant, color: c.faint),
+                      )
                     : Image.network(
-                  imageUrl!,
-                  width: 72,
-                  height: 72,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    width: 72,
-                    height: 72,
-                    color: c.chip,
-                    child: Icon(Icons.restaurant, color: c.faint),
-                  ),
-                ),
+                        imageUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Container(
+                          color: c.chip,
+                          child: Icon(Icons.restaurant, color: c.faint),
+                        ),
+                      ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 13, 14, 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       item.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: c.ink,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       '${item.mealType.name[0].toUpperCase()}${item.mealType.name.substring(1)}  ·  $_diet',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 12, color: c.muted),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 12),
                     _VialRow(c: c, item: item),
                   ],
                 ),
-              ),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    item.proteinG.toStringAsFixed(
-                      item.proteinG == item.proteinG.roundToDouble() ? 0 : 1,
-                    ),
-                    style: TextStyle(
-                      fontSize: 20,
-                      height: 1,
-                      fontWeight: FontWeight.w600,
-                      color: c.ink,
-                    ),
-                  ),
-                  Text(
-                    'g P',
-                    style: TextStyle(fontSize: 11, color: c.ice),
-                  ),
-                ],
               ),
             ],
           ),
@@ -622,42 +592,50 @@ class _VialRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: _Vial(
-            c: c,
-            letter: 'P',
-            value: '${item.proteinG.toStringAsFixed(0)}g',
-            fill: (item.proteinG / 40).clamp(0, 1),
-            color: c.ice,
-          ),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: _Vial(
-            c: c,
-            letter: 'C',
-            value: '${item.carbsG.toStringAsFixed(0)}g',
-            fill: (item.carbsG / 80).clamp(0, 1),
-            color: const Color(0xFF7D8A9E),
-          ),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: _Vial(
-            c: c,
-            letter: 'F',
-            value: '${item.fatG.toStringAsFixed(0)}g',
-            fill: (item.fatG / 30).clamp(0, 1),
-            color: const Color(0xFFB08968),
-          ),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: _Vial(
-            c: c,
-            letter: 'K',
-            value: '${item.caloriesKcal.round()}',
-            fill: (item.caloriesKcal / 700).clamp(0, 1),
-            color: c.faint,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: _Vial(
+                      c: c,
+                      letter: 'P',
+                      value: '${item.proteinG.toStringAsFixed(0)}g',
+                      fill: (item.proteinG / 40).clamp(0, 1),
+                      color: c.ice,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _Vial(
+                      c: c,
+                      letter: 'C',
+                      value: '${item.carbsG.toStringAsFixed(0)}g',
+                      fill: (item.carbsG / 80).clamp(0, 1),
+                      color: const Color(0xFF7D8A9E),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _Vial(
+                      c: c,
+                      letter: 'F',
+                      value: '${item.fatG.toStringAsFixed(0)}g',
+                      fill: (item.fatG / 30).clamp(0, 1),
+                      color: const Color(0xFFB08968),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              _Vial(
+                c: c,
+                letter: 'K',
+                value: '${item.caloriesKcal.round()} kcal',
+                fill: (item.caloriesKcal / 700).clamp(0, 1),
+                color: c.faint,
+              ),
+            ],
           ),
         ),
       ],
