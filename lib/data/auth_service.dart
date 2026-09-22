@@ -1,12 +1,9 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'profile_service.dart';
-
 class AuthService {
-  AuthService(this._client, this._profiles);
+  AuthService(this._client);
 
   final SupabaseClient _client;
-  final ProfileService _profiles;
 
   Session? get session => _client.auth.currentSession;
   User? get user => _client.auth.currentUser;
@@ -24,20 +21,12 @@ class AuthService {
     required String email,
     required String password,
     required String displayName,
-  }) async {
-    final res = await _client.auth.signUp(
+  }) {
+    return _client.auth.signUp(
       email: email.trim(),
       password: password,
       data: {'display_name': displayName.trim()},
     );
-    final uid = res.user?.id;
-    if (uid != null) {
-      await _profiles.upsertClient(
-        userId: uid,
-        displayName: displayName.trim(),
-      );
-    }
-    return res;
   }
 
   Future<void> sendReset(String email) {

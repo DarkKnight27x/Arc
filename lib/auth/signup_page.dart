@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/auth_service.dart';
 import 'login_page.dart';
 
 class SignupPage extends StatefulWidget {
@@ -69,13 +70,10 @@ class _SignupPageState extends State<SignupPage> {
     });
 
     try {
-      final response =
-      await Supabase.instance.client.auth.signUp(
+      final response = await AuthService(Supabase.instance.client).signup(
         email: userEmail,
         password: userPassword,
-        data: {
-          'display_name': userName,
-        },
+        displayName: userName,
       );
 
       if (!mounted) return;

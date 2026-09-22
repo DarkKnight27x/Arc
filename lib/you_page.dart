@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'body_avatar_page.dart';
+import 'data/auth_service.dart';
 import 'data/profile_service.dart';
 import 'theme_ctrl.dart';
 
@@ -17,6 +18,8 @@ class _YouPageState extends State<YouPage> {
   int tab = 0;
   ProfileRow? _profile;
   bool _loading = true;
+  bool _signingOut = false;
+  String? _signOutError;
 
   @override
   void initState() {
@@ -37,6 +40,25 @@ class _YouPageState extends State<YouPage> {
       _profile = profile;
       _loading = false;
     });
+  }
+
+  Future<void> _signOut() async {
+    if (_signingOut) return;
+
+    setState(() {
+      _signingOut = true;
+      _signOutError = null;
+    });
+
+    try {
+      await AuthService(Supabase.instance.client).logout();
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _signingOut = false;
+        _signOutError = 'Could not sign out. Please try again.';
+      });
+    }
   }
 
   @override
@@ -174,6 +196,20 @@ class _YouPageState extends State<YouPage> {
                 ),
                 const SizedBox(height: 16),
                 if (tab == 0) _Brief(c: c, profile: _profile) else _Body(c: c),
+                const SizedBox(height: 24),
+                if (_signOutError != null) ...[
+                  Text(
+                    _signOutError!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 13, color: c.brand),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+                MetalBtn(
+                  label: _signingOut ? 'Signing out...' : 'Sign Out',
+                  icon: Icons.logout,
+                  onTap: _signOut,
+                ),
               ],
             ),
           ),
