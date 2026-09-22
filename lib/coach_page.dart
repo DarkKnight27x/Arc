@@ -1,6 +1,83 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'theme_ctrl.dart';
 import 'widgets/location_label.dart';
+
+class _ThinkingIndicator extends StatefulWidget {
+  const _ThinkingIndicator();
+
+  @override
+  State<_ThinkingIndicator> createState() => _ThinkingIndicatorState();
+}
+
+class _ThinkingIndicatorState extends State<_ThinkingIndicator> with TickerProviderStateMixin {
+  late List<AnimationController> _controllers;
+  late List<Animation<double>> _animations;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllers = List.generate(3, (index) {
+      return AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 600),
+      );
+    });
+
+    _animations = _controllers.map((controller) {
+      return Tween<double>(begin: 0.3, end: 1.0).animate(
+        CurvedAnimation(parent: controller, curve: Curves.easeInOut),
+      );
+    }).toList();
+
+    for (int i = 0; i < 3; i++) {
+      Future.delayed(Duration(milliseconds: i * 200), () {
+        if (mounted) {
+          _controllers[i].repeat(reverse: true);
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = ArcColors.of(context);
+    return SizedBox(
+      height: 20,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(3, (index) {
+          return AnimatedBuilder(
+            animation: _animations[index],
+            builder: (context, child) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: 7,
+                height: 7,
+                decoration: BoxDecoration(
+                  color: c.ink.withOpacity(_animations[index].value),
+                  shape: BoxShape.circle,
+                ),
+              );
+            },
+          );
+        }),
+      ),
+    );
+  }
+}
 
 class CoachPage extends StatefulWidget {
   const CoachPage({super.key, this.coachOnly = false, this.session});
@@ -22,13 +99,11 @@ class _CoachPageState extends State<CoachPage> {
   int tab = 0;
   final search = TextEditingController();
   final input = TextEditingController();
-  final lines = <_Msg>[
-    const _Msg(false,
-        'Keep today’s plan steady. If something feels off, stay in the region and change the machine.\n\nARC does not diagnose injuries.'),
-    const _Msg(true, 'Can you make this a shorter day?'),
-    const _Msg(false,
-        'Keep the first three movements and leave one set in reserve. Ten minutes is enough to stay consistent.'),
-  ];
+  final ScrollController _scrollController = ScrollController();
+  bool _isLoading = false;
+  String? _conversationId;
+
+  final lines = <_Msg>[];
 
   static const physios = [
     ('Motion Lab Physio', 'Thane West · 1.2 km', 'Sports + shoulder'),
@@ -41,20 +116,97 @@ class _CoachPageState extends State<CoachPage> {
   void dispose() {
     search.dispose();
     input.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
-  void _send([String? raw]) {
+  void _scrollToBottom({bool force = false}) {
+    if (!_scrollController.hasClients) return;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (force || maxScroll - currentScroll <= 200) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_scrollController.hasClients) return;
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
+    }
+  }
+
+  Future<void> _send([String? raw]) async {
+    if (_isLoading) return;
+
     final t = (raw ?? input.text).trim();
     if (t.isEmpty) return;
+
     input.clear();
+
     setState(() {
       lines.add(_Msg(true, t));
-      lines.add(const _Msg(
-        false,
-        'Noted. Same region, different machine. Stop the set if pain rises.',
-      ));
+      _isLoading = true;
     });
+
+    _scrollToBottom(force: true);
+
+    try {
+      final userId = Supabase.instance.client.auth.currentUser?.id ?? 'anonymous_user';
+      if (_conversationId == null) {
+        _conversationId = widget.session ?? 'conv_${DateTime.now().millisecondsSinceEpoch}';
+      }
+
+      final history = lines.map((m) => {
+        'role': m.mine ? 'user' : 'assistant',
+        'content': m.text,
+      }).toList();
+
+      final conversationHistory = history;
+
+      final baseUrl = Platform.isAndroid ? 'http://10.0.2.2:8000' : 'http://127.0.0.1:8000';
+      final url = Uri.parse('$baseUrl/coach/message');
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'user_id': userId,
+          'conversation_id': _conversationId,
+          'message': t,
+          'conversation': conversationHistory,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final reply = data['message'] as String? ?? 'No response received.';
+        if (mounted) {
+          setState(() {
+            lines.add(_Msg(false, reply));
+          });
+        }
+      } else {
+        if (mounted) {
+          setState(() {
+            lines.add(const _Msg(false, 'Sorry, I couldn\'t reach the coach right now. Please try again.'));
+          });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          lines.add(const _Msg(false, 'A network error occurred. Please check your connection and try again.'));
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        _scrollToBottom();
+      }
+    }
   }
 
   @override
@@ -81,6 +233,7 @@ class _CoachPageState extends State<CoachPage> {
               children: [
                 Expanded(
                   child: ListView(
+                    controller: _scrollController,
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
                     children: [
                       Row(
@@ -177,6 +330,17 @@ class _CoachPageState extends State<CoachPage> {
         ),
         const SizedBox(height: 14),
         for (final m in lines) _Bubble(c: c, msg: m),
+        if (_isLoading)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              constraints: const BoxConstraints(maxWidth: 300),
+              padding: const EdgeInsets.all(14),
+              decoration: metalPanel(c),
+              child: const _ThinkingIndicator(),
+            ),
+          ),
       ],
     );
   }
@@ -208,7 +372,9 @@ class _CoachPageState extends State<CoachPage> {
                 controller: input,
                 style: TextStyle(color: c.ink),
                 cursorColor: c.ice,
-                onSubmitted: (_) => _send(),
+                minLines: 1,
+                maxLines: 5,
+                keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                   hintText: 'Ask anything about today…',
                   hintStyle: TextStyle(color: c.faint, fontSize: 14),

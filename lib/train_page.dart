@@ -27,6 +27,8 @@ class _TrainPageState extends State<TrainPage> {
   Future<void> _loadWorkout() async {
     final data = await WorkoutService.instance.fetchWorkoutPlan();
     if (!mounted) return;
+    // Sort weekdays in ascending chronological order (Monday -> Sunday)
+    data.sort((a, b) => a.weekday.compareTo(b.weekday));
     setState(() {
       _days = data;
       _loading = false;
