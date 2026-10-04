@@ -4,7 +4,7 @@ India-first health and fitness coach. One app for train, eat, and recover.
 
 The user chooses what to train. Arc builds the path, then keeps it when the week changes: a sore shoulder, a travel day, a ₹200 food budget, a new goal.
 
-![Arc home](docs/images/home.png2)
+![Arc home](docs/images/home2.png)
 ![Arc 3D Anatomy Viewer](docs/images/home1.png)
 
 ## Why Arc
