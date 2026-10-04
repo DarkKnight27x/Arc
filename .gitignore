@@ -133,3 +133,7 @@ Thumbs.db
 .env
 .venv/
 __pycache__/
+
+# Temporary clones
+temp_body_parts/
+temp_muscle_map/
