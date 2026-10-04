@@ -1,76 +1,69 @@
 # Arc
-Arc — India-first AI health &amp; fitness coach. Manages train, eat, and recover as life changes. Persistent Passport + life states. The coach that does not restart when your life does.
-## Team split
 
-Four people. Folders are ownership. Do not edit someone else's feature folder without asking.
+India-first health and fitness coach. One app for train, eat, and recover.
 
-Shared files (Person 1 owns them, everyone else reads):
+The user chooses what to train. Arc builds the path, then keeps it when the week changes: a sore shoulder, a travel day, a ₹200 food budget, a new goal.
 
-- `lib/data/mock_store.dart`
-- `lib/core/theme/`
-- `lib/core/navigation/tab_shell.dart`
+![Arc home](docs/images/home.png2)
+![Arc 3D Anatomy Viewer](docs/images/home1.png)
 
-### Person 1 — Foundation
+## Why Arc
 
-**Owns:** `lib/core/` · `lib/data/` · `lib/app.dart` · `lib/main.dart`
+Gym is cheap. A trainer plus a nutrition plan is not. Most apps assume a healthy week and go quiet when that week ends. Arc keeps one passport across train, eat, and recovery, and changes tomorrow’s plan without a new subscription.
 
-- Theme: colors, type, buttons, cards, chips, sheets
-- Router + tabs: Today · Train · Eat · Coach · You
-- Models + `mock_store.dart` (Saarthak seed)
-- `apply(CoachAction)` so a Coach tap can change Today
+Built for someone in India who wants a physique or a habit. Veg, egg, or non-veg. A daily budget in rupees. A gym they may not know the kit of, or a session at home.
 
-**Done when:** app opens on tabs, Saarthak lives in one store, empty screens load.
+## Features
 
-**Do not:** build live session or Eat meals.
+**Today, on one screen.** Workout, plate, and recovery. Home workouts, the full exercise library, and a trainer for doubts.
 
-### Person 2 — Train + Recover
+**Train.** A day is a muscle pair, such as Chest and Biceps. Regions open into exercises on different machines, with a name and a demo, because the gym kit is unknown. No kit: the same muscles, at home.
 
-**Owns:** `lib/features/train/` · `session/` · `recover/`
+**Eat.** Indian plates, not an imported calorie list. Protein and rupees lead. Breakfast, lunch, snack, dinner. Allergies are asked before a plate is suggested.
 
-- Week strip, session detail, swap, home vs gym
-- Live session: sets, RPE, rest, abort
-- Missed session = absorbed, not failed
-- Recover: readiness, sleep, body region, 0–10
-- Surgery-prep = low impact. Not a medical module.
+**Recover.** Yoga, rehab, and a verified physio. Rehab is a reported limit, not a diagnosis. Arc adjusts training around it. A physio is the escalation.
 
-**Done when:** start and finish a workout; miss a day with no shame copy.
+**Personal trainer.** One place to say what changed. Sore, travel, or budget. The plan updates.
 
-**Do not:** touch Coach chat or Eat.
+**You.** Body, budget, diet, reminders. The record stays with the person, not with a single good week.
 
-### Person 3 — Coach + Eat + Safety
+![Train](docs/images/train.png)
+![Eat](docs/images/eat.png)
+![Recover](docs/images/recover.png)
 
-**Owns:** `lib/features/coach/` · `eat/` · `safety/`
+## Onboarding
 
-- Coach thread + chips: Tired, Travel, Pain, Missed, budget, meal
-- Every chip calls `apply()` and shows a receipt
-- Eat: guidance-first Indian plates, log `2 dosa + sambar`
-- Pain sheet + red-flag screen (no workout on that screen)
+Seven questions, then Home.
 
-**Done when:** “Travelling tomorrow” changes WhyToday + chips, not only a chat bubble.
+1. Goal. Build muscle, lose fat, stay consistent.
+2. Sex.
+3. Age.
+4. Height and weight.
+5. Level. Beginner, intermediate, advanced.
+6. Days you can train. 3, 4, 5, 6.
+7. Food allergies. Dairy, gluten, nuts, eggs, none.
 
-**Do not:** restyle onboarding. Do not act like a doctor.
+Train, Eat, and Yoga ask their own depth the first time those sections open. Home does not.
 
-### Person 4 — You + Club + Docs
+## Stack
 
-**Owns:** `lib/features/you/` · `progress/` · `settings/` · `club/` · `docs/` · `README.md`
+- Flutter
+- Supabase. Auth, Postgres, Storage
+- Indian food data from IFCT / INDB. Ingredients per 100 g, plates summed from ingredients
 
-- Passport (living “We’ve got you”)
-- Progress: week / 8 weeks, no 20 rings
-- Settings: diet toggle, EN/HI/TA mock, Soon rows
-- Gamify: XP, freeze streak, Trainer / Chef / Doc, 3 quests
-- README, folder-structure image, handover in `docs/`
+## Run
 
-**Done when:** Travel freezes the streak and still grants +12 XP.
+Flutter and an Android emulator already installed.
 
-**Do not:** change Train programming or Coach mutation logic.
+git pull
+flutter pub get
+flutter emulators --launch Pixel_8
+flutter run
 
-### First week
+Put the anon public key in lib/data/supabase_config.dart. Never the service role key. Sign up with email. Confirm-email is off for the demo.
 
-| Day | Who | Output |
-|---|---|---|
-| 1 | Person 1 | Tabs + store + theme |
-| 2–3 | Person 2 + 3 | Train week or Coach travel chip |
-| 4 | Person 3 | Eat three plates + meal log |
-| 5 | Person 4 | Passport + README structure |
-| 6 | Person 4 | XP / streak freeze on travel |
+## Team
 
+Saarthak Kulkarni, and the Arc project team.
+
+Arc does not diagnose, grade an injury, or prescribe.
