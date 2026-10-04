@@ -44,11 +44,19 @@ class BodyServer {
       path = path.substring(1);
     }
 
-    // Explicitly map the model.
+    // Explicitly map the 3D model.
     if (path == 'human.glb') {
       return _loadAsset(
         'assets/3d_viewer/human.glb',
         'human.glb',
+      );
+    }
+
+    // Serve Body Parts Anatomy assets (.js or index.html)
+    if (path.endsWith('.js') || path == 'index.html') {
+      return _loadAsset(
+        'assets/body_parts/$path',
+        path,
       );
     }
 
@@ -128,14 +136,6 @@ class BodyServer {
 
     if (lower.endsWith('.svg')) {
       return 'image/svg+xml';
-    }
-
-    if (lower.endsWith('.woff')) {
-      return 'font/woff';
-    }
-
-    if (lower.endsWith('.woff2')) {
-      return 'font/woff2';
     }
 
     return 'application/octet-stream';

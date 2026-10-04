@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'anatomy_test_page.dart';
 import 'auth/auth_gate.dart';
 import 'coach_page.dart';
 import 'eat_page.dart';
@@ -94,6 +95,20 @@ class _HomeShellState extends State<HomeShell> {
               const CoachPage(),
               const YouPage(),
             ],
+          ),
+
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const AnatomyTestPage(),
+                ),
+              );
+            },
+            backgroundColor: c.brand,
+            foregroundColor: Colors.white,
+            icon: const Icon(Icons.accessibility_new_rounded),
+            label: const Text('Test Anatomy', style: TextStyle(fontWeight: FontWeight.w600)),
           ),
 
           bottomNavigationBar: Container(
