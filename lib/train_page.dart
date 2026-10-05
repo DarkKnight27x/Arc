@@ -5,6 +5,7 @@ import 'coach_page.dart';
 import 'session_player.dart';
 import 'theme_ctrl.dart';
 import 'widgets/location_label.dart';
+import 'focus_workout_page.dart';
 
 class TrainPage extends StatefulWidget {
   const TrainPage({super.key});
@@ -27,7 +28,6 @@ class _TrainPageState extends State<TrainPage> {
   Future<void> _loadWorkout() async {
     final data = await WorkoutService.instance.fetchWorkoutPlan();
     if (!mounted) return;
-    // Sort weekdays in ascending chronological order (Monday -> Sunday)
     data.sort((a, b) => a.weekday.compareTo(b.weekday));
     setState(() {
       _days = data;
@@ -71,7 +71,7 @@ class _TrainPageState extends State<TrainPage> {
       valueListenable: themeCtrl,
       builder: (_, __, ___) {
         final c = ArcColors.of(context);
-        
+
         if (_loading) {
           return Center(child: CircularProgressIndicator(color: c.brand));
         }
@@ -112,6 +112,59 @@ class _TrainPageState extends State<TrainPage> {
                   ],
                 ),
                 const SizedBox(height: 16),
+                ValueListenableBuilder<List<String>>(
+                  valueListenable: MuscleFocus.selected,
+                  builder: (_, muscles, __) {
+                    if (muscles.isEmpty) return const SizedBox.shrink();
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 14),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => FocusWorkoutPage(muscles: muscles),
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(18),
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: metalPanel(c),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'PRIORITY MUSCLES',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        letterSpacing: 1.1,
+                                        color: c.faint,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      muscles.join(' · '),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: c.ink,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.chevron_right, color: c.muted),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 Text(
                   'TRAIN',
                   style: TextStyle(
@@ -487,7 +540,7 @@ class _MoveRow extends StatelessWidget {
 
   void _showGif(BuildContext context) {
     if (move.gifUrl == null) return;
-    
+
     showDialog(
       context: context,
       builder: (_) => Dialog(
@@ -602,4 +655,3 @@ class _MoveRow extends StatelessWidget {
     );
   }
 }
-

@@ -106,10 +106,10 @@ class _CoachPageState extends State<CoachPage> {
   final lines = <_Msg>[];
 
   static const physios = [
-    ('Motion Lab Physio', 'Thane West · 1.2 km', 'Sports + shoulder'),
-    ('Restore Clinic', 'Naupada · 2.1 km', 'Post-op + strength'),
-    ('Hiranandani Physio', 'Powai · 6.4 km', 'Knee + spine'),
-    ('Bandra Sports PT', 'Bandra W · 18 km', 'Lifters + return to gym'),
+    _Physio('Motion Lab Physio', 'Thane West', '1.2 km', 'Sports · shoulder', 4.6, '₹900', 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80'),
+    _Physio('Restore Clinic', 'Naupada', '2.1 km', 'Post-op · strength', 4.4, '₹800', 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80'),
+    _Physio('Hiranandani Physio', 'Powai', '6.4 km', 'Knee · spine', 4.7, '₹1100', 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80'),
+    _Physio('Bandra Sports PT', 'Bandra West', '18 km', 'Lifters · return to gym', 4.5, '₹1200', 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80'),
   ];
 
   @override
@@ -216,13 +216,12 @@ class _CoachPageState extends State<CoachPage> {
       builder: (_, __, ___) {
         final c = ArcColors.of(context);
         final q = search.text.trim().toLowerCase();
-        final list = physios
-            .where((p) =>
-        q.isEmpty ||
-            p.$1.toLowerCase().contains(q) ||
-            p.$2.toLowerCase().contains(q) ||
-            p.$3.toLowerCase().contains(q))
-            .toList();
+        final list = physios.where((p) {
+          return q.isEmpty ||
+              p.name.toLowerCase().contains(q) ||
+              p.area.toLowerCase().contains(q) ||
+              p.specialty.toLowerCase().contains(q);
+        }).toList();
 
         return Scaffold(
           backgroundColor: c.page,
@@ -469,16 +468,13 @@ class _CoachPageState extends State<CoachPage> {
     );
   }
 
-  Widget _physio(ArcColors c, List<(String, String, String)> list) {
+  Widget _physio(ArcColors c, List<_Physio> list) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Search real physios near you',
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
-        const SizedBox(height: 6),
-        Text('Thane / Mumbai · sample until bookings are live.',
-            style: TextStyle(fontSize: 13, color: c.muted)),
+        Text('Physios near you', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
+        const SizedBox(height: 4),
+        Text('Sample listings · bookings not live', style: TextStyle(fontSize: 13, color: c.muted)),
         const SizedBox(height: 12),
         TextField(
           controller: search,
@@ -490,38 +486,52 @@ class _CoachPageState extends State<CoachPage> {
             prefixIcon: Icon(Icons.search, color: c.muted),
             filled: true,
             fillColor: c.chip,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: c.line),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: c.line),
-            ),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: c.line)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: c.line)),
           ),
         ),
         const SizedBox(height: 12),
         for (final p in list)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: PressScale(
-              onTap: () {},
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: metalPanel(c),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(p.$1,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: c.ink)),
-                    Text(p.$2, style: TextStyle(fontSize: 13, color: c.muted)),
-                    Text(p.$3, style: TextStyle(fontSize: 12, color: c.faint)),
-                  ],
-                ),
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Container(
+              decoration: metalPanel(c, radius: 18),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 150,
+                    width: double.infinity,
+                    child: Image.network(p.image, fit: BoxFit.cover, errorBuilder: (_, __, ___) => ColoredBox(color: c.chip)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(child: Text(p.name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: c.ink))),
+                            Text(p.price, style: TextStyle(fontWeight: FontWeight.w700, color: c.ink)),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Text('${p.area} · ${p.distance}', style: TextStyle(fontSize: 13, color: c.muted)),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Icon(Icons.star_rounded, size: 16, color: c.ink),
+                            const SizedBox(width: 4),
+                            Text(p.rating.toString(), style: TextStyle(fontWeight: FontWeight.w600, color: c.ink)),
+                            const SizedBox(width: 8),
+                            Text(p.specialty, style: TextStyle(fontSize: 12, color: c.faint)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -579,6 +589,16 @@ class _Hint extends StatelessWidget {
       ),
     );
   }
+}
+class _Physio {
+  const _Physio(this.name, this.area, this.distance, this.specialty, this.rating, this.price, this.image);
+  final String name;
+  final String area;
+  final String distance;
+  final String specialty;
+  final double rating;
+  final String price;
+  final String image;
 }
 
 class _Bubble extends StatelessWidget {

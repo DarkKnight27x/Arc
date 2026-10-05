@@ -104,7 +104,6 @@
             } else {
                 selectedGroups.add(group);
             }
-
             document.querySelectorAll(`.fragment-path[data-group="${group}"]`).forEach(p => {
                 if (selectedGroups.has(group)) {
                     p.classList.add('active');
@@ -112,6 +111,8 @@
                     p.classList.remove('active');
                 }
             });
+
+            if (window.ArcMuscle) ArcMuscle.postMessage(group);
         }
 
         function setGender(gender) {
@@ -128,6 +129,7 @@
         function clearAll() {
             selectedGroups.clear();
             document.querySelectorAll('.fragment-path').forEach(p => p.classList.remove('active'));
+            if (window.ArcMuscle) ArcMuscle.postMessage('__clear__');
         }
 
         // Initial setup
