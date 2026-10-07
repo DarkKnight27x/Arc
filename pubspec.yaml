@@ -45,6 +45,7 @@ dependencies:
   health: ^13.3.2
   geolocator: ^14.0.3
   geocoding: ^5.0.0
+  image_picker: ^1.2.3
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/logo.png
+    - assets/images/priorityMuscles.jpg
     - assets/3d_viewer/index.html
     - assets/3d_viewer/human.glb
     - assets/3d_viewer/assets/index-9RfH7Psc.js
@@ -77,7 +79,9 @@ flutter:
     - assets/images/lightBackground.jpeg
     - assets/images/logo_white.png
     - assets/body_parts/index.html
+    - assets/trainerAnimations/
     - assets/body_parts/bodyRegions.js
+    - assets/images/messages.jpg
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

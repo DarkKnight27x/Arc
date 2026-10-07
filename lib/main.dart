@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'anatomy_test_page.dart';
 import 'auth/auth_gate.dart';
-import 'coach_page.dart';
 import 'eat_page.dart';
 import 'home_page.dart';
+import 'recover_page.dart';
+import 'rehab_sheet.dart';
 import 'theme_ctrl.dart';
 import 'train_page.dart';
 import 'you_page.dart';
-import 'rehab_sheet.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,8 +43,6 @@ class ArcApp extends StatelessWidget {
           theme: arcCreamTheme(),
           darkTheme: arcDarkTheme(),
           themeMode: mode,
-
-          // Authentication now comes before the main app.
           home: const AuthGate(
             app: HomeShell(),
           ),
@@ -77,7 +75,6 @@ class _HomeShellState extends State<HomeShell> {
 
         return Scaffold(
           backgroundColor: c.page,
-
           body: IndexedStack(
             index: index,
             children: [
@@ -89,34 +86,16 @@ class _HomeShellState extends State<HomeShell> {
                 onStartSession: () => _go(1),
                 onOpenRehab: () => showRehabSheet(context),
               ),
-
               const TrainPage(),
               const EatPage(),
-              const CoachPage(),
+              const RecoverPage(),
               const YouPage(),
             ],
           ),
-
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const AnatomyTestPage(),
-                ),
-              );
-            },
-            backgroundColor: c.brand,
-            foregroundColor: Colors.white,
-            icon: const Icon(Icons.accessibility_new_rounded),
-            label: const Text('Test Anatomy', style: TextStyle(fontWeight: FontWeight.w600)),
-          ),
-
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
               color: c.shell,
-              border: Border(
-                top: BorderSide(color: c.line),
-              ),
+              border: Border(top: BorderSide(color: c.line)),
             ),
             child: NavigationBar(
               selectedIndex: index,
@@ -126,41 +105,11 @@ class _HomeShellState extends State<HomeShell> {
               indicatorColor: c.raised,
               height: 68,
               destinations: [
-                _dest(
-                  c,
-                  Icons.home_outlined,
-                  Icons.home_rounded,
-                  'Home',
-                  0,
-                ),
-                _dest(
-                  c,
-                  Icons.fitness_center_outlined,
-                  Icons.fitness_center,
-                  'Train',
-                  1,
-                ),
-                _dest(
-                  c,
-                  Icons.restaurant_outlined,
-                  Icons.restaurant,
-                  'Eat',
-                  2,
-                ),
-                _dest(
-                  c,
-                  Icons.favorite_border,
-                  Icons.favorite,
-                  'Recover',
-                  3,
-                ),
-                _dest(
-                  c,
-                  Icons.person_outline,
-                  Icons.person,
-                  'You',
-                  4,
-                ),
+                _dest(c, Icons.home_outlined, Icons.home_rounded, 'Home', 0),
+                _dest(c, Icons.fitness_center_outlined, Icons.fitness_center, 'Train', 1),
+                _dest(c, Icons.restaurant_outlined, Icons.restaurant, 'Eat', 2),
+                _dest(c, Icons.favorite_border, Icons.favorite, 'Recover', 3),
+                _dest(c, Icons.person_outline, Icons.person, 'You', 4),
               ],
             ),
           ),
@@ -169,24 +118,11 @@ class _HomeShellState extends State<HomeShell> {
     );
   }
 
-  NavigationDestination _dest(
-      ArcColors c,
-      IconData off,
-      IconData on,
-      String label,
-      int i,
-      ) {
+  NavigationDestination _dest(ArcColors c, IconData off, IconData on, String label, int i) {
     final sel = index == i;
-
     return NavigationDestination(
-      icon: Icon(
-        off,
-        color: c.muted,
-      ),
-      selectedIcon: Icon(
-        on,
-        color: sel ? c.ink : c.muted,
-      ),
+      icon: Icon(off, color: c.muted),
+      selectedIcon: Icon(on, color: sel ? c.ink : c.muted),
       label: label,
     );
   }

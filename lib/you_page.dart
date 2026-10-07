@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'body_avatar_page.dart';
-import 'data/auth_service.dart';
-import 'data/profile_service.dart';
 import 'theme_ctrl.dart';
 
 class YouPage extends StatefulWidget {
@@ -16,467 +11,130 @@ class YouPage extends StatefulWidget {
 
 class _YouPageState extends State<YouPage> {
   int tab = 0;
-  ProfileRow? _profile;
-  bool _loading = true;
-  bool _signingOut = false;
-  String? _signOutError;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadProfile();
-  }
-
-  Future<void> _loadProfile() async {
-    setState(() {
-      _loading = true;
-    });
-
-    final profile = await ProfileService(Supabase.instance.client).fetchCurrentUser();
-
-    if (!mounted) return;
-
-    setState(() {
-      _profile = profile;
-      _loading = false;
-    });
-  }
-
-  Future<void> _signOut() async {
-    if (_signingOut) return;
-
-    setState(() {
-      _signingOut = true;
-      _signOutError = null;
-    });
-
-    try {
-      await AuthService(Supabase.instance.client).logout();
-    } catch (_) {
-      if (!mounted) return;
-      setState(() {
-        _signingOut = false;
-        _signOutError = 'Could not sign out. Please try again.';
-      });
-    }
+  void _toggleTheme() {
+    final dark = themeCtrl.value == ThemeMode.dark;
+    themeCtrl.value = dark ? ThemeMode.light : ThemeMode.dark;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: themeCtrl,
-      builder: (_, mode, __) {
-        final c = ArcColors.of(context);
-        final dark = mode == ThemeMode.dark;
-        return ColoredBox(
-          color: c.page,
-          child: SafeArea(
-            bottom: false,
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 28),
+    final c = ArcColors.of(context);
+    return ColoredBox(
+      color: c.page,
+      child: SafeArea(
+        bottom: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(22, 10, 22, 36),
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'YOU  ·  YOUR OPERATING CONTEXT',
-                      style: TextStyle(
-                        fontSize: 10,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.w600,
-                        color: c.faint,
-                      ),
+                ColorFiltered(
+                  colorFilter: ColorFilter.mode(c.ink, BlendMode.srcIn),
+                  child: const ArcLogo(),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: _toggleTheme,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(999),
+                      border: Border.all(color: c.line),
                     ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: toggleArcTheme,
-                      child: Container(
-                        height: 32,
-                        padding: const EdgeInsets.fromLTRB(10, 0, 4, 0),
-                        decoration: BoxDecoration(
-                          color: c.chip,
-                          borderRadius: BorderRadius.circular(999),
-                          border: Border.all(color: c.line),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              dark ? 'Dark metal' : 'Champagne',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: c.muted,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              width: 22,
-                              height: 22,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color: c.ink.withValues(alpha: 0.65)),
-                                gradient: RadialGradient(
-                                  center: const Alignment(-0.4, -0.5),
-                                  colors: dark
-                                      ? const [
-                                          Color(0xFFF2F5F8),
-                                          Color(0xFF8A939C),
-                                          Color(0xFF2A2E33),
-                                        ]
-                                      : const [
-                                          Color(0xFFFDEEE9),
-                                          Color(0xFFE8C1B5),
-                                          Color(0xFFC78474),
-                                        ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    child: Text(
+                      themeCtrl.value == ThemeMode.dark ? 'Dark' : 'Light',
+                      style: TextStyle(color: c.ink, fontSize: 13, fontWeight: FontWeight.w600),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Keep it ',
-                        style: TextStyle(
-                          fontSize: 40,
-                          height: 1.02,
-                          fontWeight: FontWeight.w500,
-                          color: c.ink,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'yours.',
-                        style: TextStyle(
-                          fontSize: 40,
-                          height: 1.02,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w500,
-                          color: c.ink,
-                        ),
-                      ),
-                    ],
                   ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: metalWell(c),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _Seg(
-                          'Brief',
-                          tab == 0,
-                          c,
-                              () {
-                            HapticFeedback.selectionClick();
-                            setState(() => tab = 0);
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: _Seg(
-                          'Body',
-                          tab == 1,
-                          c,
-                              () {
-                            HapticFeedback.selectionClick();
-                            setState(() => tab = 1);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                if (tab == 0) _Brief(c: c, profile: _profile) else _Body(c: c),
-                const SizedBox(height: 24),
-                if (_signOutError != null) ...[
-                  Text(
-                    _signOutError!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 13, color: c.brand),
-                  ),
-                  const SizedBox(height: 8),
-                ],
-                MetalBtn(
-                  label: _signingOut ? 'Signing out...' : 'Sign Out',
-                  icon: Icons.logout,
-                  onTap: _signOut,
                 ),
               ],
             ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _Seg extends StatelessWidget {
-  const _Seg(this.label, this.on, this.c, this.tap);
-  final String label;
-  final bool on;
-  final ArcColors c;
-  final VoidCallback tap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: tap,
-      child: Container(
-        height: 40,
-        alignment: Alignment.center,
-        decoration: on
-            ? BoxDecoration(
-          color: c.raised,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: c.line),
-        )
-            : null,
-        child: Text(
-          label,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: on ? c.ink : c.muted,
-          ),
+            const SizedBox(height: 28),
+            Text('YOU', style: TextStyle(color: c.muted, fontSize: 11, letterSpacing: 1.6, fontWeight: FontWeight.w600)),
+            const SizedBox(height: 8),
+            Text('Saarthak.', style: TextStyle(fontSize: 36, height: 1.02, fontWeight: FontWeight.w500, color: c.ink)),
+            const SizedBox(height: 8),
+            Text('Build muscle · intermediate', style: TextStyle(color: c.muted, fontSize: 15)),
+            const SizedBox(height: 22),
+            Row(
+              children: [
+                _tab(c, 'Brief', 0),
+                const SizedBox(width: 18),
+                _tab(c, 'Body', 1),
+              ],
+            ),
+            const SizedBox(height: 22),
+            if (tab == 0) _brief(c) else _body(c),
+          ],
         ),
       ),
     );
   }
-}
 
-class _Brief extends StatelessWidget {
-  const _Brief({required this.c, required this.profile});
-  final ArcColors c;
-  final ProfileRow? profile;
+  Widget _tab(ArcColors c, String label, int i) {
+    final on = tab == i;
+    return GestureDetector(
+      onTap: () => setState(() => tab = i),
+      child: Text(label, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: on ? c.ink : c.muted)),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    final displayName = (profile?.displayName ?? '').trim();
-    final goal = profile?.fitnessGoal ?? 'Not set';
-    final experience = profile?.experienceLevel ?? 'Not set';
-    final location = profile?.workoutLocation ?? 'Not set';
-    final diet = profile?.dietType ?? 'Not set';
-    final height = profile?.heightCm == null ? 'Not set' : '${profile!.heightCm!.round()} cm';
-    final weight = profile?.weightKg == null ? 'Not set' : '${profile!.weightKg!.round()} kg';
-
+  Widget _brief(ArcColors c) {
+    const rows = [
+      ('Goal', 'Build muscle'),
+      ('Experience', 'Intermediate'),
+      ('Location', 'Gym'),
+      ('Diet', 'Nonveg'),
+      ('Height', '178 cm'),
+      ('Weight', '76 kg'),
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(18),
-          decoration: metalPanel(c),
+          padding: const EdgeInsets.fromLTRB(18, 6, 18, 6),
+          decoration: BoxDecoration(
+            color: c.page,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: c.ink),
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    (displayName.isEmpty ? 'YOUR PROFILE' : displayName.toUpperCase()),
-                    style: TextStyle(
-                      fontSize: 11,
-                      letterSpacing: 1.0,
-                      color: c.faint,
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    width: 34,
-                    height: 34,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: c.chip,
-                      border: Border.all(color: c.line),
-                    ),
-                    child: Icon(Icons.person_outline, size: 16, color: c.muted),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'The useful brief',
-                style: TextStyle(
-                  fontSize: 26,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w500,
-                  color: c.ink,
-                ),
-              ),
-              const SizedBox(height: 14),
-              _KV(c, 'Goal', goal),
-              _KV(c, 'Experience', experience),
-              _KV(c, 'Location', location),
-              _KV(c, 'Diet', diet),
-              _KV(c, 'Height', height),
-              _KV(c, 'Weight', weight),
-            ],
+            children: [for (final row in rows) _row(c, row.$1, row.$2)],
           ),
         ),
-        const SizedBox(height: 20),
-        Text('Life state',
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
+        const SizedBox(height: 18),
+        Text('NOTE', style: TextStyle(color: c.muted, fontSize: 11, letterSpacing: 1.4, fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: metalPanel(c),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('CURRENT NOTE',
-                        style: TextStyle(
-                            fontSize: 11, letterSpacing: 1.0, color: c.faint)),
-                    const SizedBox(height: 4),
-                    Text('Regular, travelling this week',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: c.ink)),
-                  ],
-                ),
-              ),
-              Icon(Icons.chevron_right, color: c.faint),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        Text('Preferences',
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-          decoration: metalPanel(c),
-          child: Column(
-            children: [
-              _KV(c, 'Gym', location, line: false),
-              _KV(c, 'Food', diet),
-              _KV(c, 'Level', experience),
-              _KV(c, 'Plan', goal),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        Text('Life folds',
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w600, color: c.ink)),
-        const SizedBox(height: 8),
-        _Fold(c, 'Travel week', 'Active', ok: true),
-        const SizedBox(height: 8),
-        _Fold(c, 'Injury / rehab', 'Soon'),
-        const SizedBox(height: 8),
-        _Fold(c, 'Surgery recovery', 'Soon'),
-        const SizedBox(height: 16),
-        MetalBtn(
-          label: 'Open body view  →',
-          onTap: () {},
-        ),
+        Text('Regular. Travelling this week.', style: TextStyle(color: c.ink, fontSize: 16)),
       ],
     );
   }
-}
 
-class _Body extends StatelessWidget {
-  const _Body({required this.c});
-  final ArcColors c;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _row(ArcColors c, String label, String value) {
     return Container(
-      height: 430,
-      decoration: metalPanel(c),
-      clipBehavior: Clip.antiAlias,
-      child: const BodyAvatar(height: 430),
-    );
-  }
-}
-
-class _Fold extends StatelessWidget {
-  const _Fold(this.c, this.title, this.tag, {this.ok = false});
-  final ArcColors c;
-  final String title;
-  final String tag;
-  final bool ok;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      decoration: metalPanel(c),
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: c.line))),
       child: Row(
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: c.ink)),
-                if (ok)
-                  Text('Active',
-                      style: TextStyle(fontSize: 13, color: c.ok)),
-              ],
-            ),
-          ),
-          if (ok)
-            Icon(Icons.check, color: c.ok, size: 18)
-          else
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: c.chip,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: c.line),
-              ),
-              child: Text(tag,
-                  style: TextStyle(fontSize: 12, color: c.muted)),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _KV extends StatelessWidget {
-  const _KV(this.c, this.k, this.v, {this.line = true});
-  final ArcColors c;
-  final String k, v;
-  final bool line;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: line
-          ? BoxDecoration(
-        border: Border(top: BorderSide(color: c.line.withValues(alpha: 0.6))),
-      )
-          : null,
-      child: Row(
-        children: [
-          Text(k, style: TextStyle(fontSize: 14, color: c.muted)),
+          Text(label, style: TextStyle(color: c.muted, fontSize: 15)),
           const Spacer(),
-          Text(v,
-              style: TextStyle(
-                  fontSize: 14, fontWeight: FontWeight.w600, color: c.ink)),
+          Text(value, style: TextStyle(color: c.ink, fontSize: 15, fontWeight: FontWeight.w600)),
         ],
       ),
+    );
+  }
+
+  Widget _body(ArcColors c) {
+    return Container(
+      height: 280,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: c.chip,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: c.line),
+      ),
+      child: Text('Body map', style: TextStyle(color: c.muted, fontSize: 15)),
     );
   }
 }
