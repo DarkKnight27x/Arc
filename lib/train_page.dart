@@ -1,1 +1,628 @@
+import 'package:flutter/material.dart';
+import 'data/workout_models.dart';
+import 'data/workout_service.dart';
+import 'coach_page.dart';
+import 'session_player.dart';
+import 'theme_ctrl.dart';
+import 'widgets/location_label.dart';
+import 'focus_workout_page.dart';
+import 'anatomy_test_page.dart';
 
+class TrainPage extends StatefulWidget {
+  const TrainPage({super.key});
+  @override
+  State<TrainPage> createState() => _TrainPageState();
+}
+
+class _TrainPageState extends State<TrainPage> {
+  List<WorkoutDay> _days = [];
+  int _dayIndex = 0;
+  int? open = 0;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWorkout();
+  }
+
+  Future<void> _loadWorkout() async {
+    final data = await WorkoutService.instance.fetchWorkoutPlan();
+    if (!mounted) return;
+    data.sort((a, b) => a.weekday.compareTo(b.weekday));
+    final today = DateTime.now().weekday;
+    final todayIndex = data.indexWhere((d) => d.weekday == today);
+    setState(() {
+      _days = data;
+      _dayIndex = todayIndex < 0 ? 0 : todayIndex;
+      _loading = false;
+    });
+  }
+
+  void _openCoach() {
+    if (_days.isEmpty) return;
+    final session = _days[_dayIndex].title;
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => CoachPage(coachOnly: true, session: session),
+      ),
+    );
+  }
+
+  String _weekdayName(int weekday) {
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    if (weekday < 1 || weekday > 7) return 'Day';
+    return names[weekday - 1];
+  }
+
+  DateTime _dateFor(int weekday) {
+    final now = DateTime.now();
+    final monday = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - 1));
+    return monday.add(Duration(days: weekday - 1));
+  }
+
+  void _startSession(WorkoutDay d) {
+    final allMoves = d.regions.expand((r) => r.moves).toList();
+    if (allMoves.isEmpty) return;
+
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => SessionPlayer(
+          dayTitle: d.title,
+          exercises: allMoves,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeCtrl,
+      builder: (_, __, ___) {
+        final c = ArcColors.of(context);
+
+        if (_loading) {
+          return Center(child: CircularProgressIndicator(color: c.brand));
+        }
+
+        if (_days.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'No workout plan found.',
+                  style: TextStyle(color: c.muted, fontSize: 16),
+                ),
+                const SizedBox(height: 12),
+                MetalBtn(
+                  label: 'Refresh',
+                  onTap: _loadWorkout,
+                ),
+              ],
+            ),
+          );
+        }
+
+        final d = _days[_dayIndex];
+
+        return ColoredBox(
+          color: c.page,
+          child: SafeArea(
+            bottom: false,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 28),
+              children: [
+                Row(
+                  children: [
+                    const ArcLogo(),
+                    const Spacer(),
+                    LocationLabel(c: c),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                ValueListenableBuilder<List<String>>(
+                  valueListenable: MuscleFocus.selected,
+                  builder: (_, muscles, __) {
+                    if (muscles.isEmpty) return const SizedBox.shrink();
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 14),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => FocusWorkoutPage(muscles: muscles),
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(18),
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: metalPanel(c),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'PRIORITY MUSCLES',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        letterSpacing: 1.1,
+                                        color: c.faint,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      muscles.join(' · '),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: c.ink,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(Icons.chevron_right, color: c.muted),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Text(
+                  'TRAIN',
+                  style: TextStyle(
+                    fontSize: 11,
+                    letterSpacing: 1.1,
+                    fontWeight: FontWeight.w600,
+                    color: c.faint,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        d.title,
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500, color: c.ink),
+                      ),
+                    ),
+                    Material(
+                      color: const Color(0xFFF5F5F6),
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const AnatomyTestPage()),
+                          );
+                        },
+                        child: SizedBox(
+                          width: 42,
+                          height: 42,
+                          child: Image.asset(
+                            'assets/images/priorityMuscles.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${d.estimatedMinutes} min estimated · machines first',
+                  style: TextStyle(fontSize: 13, color: c.muted),
+                ),
+                const SizedBox(height: 14),
+                _SegBar(
+                  c: c,
+                  index: 0,
+                  labels: const ['Plan', 'Coach'],
+                  onTap: (i) => i == 1 ? _openCoach() : null,
+                ),
+                const SizedBox(height: 14),
+                SizedBox(
+                  height: 56,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _days.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    itemBuilder: (_, i) {
+                      final on = i == _dayIndex;
+                      return GestureDetector(
+                        onTap: () => setState(() {
+                          _dayIndex = i;
+                          open = 0;
+                        }),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          width: 56,
+                          height: 56,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: on ? c.cta : const Color(0xFFF5F5F6),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: on ? c.cta : const Color(0xFFD9D3C7),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                _weekdayName(_days[i].weekday),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: on ? c.ctaInk : const Color(0xFF111111),
+                                ),
+                              ),
+                              Text(
+                                '${_dateFor(_days[i].weekday).day}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: on ? c.ctaInk : const Color(0xFF111111),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Text.rich(TextSpan(children: [
+                  TextSpan(
+                      text: 'Regions ',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: c.ink)),
+                  TextSpan(
+                      text: 'choose what exists',
+                      style: TextStyle(fontSize: 13, color: c.faint)),
+                ])),
+                const SizedBox(height: 10),
+                AnimatedSwitcher(
+                  duration: ArcMotion.base,
+                  child: Column(
+                    key: ValueKey(_dayIndex),
+                    children: [
+                      for (var i = 0; i < d.regions.length; i++)
+                        FadeSlideIn(
+                          index: i,
+                          delayStep: const Duration(milliseconds: 30),
+                          child: _RegionTile(
+                            c: c,
+                            region: d.regions[i],
+                            expanded: open == i,
+                            onTap: () =>
+                                setState(() => open = open == i ? null : i),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: metalPanel(c),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('ASK THE COACH',
+                          style: TextStyle(
+                              fontSize: 10,
+                              letterSpacing: 1.1,
+                              color: c.faint)),
+                      const SizedBox(height: 6),
+                      Text('Swap a machine · shorten the session.',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: c.ink)),
+                      const SizedBox(height: 4),
+                      Text('Keep the region. Change what is in front of you.',
+                          style: TextStyle(fontSize: 13, color: c.muted)),
+                      const SizedBox(height: 12),
+                      PressScale(
+                        onTap: _openCoach,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
+                          decoration: metalPrimary(c),
+                          child: Text('Ask coach',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, color: c.ctaInk)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                MetalBtn(
+                  label: 'Start session',
+                  icon: Icons.play_arrow_rounded,
+                  onTap: () => _startSession(d),
+                ),
+                const SizedBox(height: 10),
+                MetalBtn(
+                  label: 'Use 10-minute version',
+                  ghost: true,
+                  onTap: () => _startSession(d),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SegBar extends StatelessWidget {
+  const _SegBar({
+    required this.c,
+    required this.index,
+    required this.labels,
+    required this.onTap,
+  });
+  final ArcColors c;
+  final int index;
+  final List<String> labels;
+  final void Function(int) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: metalWell(c),
+      child: Row(
+        children: List.generate(labels.length, (i) {
+          final on = i == index;
+          return Expanded(
+            child: PressScale(
+              onTap: () => onTap(i),
+              child: AnimatedContainer(
+                duration: ArcMotion.base,
+                curve: ArcMotion.enter,
+                height: 40,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: on ? c.raised : Colors.transparent,
+                  borderRadius: BorderRadius.circular(999),
+                  boxShadow: on
+                      ? [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ]
+                      : [],
+                ),
+                child: Text(labels[i],
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: on ? c.ink : c.muted)),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class _RegionTile extends StatelessWidget {
+  const _RegionTile({
+    required this.c,
+    required this.region,
+    required this.expanded,
+    required this.onTap,
+  });
+  final ArcColors c;
+  final WorkoutRegion region;
+  final bool expanded;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: AnimatedContainer(
+        duration: ArcMotion.base,
+        curve: ArcMotion.enter,
+        decoration: metalPanel(c, glow: expanded),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: onTap,
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(region.label,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: c.ink)),
+                          Text('${region.moves.length} options · machine first',
+                              style: TextStyle(fontSize: 12, color: c.faint)),
+                        ],
+                      ),
+                    ),
+                    AnimatedRotation(
+                      turns: expanded ? 0.25 : 0,
+                      duration: ArcMotion.base,
+                      curve: ArcMotion.enter,
+                      child: Icon(Icons.chevron_right, color: c.faint),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            AnimatedSize(
+              duration: ArcMotion.base,
+              curve: ArcMotion.enter,
+              child: expanded
+                  ? Padding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                child: Column(
+                  children: [
+                    for (var i = 0; i < region.moves.length; i++)
+                      FadeSlideIn(
+                        index: i,
+                        delayStep: const Duration(milliseconds: 40),
+                        dy: 8,
+                        child: _MoveRow(c: c, move: region.moves[i]),
+                      ),
+                  ],
+                ),
+              )
+                  : const SizedBox(width: double.infinity),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MoveRow extends StatelessWidget {
+  const _MoveRow({required this.c, required this.move});
+  final ArcColors c;
+  final WorkoutMove move;
+
+  void _showGif(BuildContext context) {
+    if (move.gifUrl == null) return;
+
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(4),
+          decoration: metalPanel(c, radius: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  move.gifUrl!,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (_, child, progress) {
+                    if (progress == null) return child;
+                    return Container(
+                      height: 200,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(color: c.brand),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      move.name,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: c.ink,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      move.machine,
+                      style: TextStyle(color: c.muted),
+                    ),
+                    const SizedBox(height: 16),
+                    MetalBtn(
+                      label: 'Close',
+                      ghost: true,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(10),
+      decoration: metalWell(c),
+      child: Row(
+        children: [
+          PressScale(
+            onTap: () => _showGif(context),
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [c.raised, Color.lerp(c.raised, Colors.black, 0.2)!],
+                ),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(
+                move.gifUrl != null ? Icons.play_arrow_rounded : Icons.info_outline,
+                color: c.ink,
+                size: 18,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(move.name,
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: c.ink)),
+                Text('${move.machine} · ${move.scheme}',
+                    style: TextStyle(fontSize: 12, color: c.muted)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -53,14 +53,14 @@ class ArcColors {
   final Color ok;
 
   static const dark = ArcColors._(
-    page: Color(0xFF121317),
-    shell: Color(0xFF0B0C0F),
+    page: Color(0xFF050506),
+    shell: Color(0xFF12110E),
     surface: Color(0xFF1C1E24),
-    raised: Color(0xFF24262D),
+    raised: Color(0xFF1C1B17),
     chip: Color(0xFF16181D),
-    line: Color(0x66C5CCD6),
-    ink: Color(0xFFE8EEF4),
-    muted: Color(0xFF8B939E),
+    ink: Color(0xFFF4F1EA),
+    muted: Color(0xFFA39E93),
+    line: Color(0xFF2A2824),
     faint: Color(0xFF5C636C),
     cta: Color(0xFF141518),
     ctaInk: Color(0xFFF3F6F8),

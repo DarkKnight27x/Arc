@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'coach_page.dart';
+
 import 'data/health_models.dart';
 import 'data/health_service.dart';
 import 'data/profile_service.dart';
+import 'injury_mode.dart';
 import 'theme_ctrl.dart';
 import 'widgets/location_label.dart';
 import 'widgets/health_metric_card.dart';
@@ -212,6 +213,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(height: 22),
+                        const InjuryModeCard(),
+                        const SizedBox(height: 12),
 
                         // Health cards hidden for the demo. Uncomment this block to bring them back.
                         // if (!_hasHealthAccess)
@@ -314,39 +317,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Positioned(
-                right: 4,
-                bottom: -10,
+                right: 8,
+                bottom: 0,
                 child: Image.asset(
                   'assets/trainerAnimations/Avatar.gif',
-                  height: 275,
+                  height: 270,
                   fit: BoxFit.contain,
-                ),
-              ),
-              Positioned(
-                left: 16,
-                bottom: 12,
-                child: Material(
-                  color: const Color(0xFFF5F5F6),
-                  shape: const CircleBorder(),
-                  clipBehavior: Clip.antiAlias,
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const CoachPage(coachOnly: true, session: 'Today'),
-                        ),
-                      );
-                    },
-                    child: SizedBox(
-                      width: 52,
-                      height: 52,
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: Image.asset('assets/images/messages.jpg', fit: BoxFit.contain),
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ],
@@ -514,36 +490,71 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _trainingCard(ArcColors c) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
-      decoration: metalPanel(c, glow: true, radius: 24),
+    return ValueListenableBuilder<InjuryScript?>(
+      valueListenable: InjuryMode.current,
+      builder: (_, injury, __) {
+        final shoulderOff = injury?.id == 'shoulder';
+        return Container(
+          padding: const EdgeInsets.all(20),
+          decoration: metalPanel(c, glow: true, radius: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "TODAY",
+                style: TextStyle(fontSize: 10, letterSpacing: 1.0, fontWeight: FontWeight.w700, color: c.faint),
+              ),
+              const SizedBox(height: 10),
+              Text('Upper push', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: c.ink)),
+              const SizedBox(height: 4),
+              Text(
+                shoulderOff ? 'Chest, triceps · shoulders off' : 'Chest, shoulders, triceps · 45 min',
+                style: TextStyle(fontSize: 14, color: c.muted),
+              ),
+              const SizedBox(height: 18),
+              Text('EAT', style: TextStyle(fontSize: 10, letterSpacing: 1.1, fontWeight: FontWeight.w700, color: c.faint)),
+              const SizedBox(height: 8),
+              _plate(c, 'Breakfast', 'Eggs, toast'),
+              _plate(c, 'Lunch', 'Roti, dal tadka'),
+              _plate(c, 'Dinner', 'Rice, chicken, curd'),
+              const SizedBox(height: 16),
+              Text('MACROS', style: TextStyle(fontSize: 10, letterSpacing: 1.1, fontWeight: FontWeight.w700, color: c.faint)),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  _macro(c, '110g', 'Protein'),
+                  _macro(c, '210g', 'Carbs'),
+                  _macro(c, '48g', 'Fat'),
+                  _macro(c, '1,800', 'kcal'),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _plate(ArcColors c, String meal, String food) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          SizedBox(width: 88, child: Text(meal, style: TextStyle(color: c.muted, fontSize: 14))),
+          Expanded(child: Text(food, style: TextStyle(color: c.ink, fontSize: 15, fontWeight: FontWeight.w600))),
+        ],
+      ),
+    );
+  }
+
+  Widget _macro(ArcColors c, String value, String label) {
+    return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "TODAY'S PATH",
-            style: TextStyle(
-              fontSize: 10,
-              letterSpacing: 1.2,
-              fontWeight: FontWeight.w700,
-              color: c.faint,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Upper push',
-            style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600, color: c.ink),
-          ),
-          const SizedBox(height: 14),
-          Text('TRAIN', style: TextStyle(fontSize: 10, letterSpacing: 1.1, fontWeight: FontWeight.w700, color: c.faint)),
-          const SizedBox(height: 4),
-          Text('Chest, shoulders, triceps', style: TextStyle(fontSize: 15, color: c.ink)),
-          const SizedBox(height: 12),
-          Text('EAT', style: TextStyle(fontSize: 10, letterSpacing: 1.1, fontWeight: FontWeight.w700, color: c.faint)),
-          const SizedBox(height: 4),
-          Text('Dal, rice, curd', style: TextStyle(fontSize: 15, color: c.ink)),
-          const SizedBox(height: 12),
-          Text('1,800 kcal   ·   110 g protein', style: TextStyle(fontSize: 13, color: c.muted)),
+          Text(value, style: TextStyle(color: c.ink, fontSize: 16, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 2),
+          Text(label, style: TextStyle(color: c.muted, fontSize: 11)),
         ],
       ),
     );

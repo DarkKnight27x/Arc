@@ -1,0 +1,35 @@
+{
+  "reports": [
+    {
+      "id": "23ff61cc-ddd6-4abd-b170-f11a56d0df49",
+      "user_id": "saarthak",
+      "body_region": "Shoulders",
+      "description": "Tight after bench, right side.",
+      "status": "active",
+      "created_at": "2026-10-07T06:21:45+00:00",
+      "updated_at": "2026-10-07T06:21:45+00:00",
+      "disclaimer": "Recorded only. Arc does not diagnose."
+    }
+  ],
+  "documents": [],
+  "messages": [
+    {
+      "id": "c66475bc-a0ed-4bcb-adbe-f7a586a1d778",
+      "user_id": "saarthak",
+      "role": "user",
+      "message": "Tight after bench, right side.",
+      "body_region": "Shoulders",
+      "created_at": "2026-10-07T06:21:45+00:00"
+    },
+    {
+      "id": "78a9a29c-4344-4e2e-9b75-cea24f626894",
+      "user_id": "saarthak",
+      "role": "arc",
+      "message": "Recorded: Shoulders. Arc kept your note and will not diagnose it. A physio near Thane can look at it if you want a person to.",
+      "body_region": "Shoulders",
+      "created_at": "2026-10-07T06:21:45+00:00",
+      "diagnoses": false
+    }
+  ],
+  "bookings": []
+}

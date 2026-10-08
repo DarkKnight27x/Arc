@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'anatomy_test_page.dart';
 import 'auth/auth_gate.dart';
 import 'eat_page.dart';
 import 'home_page.dart';
@@ -32,20 +31,16 @@ class ArcApp extends StatelessWidget {
       valueListenable: themeCtrl,
       builder: (_, mode, __) {
         final dark = mode == ThemeMode.dark;
-
         SystemChrome.setSystemUIOverlayStyle(
           dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
         );
-
         return MaterialApp(
           title: 'Arc',
           debugShowCheckedModeBanner: false,
           theme: arcCreamTheme(),
           darkTheme: arcDarkTheme(),
           themeMode: mode,
-          home: const AuthGate(
-            app: HomeShell(),
-          ),
+          home: const AuthGate(app: HomeShell()),
         );
       },
     );
@@ -62,59 +57,51 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int index = 0;
 
-  void _go(int i) {
-    setState(() => index = i);
-  }
+  void _go(int i) => setState(() => index = i);
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-      valueListenable: themeCtrl,
-      builder: (_, __, ___) {
-        final c = ArcColors.of(context);
-
-        return Scaffold(
-          backgroundColor: c.page,
-          body: IndexedStack(
-            index: index,
-            children: [
-              HomePage(
-                onOpenTrain: () => _go(1),
-                onOpenEat: () => _go(2),
-                onOpenRecover: () => _go(3),
-                onOpenYou: () => _go(4),
-                onStartSession: () => _go(1),
-                onOpenRehab: () => showRehabSheet(context),
-              ),
-              const TrainPage(),
-              const EatPage(),
-              const RecoverPage(),
-              const YouPage(),
-            ],
+    final c = ArcColors.of(context);
+    return Scaffold(
+      backgroundColor: c.page,
+      body: IndexedStack(
+        index: index,
+        children: [
+          HomePage(
+            onOpenTrain: () => _go(1),
+            onOpenEat: () => _go(2),
+            onOpenRecover: () => _go(3),
+            onOpenYou: () => _go(4),
+            onStartSession: () => _go(1),
+            onOpenRehab: () => showRehabSheet(context),
           ),
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              color: c.shell,
-              border: Border(top: BorderSide(color: c.line)),
-            ),
-            child: NavigationBar(
-              selectedIndex: index,
-              onDestinationSelected: _go,
-              backgroundColor: Colors.transparent,
-              surfaceTintColor: Colors.transparent,
-              indicatorColor: c.raised,
-              height: 68,
-              destinations: [
-                _dest(c, Icons.home_outlined, Icons.home_rounded, 'Home', 0),
-                _dest(c, Icons.fitness_center_outlined, Icons.fitness_center, 'Train', 1),
-                _dest(c, Icons.restaurant_outlined, Icons.restaurant, 'Eat', 2),
-                _dest(c, Icons.favorite_border, Icons.favorite, 'Recover', 3),
-                _dest(c, Icons.person_outline, Icons.person, 'You', 4),
-              ],
-            ),
-          ),
-        );
-      },
+          const TrainPage(),
+          const EatPage(),
+          const RecoverPage(),
+          const YouPage(),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: c.shell,
+          border: Border(top: BorderSide(color: c.line)),
+        ),
+        child: NavigationBar(
+          selectedIndex: index,
+          onDestinationSelected: _go,
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          indicatorColor: c.raised,
+          height: 68,
+          destinations: [
+            _dest(c, Icons.home_outlined, Icons.home_rounded, 'Home', 0),
+            _dest(c, Icons.fitness_center_outlined, Icons.fitness_center, 'Train', 1),
+            _dest(c, Icons.restaurant_outlined, Icons.restaurant, 'Eat', 2),
+            _dest(c, Icons.favorite_border, Icons.favorite, 'Recover', 3),
+            _dest(c, Icons.person_outline, Icons.person, 'You', 4),
+          ],
+        ),
+      ),
     );
   }
 

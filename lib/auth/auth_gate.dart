@@ -106,8 +106,9 @@ class _ProfileGateState extends State<_ProfileGate> {
         if (profile?.onboardingComplete == true) {
           return widget.app;
         }
-
-        return const OnboardingPage();
+        return OnboardingPage(
+          onComplete: _retry,
+        );
       },
     );
   }
