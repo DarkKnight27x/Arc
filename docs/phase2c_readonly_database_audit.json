@@ -1,0 +1,2540 @@
+{
+  "audit_date": "2026-10-10",
+  "timezone": "Asia/Calcutta",
+  "project_id": "nbojicqbpqgotdmdayku",
+  "scope": "Read-only SELECT metadata, public exercise catalog and aggregate completeness; no user rows or auth credentials retrieved",
+  "remote_migrations": [
+    {
+      "version": "20261009174458",
+      "name": "arc_phase_2a_2b_training_variants"
+    }
+  ],
+  "catalog_schema": [
+    {
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "column_name": "source_external_id",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "column_name": "name",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "column_name": "body_part",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "column_name": "target_muscle",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "column_name": "secondary_muscles",
+      "data_type": "ARRAY",
+      "is_nullable": "NO",
+      "column_default": "'{}'::text[]"
+    },
+    {
+      "column_name": "equipment",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": "'bodyweight'::text"
+    },
+    {
+      "column_name": "difficulty",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "column_name": "instructions",
+      "data_type": "ARRAY",
+      "is_nullable": "NO",
+      "column_default": "'{}'::text[]"
+    },
+    {
+      "column_name": "gif_path",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "column_name": "tags",
+      "data_type": "ARRAY",
+      "is_nullable": "NO",
+      "column_default": "'{}'::text[]"
+    },
+    {
+      "column_name": "is_published",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "column_default": "true"
+    },
+    {
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "column_default": "now()"
+    }
+  ],
+  "integrity": [
+    {
+      "table_name": "exercise_library",
+      "rls": true,
+      "conname": "exercise_library_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "exercise_library",
+      "rls": true,
+      "conname": "exercise_library_source_external_id_key",
+      "definition": "UNIQUE (source_external_id)"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_alternative_exercise_id_fkey",
+      "definition": "FOREIGN KEY (alternative_exercise_id) REFERENCES exercise_library(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_check",
+      "definition": "CHECK (((min_sets >= 1) AND (min_sets <= sets)))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_movement_pattern_check",
+      "definition": "CHECK ((movement_pattern = ANY (ARRAY['elbow_flexion'::text, 'shoulder_flexion'::text, 'upright_row'::text])))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_priority_check",
+      "definition": "CHECK ((priority >= 0))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_reps_check",
+      "definition": "CHECK (((length(reps) >= 1) AND (length(reps) <= 120)))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_required_equipment_check",
+      "definition": "CHECK (((cardinality(required_equipment) > 0) AND (required_equipment <@ ARRAY['bodyweight'::text, 'dumbbells'::text, 'bands'::text])))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_rest_seconds_check",
+      "definition": "CHECK (((rest_seconds >= 0) AND (rest_seconds <= 600)))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_review_status_check",
+      "definition": "CHECK ((review_status = ANY (ARRAY['proposed'::text, 'approved'::text, 'retired'::text])))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_sets_check",
+      "definition": "CHECK (((sets >= 1) AND (sets <= 20)))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_source_exercise_id_alternative_key",
+      "definition": "UNIQUE (source_exercise_id, alternative_exercise_id, version)"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_source_exercise_id_fkey",
+      "definition": "FOREIGN KEY (source_exercise_id) REFERENCES exercise_library(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_version_check",
+      "definition": "CHECK ((version > 0))"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "rls": true,
+      "conname": "workout_alternative_mappings_work_seconds_per_set_check",
+      "definition": "CHECK (((work_seconds_per_set >= 1) AND (work_seconds_per_set <= 600)))"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "rls": true,
+      "conname": "workout_day_exercises_exercise_id_fkey",
+      "definition": "FOREIGN KEY (exercise_id) REFERENCES exercise_library(id)"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "rls": true,
+      "conname": "workout_day_exercises_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "rls": true,
+      "conname": "workout_day_exercises_rest_seconds_check",
+      "definition": "CHECK ((rest_seconds >= 0))"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "rls": true,
+      "conname": "workout_day_exercises_sets_check",
+      "definition": "CHECK ((sets > 0))"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "rls": true,
+      "conname": "workout_day_exercises_sort_order_check",
+      "definition": "CHECK ((sort_order >= 0))"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "rls": true,
+      "conname": "workout_day_exercises_workout_day_id_fkey",
+      "definition": "FOREIGN KEY (workout_day_id) REFERENCES workout_days(id) ON DELETE CASCADE"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "rls": true,
+      "conname": "workout_day_exercises_workout_day_id_sort_order_key",
+      "definition": "UNIQUE (workout_day_id, sort_order)"
+    },
+    {
+      "table_name": "workout_days",
+      "rls": true,
+      "conname": "workout_days_estimated_minutes_check",
+      "definition": "CHECK ((estimated_minutes > 0))"
+    },
+    {
+      "table_name": "workout_days",
+      "rls": true,
+      "conname": "workout_days_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "workout_days",
+      "rls": true,
+      "conname": "workout_days_weekday_check",
+      "definition": "CHECK (((weekday >= 1) AND (weekday <= 7)))"
+    },
+    {
+      "table_name": "workout_days",
+      "rls": true,
+      "conname": "workout_days_workout_plan_id_fkey",
+      "definition": "FOREIGN KEY (workout_plan_id) REFERENCES workout_plans(id) ON DELETE CASCADE"
+    },
+    {
+      "table_name": "workout_days",
+      "rls": true,
+      "conname": "workout_days_workout_plan_id_weekday_key",
+      "definition": "UNIQUE (workout_plan_id, weekday)"
+    },
+    {
+      "table_name": "workout_plans",
+      "rls": true,
+      "conname": "workout_plans_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "workout_plans",
+      "rls": true,
+      "conname": "workout_plans_user_id_fkey",
+      "definition": "FOREIGN KEY (user_id) REFERENCES profiles(user_id) ON DELETE CASCADE"
+    },
+    {
+      "table_name": "workout_plans",
+      "rls": true,
+      "conname": "workout_plans_version_check",
+      "definition": "CHECK ((version > 0))"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_actual_exercise_library_id_fkey",
+      "definition": "FOREIGN KEY (actual_exercise_library_id) REFERENCES exercise_library(id) ON DELETE SET NULL"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_exercise_position_check",
+      "definition": "CHECK ((exercise_position >= 0))"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_mapping_id_fkey",
+      "definition": "FOREIGN KEY (mapping_id) REFERENCES workout_alternative_mappings(id) ON DELETE SET NULL"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_recorded_reps_check",
+      "definition": "CHECK ((recorded_reps >= 0))"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_session_id_exercise_position_set_numbe_key",
+      "definition": "UNIQUE (session_id, exercise_position, set_number)"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_session_id_fkey",
+      "definition": "FOREIGN KEY (session_id) REFERENCES workout_sessions(id) ON DELETE CASCADE"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_set_number_check",
+      "definition": "CHECK ((set_number > 0))"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_source_workout_day_exercise_id_fkey",
+      "definition": "FOREIGN KEY (source_workout_day_exercise_id) REFERENCES workout_day_exercises(id) ON DELETE SET NULL"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "rls": true,
+      "conname": "workout_session_sets_weight_kg_check",
+      "definition": "CHECK (((weight_kg >= (0)::numeric) AND (weight_kg <> 'NaN'::numeric)))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_check",
+      "definition": "CHECK (((current_index >= 0) AND (current_index < jsonb_array_length(prescription))))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_check1",
+      "definition": "CHECK ((((training_location = 'gym'::text) AND (session_variant = 'gym_original'::text)) OR ((training_location = 'home'::text) AND (session_variant = 'home_curated'::text))))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_check2",
+      "definition": "CHECK (((completed_at IS NULL) OR (completed_at >= started_at)))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_check3",
+      "definition": "CHECK (COALESCE((((status = 'in_progress'::text) AND (completed_at IS NULL) AND (outcome IS NULL)) OR ((status = 'completed'::text) AND (completed_at IS NOT NULL) AND (outcome = 'completed'::text)) OR ((status = 'abandoned'::text) AND (completed_at IS NOT NULL) AND (outcome = ANY (ARRAY['partial'::text, 'discarded'::text])))), false))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_estimated_duration_seconds_check",
+      "definition": "CHECK ((estimated_duration_seconds > 0))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_outcome_check",
+      "definition": "CHECK ((outcome = ANY (ARRAY['completed'::text, 'partial'::text, 'discarded'::text])))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_pkey",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_prescription_check",
+      "definition": "CHECK (((jsonb_typeof(prescription) = 'array'::text) AND ((jsonb_array_length(prescription) >= 1) AND (jsonb_array_length(prescription) <= 100))))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_requested_duration_minutes_check",
+      "definition": "CHECK (((requested_duration_minutes >= 1) AND (requested_duration_minutes <= 240)))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_revision_check",
+      "definition": "CHECK ((revision >= 0))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_session_variant_check",
+      "definition": "CHECK ((session_variant = ANY (ARRAY['gym_original'::text, 'home_curated'::text])))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_source_prescription_check",
+      "definition": "CHECK ((jsonb_typeof(source_prescription) = 'array'::text))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_status_check",
+      "definition": "CHECK ((status = ANY (ARRAY['in_progress'::text, 'completed'::text, 'abandoned'::text])))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_training_location_check",
+      "definition": "CHECK ((training_location = ANY (ARRAY['gym'::text, 'home'::text])))"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_user_id_fkey",
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_workout_day_id_fkey",
+      "definition": "FOREIGN KEY (workout_day_id) REFERENCES workout_days(id) ON DELETE SET NULL"
+    },
+    {
+      "table_name": "workout_sessions",
+      "rls": true,
+      "conname": "workout_sessions_workout_plan_id_fkey",
+      "definition": "FOREIGN KEY (workout_plan_id) REFERENCES workout_plans(id) ON DELETE SET NULL"
+    }
+  ],
+  "access": [
+    {
+      "tablename": "exercise_library",
+      "policyname": "read published exercises",
+      "roles": "{anon,authenticated}",
+      "cmd": "SELECT",
+      "qual": "is_published",
+      "with_check": null
+    },
+    {
+      "tablename": "workout_alternative_mappings",
+      "policyname": "mappings_read",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "((review_status = 'approved'::text) AND enabled)",
+      "with_check": null
+    },
+    {
+      "tablename": "workout_day_exercises",
+      "policyname": "users access own workout exercises",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "qual": "(EXISTS ( SELECT 1\n   FROM (workout_days d\n     JOIN workout_plans p ON ((p.id = d.workout_plan_id)))\n  WHERE ((d.id = workout_day_exercises.workout_day_id) AND (p.user_id = auth.uid()))))",
+      "with_check": "(EXISTS ( SELECT 1\n   FROM (workout_days d\n     JOIN workout_plans p ON ((p.id = d.workout_plan_id)))\n  WHERE ((d.id = workout_day_exercises.workout_day_id) AND (p.user_id = auth.uid()))))"
+    },
+    {
+      "tablename": "workout_days",
+      "policyname": "users access own workout days",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "qual": "(EXISTS ( SELECT 1\n   FROM workout_plans p\n  WHERE ((p.id = workout_days.workout_plan_id) AND (p.user_id = auth.uid()))))",
+      "with_check": "(EXISTS ( SELECT 1\n   FROM workout_plans p\n  WHERE ((p.id = workout_days.workout_plan_id) AND (p.user_id = auth.uid()))))"
+    },
+    {
+      "tablename": "workout_plans",
+      "policyname": "users manage own workout plans",
+      "roles": "{authenticated}",
+      "cmd": "ALL",
+      "qual": "(user_id = auth.uid())",
+      "with_check": "(user_id = auth.uid())"
+    },
+    {
+      "tablename": "workout_session_sets",
+      "policyname": "set_read",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "(EXISTS ( SELECT 1\n   FROM workout_sessions s\n  WHERE ((s.id = workout_session_sets.session_id) AND (s.user_id = ( SELECT auth.uid() AS uid)))))",
+      "with_check": null
+    },
+    {
+      "tablename": "workout_sessions",
+      "policyname": "session_read",
+      "roles": "{authenticated}",
+      "cmd": "SELECT",
+      "qual": "(user_id = ( SELECT auth.uid() AS uid))",
+      "with_check": null
+    }
+  ],
+  "grants": [
+    {
+      "table_name": "exercise_library",
+      "grantee": "anon",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "anon",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "anon",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "anon",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "anon",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "anon",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "authenticated",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "authenticated",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "authenticated",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "authenticated",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "authenticated",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "exercise_library",
+      "grantee": "authenticated",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "anon",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "anon",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "anon",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "anon",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "anon",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "anon",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "authenticated",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "authenticated",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "authenticated",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "authenticated",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "authenticated",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "grantee": "authenticated",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "anon",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "anon",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "anon",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "anon",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "anon",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "anon",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "authenticated",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "authenticated",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "authenticated",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "authenticated",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "authenticated",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "workout_days",
+      "grantee": "authenticated",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "anon",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "anon",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "anon",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "anon",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "anon",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "anon",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "anon",
+      "privilege_type": "UPDATE"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "authenticated",
+      "privilege_type": "DELETE"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "authenticated",
+      "privilege_type": "INSERT"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "authenticated",
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "authenticated",
+      "privilege_type": "SELECT"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "authenticated",
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "authenticated",
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "table_name": "workout_plans",
+      "grantee": "authenticated",
+      "privilege_type": "UPDATE"
+    }
+  ],
+  "plan_indexes": [
+    {
+      "tablename": "workout_day_exercises",
+      "indexname": "workout_day_exercises_pkey",
+      "indexdef": "CREATE UNIQUE INDEX workout_day_exercises_pkey ON public.workout_day_exercises USING btree (id)"
+    },
+    {
+      "tablename": "workout_day_exercises",
+      "indexname": "workout_day_exercises_workout_day_id_sort_order_key",
+      "indexdef": "CREATE UNIQUE INDEX workout_day_exercises_workout_day_id_sort_order_key ON public.workout_day_exercises USING btree (workout_day_id, sort_order)"
+    },
+    {
+      "tablename": "workout_day_exercises",
+      "indexname": "workout_day_exercises_exercise_idx",
+      "indexdef": "CREATE INDEX workout_day_exercises_exercise_idx ON public.workout_day_exercises USING btree (exercise_id)"
+    },
+    {
+      "tablename": "workout_days",
+      "indexname": "workout_days_pkey",
+      "indexdef": "CREATE UNIQUE INDEX workout_days_pkey ON public.workout_days USING btree (id)"
+    },
+    {
+      "tablename": "workout_days",
+      "indexname": "workout_days_workout_plan_id_weekday_key",
+      "indexdef": "CREATE UNIQUE INDEX workout_days_workout_plan_id_weekday_key ON public.workout_days USING btree (workout_plan_id, weekday)"
+    },
+    {
+      "tablename": "workout_plans",
+      "indexname": "workout_plans_pkey",
+      "indexdef": "CREATE UNIQUE INDEX workout_plans_pkey ON public.workout_plans USING btree (id)"
+    },
+    {
+      "tablename": "workout_plans",
+      "indexname": "one_active_plan_per_type",
+      "indexdef": "CREATE UNIQUE INDEX one_active_plan_per_type ON public.workout_plans USING btree (user_id, plan_type) WHERE (status = 'active'::plan_status)"
+    }
+  ],
+  "coverage": [
+    {
+      "target": "abs",
+      "equipment": "assisted",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "abs",
+      "equipment": "cable",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "abs",
+      "equipment": "weighted",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "biceps",
+      "equipment": "barbell",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "biceps",
+      "equipment": "cable",
+      "total": 2,
+      "published": 2,
+      "published_with_instructions": 2,
+      "published_with_difficulty": 0,
+      "published_with_gif": 2
+    },
+    {
+      "target": "biceps",
+      "equipment": "dumbbell",
+      "total": 3,
+      "published": 3,
+      "published_with_instructions": 3,
+      "published_with_difficulty": 0,
+      "published_with_gif": 3
+    },
+    {
+      "target": "calves",
+      "equipment": "barbell",
+      "total": 2,
+      "published": 2,
+      "published_with_instructions": 2,
+      "published_with_difficulty": 0,
+      "published_with_gif": 2
+    },
+    {
+      "target": "calves",
+      "equipment": "sled machine",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "delts",
+      "equipment": "dumbbell",
+      "total": 2,
+      "published": 2,
+      "published_with_instructions": 2,
+      "published_with_difficulty": 0,
+      "published_with_gif": 2
+    },
+    {
+      "target": "forearms",
+      "equipment": "barbell",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "forearms",
+      "equipment": "dumbbell",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "glutes",
+      "equipment": "body weight",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "glutes",
+      "equipment": "kettlebell",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "glutes",
+      "equipment": "sled machine",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "glutes",
+      "equipment": "smith machine",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "lats",
+      "equipment": "leverage machine",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "pectorals",
+      "equipment": "barbell",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "pectorals",
+      "equipment": "cable",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "pectorals",
+      "equipment": "smith machine",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "spine",
+      "equipment": "weighted",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "triceps",
+      "equipment": "barbell",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "triceps",
+      "equipment": "body weight",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    },
+    {
+      "target": "triceps",
+      "equipment": "dumbbell",
+      "total": 2,
+      "published": 2,
+      "published_with_instructions": 2,
+      "published_with_difficulty": 0,
+      "published_with_gif": 2
+    },
+    {
+      "target": "upper back",
+      "equipment": "leverage machine",
+      "total": 1,
+      "published": 1,
+      "published_with_instructions": 1,
+      "published_with_difficulty": 0,
+      "published_with_gif": 1
+    }
+  ],
+  "quality": [
+    {
+      "total": 30,
+      "published": 30,
+      "instructions_present": 30,
+      "secondary_present": 30,
+      "difficulty_present": 0,
+      "gif_present": 30,
+      "tags_present": 0
+    }
+  ],
+  "mapping_counts": [],
+  "profile_completeness": [
+    {
+      "total": 2,
+      "completed": 2,
+      "completed_missing_goal": 0,
+      "completed_missing_level": 0,
+      "completed_missing_days": 0,
+      "location_present": 1,
+      "duration_present": 1
+    }
+  ],
+  "profile_quality": [
+    {
+      "completed_missing_physical": 0,
+      "completed_invalid_training_inputs": 0
+    }
+  ],
+  "project": [
+    {
+      "postgres_version": "17.6"
+    }
+  ],
+  "table_columns": [
+    {
+      "table_name": "exercise_library",
+      "column_name": "id",
+      "data_type": "uuid",
+      "column_default": "gen_random_uuid()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "source_external_id",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "name",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "body_part",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "target_muscle",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "secondary_muscles",
+      "data_type": "ARRAY",
+      "column_default": "'{}'::text[]",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "equipment",
+      "data_type": "text",
+      "column_default": "'bodyweight'::text",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "difficulty",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "instructions",
+      "data_type": "ARRAY",
+      "column_default": "'{}'::text[]",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "gif_path",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "tags",
+      "data_type": "ARRAY",
+      "column_default": "'{}'::text[]",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "is_published",
+      "data_type": "boolean",
+      "column_default": "true",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "exercise_library",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "column_default": "now()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "display_name",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "avatar_path",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "account_type",
+      "data_type": "USER-DEFINED",
+      "column_default": "'client'::account_type",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "onboarding_complete",
+      "data_type": "boolean",
+      "column_default": "false",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "column_default": "now()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "column_default": "now()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "user_state",
+      "data_type": "jsonb",
+      "column_default": "'{}'::jsonb",
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "date_of_birth",
+      "data_type": "date",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "gender",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "height_cm",
+      "data_type": "numeric",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "weight_kg",
+      "data_type": "numeric",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "fitness_goal",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "experience_level",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "workout_location",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "session_duration_minutes",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "diet_type",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "age",
+      "data_type": "smallint",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "train_days",
+      "data_type": "smallint",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "profiles",
+      "column_name": "allergies",
+      "data_type": "ARRAY",
+      "column_default": "'{}'::text[]",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "id",
+      "data_type": "uuid",
+      "column_default": "gen_random_uuid()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "source_exercise_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "alternative_exercise_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "version",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "primary_target",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "secondary_targets",
+      "data_type": "ARRAY",
+      "column_default": "'{}'::text[]",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "movement_pattern",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "required_equipment",
+      "data_type": "ARRAY",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "sets",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "min_sets",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "reps",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "rest_seconds",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "work_seconds_per_set",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "priority",
+      "data_type": "integer",
+      "column_default": "0",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "limitations",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "review_status",
+      "data_type": "text",
+      "column_default": "'proposed'::text",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "enabled",
+      "data_type": "boolean",
+      "column_default": "false",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_alternative_mappings",
+      "column_name": "review_metadata",
+      "data_type": "jsonb",
+      "column_default": "'{}'::jsonb",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "id",
+      "data_type": "uuid",
+      "column_default": "gen_random_uuid()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "workout_day_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "exercise_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "sort_order",
+      "data_type": "smallint",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "sets",
+      "data_type": "smallint",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "reps",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "rest_seconds",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_day_exercises",
+      "column_name": "notes",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_days",
+      "column_name": "id",
+      "data_type": "uuid",
+      "column_default": "gen_random_uuid()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_days",
+      "column_name": "workout_plan_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_days",
+      "column_name": "weekday",
+      "data_type": "smallint",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_days",
+      "column_name": "title",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_days",
+      "column_name": "estimated_minutes",
+      "data_type": "smallint",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_days",
+      "column_name": "notes",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "id",
+      "data_type": "uuid",
+      "column_default": "gen_random_uuid()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "plan_type",
+      "data_type": "USER-DEFINED",
+      "column_default": "'training'::plan_type",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "name",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "status",
+      "data_type": "USER-DEFINED",
+      "column_default": "'draft'::plan_status",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "version",
+      "data_type": "integer",
+      "column_default": "1",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "column_default": "now()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_plans",
+      "column_name": "updated_at",
+      "data_type": "timestamp with time zone",
+      "column_default": "now()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "id",
+      "data_type": "uuid",
+      "column_default": "gen_random_uuid()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "session_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "exercise_position",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "source_workout_day_exercise_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "actual_exercise_library_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "mapping_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "mapping_version",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "set_number",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "completed",
+      "data_type": "boolean",
+      "column_default": "false",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "recorded_reps",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_session_sets",
+      "column_name": "weight_kg",
+      "data_type": "numeric",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "column_default": "gen_random_uuid()",
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "workout_plan_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "workout_day_id",
+      "data_type": "uuid",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "day_title",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "started_at",
+      "data_type": "timestamp with time zone",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "completed_at",
+      "data_type": "timestamp with time zone",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "status",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "outcome",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "training_location",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "session_variant",
+      "data_type": "text",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "equipment_selection",
+      "data_type": "ARRAY",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "requested_duration_minutes",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "estimated_duration_seconds",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "YES"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "original_targets",
+      "data_type": "ARRAY",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "source_prescription",
+      "data_type": "jsonb",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "prescription",
+      "data_type": "jsonb",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "snapshot",
+      "data_type": "jsonb",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "current_index",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "revision",
+      "data_type": "integer",
+      "column_default": null,
+      "is_nullable": "NO"
+    },
+    {
+      "table_name": "workout_sessions",
+      "column_name": "injury_warning",
+      "data_type": "boolean",
+      "column_default": "false",
+      "is_nullable": "NO"
+    }
+  ],
+  "internal_functions": [
+    {
+      "nspname": "pg_catalog",
+      "proname": "pg_ident_file_mappings",
+      "prosecdef": false,
+      "proconfig": null,
+      "definition": "CREATE OR REPLACE FUNCTION pg_catalog.pg_ident_file_mappings(OUT map_number integer, OUT file_name text, OUT line_number integer, OUT map_name text, OUT sys_name text, OUT pg_username text, OUT error text)\n RETURNS SETOF record\n LANGUAGE internal\n PARALLEL SAFE STRICT\nAS $function$pg_ident_file_mappings$function$\n",
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "nspname": "arc_private",
+      "proname": "freeze_mapping",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION arc_private.freeze_mapping()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO ''\nAS $function$\r\nbegin\r\n  if old.review_status in ('approved','retired') and\r\n    ((to_jsonb(old) - array['enabled','review_status']) is distinct from (to_jsonb(new) - array['enabled','review_status'])\r\n      or new.review_status = 'proposed') then\r\n    raise exception 'Create a new mapping version instead of changing reviewed definitions';\r\n  end if;\r\n  return new;\r\nend;\r\n$function$\n",
+      "anon_execute": false,
+      "authenticated_execute": false
+    },
+    {
+      "nspname": "arc_private",
+      "proname": "save_workout_session",
+      "prosecdef": true,
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION arc_private.save_workout_session(payload jsonb)\n RETURNS uuid\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\r\ndeclare\r\n  caller uuid := auth.uid();\r\n  sid uuid := (payload->>'id')::uuid;\r\n  pid uuid := (payload->>'workout_plan_id')::uuid;\r\n  did uuid := (payload->>'workout_day_id')::uuid;\r\n  incoming_revision integer := (payload->>'revision')::integer;\r\n  base_revision integer := (payload->>'base_revision')::integer;\r\n  old_session public.workout_sessions%rowtype;\r\n  mapping public.workout_alternative_mappings%rowtype;\r\n  source record;\r\n  actual public.exercise_library%rowtype;\r\n  source_json jsonb;\r\n  ex jsonb;\r\n  flags jsonb;\r\n  envelope jsonb;\r\n  original_targets text[];\r\n  equipment text[];\r\n  i integer;\r\n  j integer;\r\n  expected integer;\r\n  estimated integer := 180;\r\n  all_done boolean := true;\r\n  is_new boolean;\r\n  location text := payload->>'training_location';\r\n  new_status text := payload->>'status';\r\n  n integer;\r\n  started timestamptz := (payload->>'started_at')::timestamptz;\r\n  ended timestamptz := (payload->>'completed_at')::timestamptz;\r\nbegin\r\n  if caller is null or (payload->>'user_id')::uuid is distinct from caller then\r\n    raise exception 'Authenticated owner mismatch' using errcode = '42501';\r\n  end if;\r\n  if sid is null or payload->>'contract_version' is distinct from '2' then\r\n    raise exception 'Invalid snapshot contract' using errcode = '22023';\r\n  end if;\r\n  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(caller::text || ':' || did::text, 0));\r\n  select * into old_session from public.workout_sessions where id = sid for update;\r\n  is_new := not found;\r\n  if not is_new and old_session.user_id <> caller then\r\n    raise exception 'Authenticated owner mismatch' using errcode = '42501';\r\n  end if;\r\n  if jsonb_typeof(payload->'prescription') is distinct from 'array' or jsonb_typeof(payload->'completion') is distinct from 'array'\r\n    or jsonb_typeof(payload->'source_prescription') is distinct from 'array'\r\n    or jsonb_typeof(payload->'equipment_selection') is distinct from 'array'\r\n    or jsonb_typeof(payload->'original_targets') is distinct from 'array' then\r\n    raise exception 'Malformed snapshot arrays' using errcode = '22023';\r\n  end if;\r\n  n := jsonb_array_length(payload->'prescription');\r\n  if n not between 1 and 100 or jsonb_array_length(payload->'completion') <> n\r\n    or incoming_revision is null or incoming_revision < 0 or base_revision is null\r\n    or started is null or started > clock_timestamp() + interval '5 minutes'\r\n    or (ended is not null and (ended < started or ended > clock_timestamp() + interval '5 minutes')) then\r\n    raise exception 'Invalid snapshot shape, revision or time' using errcode = '22023';\r\n  end if;\r\n  select coalesce(array_agg(value order by value collate \"C\"), '{}') into equipment from jsonb_array_elements_text(payload->'equipment_selection');\r\n  if cardinality(equipment) <> (select count(distinct x) from unnest(equipment) x)\r\n    or (location = 'home' and (not equipment @> array['bodyweight'] or not equipment <@ array['bodyweight','dumbbells','bands']))\r\n    or (location = 'gym' and (cardinality(equipment) <> 0 or payload->>'requested_duration_minutes' is not null))\r\n    or location not in ('gym','home')\r\n    or (location = 'gym' and payload->>'session_variant' is distinct from 'gym_original')\r\n    or (location = 'home' and payload->>'session_variant' is distinct from 'home_curated') then\r\n    raise exception 'Invalid variant equipment metadata' using errcode = '22023';\r\n  end if;\r\n  -- Validate every flag, even on an otherwise idempotent retry.\r\n  for i in 0 .. n - 1 loop\r\n    ex := payload->'prescription'->i; flags := payload->'completion'->i;\r\n    expected := coalesce((ex->>'sets')::integer, 1);\r\n    if (ex->>'exercise_position')::integer is distinct from i or expected not between 1 and 100\r\n      or jsonb_typeof(flags) is distinct from 'array' or jsonb_array_length(flags) <> expected then\r\n      raise exception 'Invalid completion dimensions' using errcode = '22023';\r\n    end if;\r\n    for j in 0 .. expected - 1 loop\r\n      if jsonb_typeof(flags->j) is distinct from 'boolean' then raise exception 'Completion flags must be boolean' using errcode = '22023'; end if;\r\n    end loop;\r\n  end loop;\r\n  envelope := payload - array['completion','status','outcome','completed_at','current_index','revision','base_revision','injury_warning'];\r\n  if not is_new then\r\n    if old_session.snapshot <> envelope then\r\n      raise exception 'Immutable prescription or source changed' using errcode = '22023';\r\n    end if;\r\n    if incoming_revision = old_session.revision then\r\n      if new_status is distinct from old_session.status or payload->>'outcome' is distinct from old_session.outcome\r\n        or ended is distinct from old_session.completed_at or (payload->>'current_index')::integer is distinct from old_session.current_index\r\n        or exists(select 1 from public.workout_session_sets st where st.session_id = sid\r\n          and st.completed is distinct from (payload->'completion'->st.exercise_position->>(st.set_number-1))::boolean) then\r\n        raise exception 'Conflicting retry snapshot' using errcode = '40001';\r\n      end if;\r\n      return sid;\r\n    end if;\r\n    if old_session.status <> 'in_progress' or incoming_revision <= old_session.revision or base_revision <> old_session.revision then\r\n      raise exception 'Session changed or ended. Reload and resolve the conflict.' using errcode = '40001';\r\n    end if;\r\n  else\r\n    if exists(select 1 from public.workout_sessions s where s.user_id = caller and s.workout_day_id = did and s.status = 'in_progress') then\r\n      raise exception 'Continue or explicitly end the existing session first' using errcode = '40001';\r\n    end if;\r\n    if not exists(select 1 from public.workout_days d join public.workout_plans p on p.id = d.workout_plan_id\r\n      where d.id = did and p.id = pid and p.user_id = caller and p.status = 'active' and p.plan_type = 'training' and d.title = payload->>'day_title') then\r\n      raise exception 'Source plan/day is not the active owned training prescription' using errcode = '42501';\r\n    end if;\r\n    if jsonb_array_length(payload->'source_prescription') <> (select count(*) from public.workout_day_exercises where workout_day_id = did) then\r\n      raise exception 'Incomplete source snapshot' using errcode = '22023';\r\n    end if;\r\n    i := 0;\r\n    for source in select e.*, l.name, l.equipment, l.target_muscle, l.instructions, l.secondary_muscles, l.body_part, l.gif_path, l.is_published\r\n      from public.workout_day_exercises e join public.exercise_library l on l.id = e.exercise_id where e.workout_day_id = did order by e.sort_order loop\r\n      source_json := payload->'source_prescription'->i;\r\n      if not source.is_published or (source_json->>'source_workout_day_exercise_id')::uuid is distinct from source.id\r\n        or (source_json->>'actual_exercise_library_id')::uuid is distinct from source.exercise_id\r\n        or (source_json->>'sort_order')::integer is distinct from source.sort_order\r\n        or (source_json->>'sets')::integer is distinct from source.sets\r\n        or source_json->>'reps' is distinct from source.reps or (source_json->>'rest_seconds')::integer is distinct from source.rest_seconds\r\n        or source_json->>'notes' is distinct from source.notes or source_json->>'name' is distinct from source.name\r\n        or source_json->>'equipment' is distinct from source.equipment\r\n        or source_json->'instructions' is distinct from to_jsonb(source.instructions)\r\n        or (source_json->>'primary_target' is not null and source_json->>'primary_target' is distinct from source.target_muscle)\r\n        or (location = 'home' and (source_json->>'primary_target' is distinct from source.target_muscle\r\n          or source_json->'secondary_muscles' is distinct from to_jsonb(source.secondary_muscles)\r\n          or source_json->>'body_part' is distinct from source.body_part or source_json->>'gif_path' is distinct from source.gif_path)) then\r\n        raise exception 'Source snapshot does not match saved prescription' using errcode = '22023';\r\n      end if;\r\n      i := i + 1;\r\n    end loop;\r\n    select coalesce(array_agg(distinct l.target_muscle order by l.target_muscle), '{}') into original_targets\r\n      from public.workout_day_exercises e join public.exercise_library l on l.id = e.exercise_id where e.workout_day_id = did and l.target_muscle is not null;\r\n    -- Legacy Phase 2A gym drafts may have no target metadata, never home drafts.\r\n    if (payload->'original_targets' <> to_jsonb(original_targets)) and not (location = 'gym' and payload->'original_targets' = '[]'::jsonb) then\r\n      raise exception 'Original scheduled targets changed' using errcode = '22023';\r\n    end if;\r\n    if location = 'gym' and payload->'prescription' <> payload->'source_prescription' then\r\n      raise exception 'Gym must preserve its original ordered prescription' using errcode = '22023';\r\n    end if;\r\n    if location = 'gym' and exists (select 1 from jsonb_array_elements(payload->'prescription') x\r\n      where x->>'mapping_id' is not null or x->>'mapping_version' is not null or x->>'movement_pattern' is not null) then\r\n      raise exception 'Gym cannot claim home mapping approval' using errcode = '22023';\r\n    end if;\r\n    if location = 'home' and ((select count(distinct value->>'actual_exercise_library_id') from jsonb_array_elements(payload->'prescription')) <> n\r\n      or (select count(distinct value->>'source_workout_day_exercise_id') from jsonb_array_elements(payload->'prescription')) <> n) then\r\n      raise exception 'Duplicate home alternatives' using errcode = '22023';\r\n    end if;\r\n  end if;\r\n  for i in 0 .. n - 1 loop\r\n    ex := payload->'prescription'->i;\r\n    flags := payload->'completion'->i;\r\n    expected := coalesce((ex->>'sets')::integer, 1);\r\n    if (ex->>'exercise_position')::integer is distinct from i or expected not between 1 and 100\r\n      or coalesce((ex->>'rest_seconds')::integer, 0) < 0 or jsonb_typeof(flags) is distinct from 'array'\r\n      or jsonb_array_length(flags) <> expected then\r\n      raise exception 'Invalid exercise position or set array' using errcode = '22023';\r\n    end if;\r\n    if is_new and location = 'home' then\r\n      select * into mapping from public.workout_alternative_mappings where id = (ex->>'mapping_id')::uuid\r\n        and version = (ex->>'mapping_version')::integer and review_status = 'approved' and enabled;\r\n      if not found then raise exception 'Mapping is unavailable or unreviewed' using errcode = '42501'; end if;\r\n      select e.*, l.target_muscle into source from public.workout_day_exercises e join public.exercise_library l on l.id = e.exercise_id\r\n        where e.id = (ex->>'source_workout_day_exercise_id')::uuid and e.workout_day_id = did;\r\n      if not found or source.exercise_id <> mapping.source_exercise_id or source.target_muscle is distinct from mapping.primary_target\r\n        or (ex->>'actual_exercise_library_id')::uuid is distinct from mapping.alternative_exercise_id\r\n        or not mapping.required_equipment <@ equipment or ex->>'movement_pattern' is distinct from mapping.movement_pattern\r\n        or expected not between mapping.min_sets and mapping.sets\r\n        or (payload->>'requested_duration_minutes' is null and expected <> mapping.sets)\r\n        or ex->>'reps' is distinct from mapping.reps or (ex->>'rest_seconds')::integer is distinct from mapping.rest_seconds\r\n        or (ex->>'sort_order')::integer is distinct from source.sort_order or ex->>'notes' is distinct from mapping.limitations then\r\n        raise exception 'Home prescription is not authorized by its reviewed mapping' using errcode = '42501';\r\n      end if;\r\n      select * into actual from public.exercise_library where id = mapping.alternative_exercise_id and is_published;\r\n      if not found or actual.target_muscle is distinct from mapping.primary_target or ex->>'primary_target' is distinct from actual.target_muscle\r\n        or ex->>'name' is distinct from actual.name or ex->>'equipment' is distinct from actual.equipment\r\n        or ex->'instructions' is distinct from to_jsonb(actual.instructions)\r\n        or ex->'secondary_muscles' is distinct from to_jsonb(actual.secondary_muscles)\r\n        or ex->>'body_part' is distinct from actual.body_part or ex->>'gif_path' is distinct from actual.gif_path then\r\n        raise exception 'Actual home exercise is unpublished or its metadata is invalid' using errcode = '42501';\r\n      end if;\r\n      if not (mapping.required_equipment @> (case lower(trim(actual.equipment)) when 'dumbbells' then array['dumbbells'] when 'resistance bands' then array['bands'] when 'dumbbell' then array['dumbbells']\r\n        when 'body weight' then array['bodyweight'] when 'bodyweight' then array['bodyweight']\r\n        when 'band' then array['bands'] when 'resistance band' then array['bands'] else array['unsupported'] end)) then\r\n        raise exception 'Alternative equipment is incompatible' using errcode = '42501';\r\n      end if;\r\n      estimated := estimated + expected * mapping.work_seconds_per_set + (expected-1) * mapping.rest_seconds + 30;\r\n    end if;\r\n    for j in 0 .. expected - 1 loop\r\n      if jsonb_typeof(flags->j) is distinct from 'boolean' then raise exception 'Completion flags must be boolean' using errcode = '22023'; end if;\r\n      all_done := all_done and (flags->>j)::boolean;\r\n    end loop;\r\n  end loop;\r\n  if is_new and location = 'home' and ((payload->>'estimated_duration_seconds')::integer is distinct from estimated\r\n    or (payload->>'requested_duration_minutes' is not null and estimated > (payload->>'requested_duration_minutes')::integer * 60)) then\r\n    raise exception 'Home duration estimate is invalid or exceeds the requested budget' using errcode = '22023';\r\n  end if;\r\n  if (new_status = 'completed' and not all_done) or (payload->>'outcome' = 'partial' and all_done) then\r\n    raise exception 'Completion status contradicts checked sets' using errcode = '22023';\r\n  end if;\r\n  if is_new then\r\n    insert into public.workout_sessions(id,user_id,workout_plan_id,workout_day_id,day_title,started_at,completed_at,status,outcome,\r\n      training_location,session_variant,equipment_selection,requested_duration_minutes,estimated_duration_seconds,original_targets,\r\n      source_prescription,prescription,snapshot,current_index,revision,injury_warning)\r\n    values(sid,caller,pid,did,payload->>'day_title',started,ended,new_status,payload->>'outcome',location,payload->>'session_variant',equipment,\r\n      (payload->>'requested_duration_minutes')::integer,(payload->>'estimated_duration_seconds')::integer,\r\n      array(select jsonb_array_elements_text(payload->'original_targets')),payload->'source_prescription',payload->'prescription',envelope,\r\n      (payload->>'current_index')::integer,incoming_revision,coalesce((payload->>'injury_warning')::boolean,false));\r\n    for i in 0 .. n - 1 loop\r\n      ex := payload->'prescription'->i; flags := payload->'completion'->i;\r\n      for j in 0 .. jsonb_array_length(flags) - 1 loop\r\n        insert into public.workout_session_sets(session_id,exercise_position,source_workout_day_exercise_id,actual_exercise_library_id,mapping_id,mapping_version,set_number,completed)\r\n        values(sid,i,(ex->>'source_workout_day_exercise_id')::uuid,(ex->>'actual_exercise_library_id')::uuid,\r\n          (ex->>'mapping_id')::uuid,(ex->>'mapping_version')::integer,j+1,(flags->>j)::boolean);\r\n      end loop;\r\n    end loop;\r\n  else\r\n    -- Existing registered snapshots remain authorized after plan/mapping/catalog edits.\r\n    -- Update flags only; nullable historical FKs are not reinserted or revalidated.\r\n    update public.workout_sessions set completed_at = ended, status = new_status, outcome = payload->>'outcome',\r\n      current_index = (payload->>'current_index')::integer, revision = incoming_revision,\r\n      injury_warning = injury_warning or coalesce((payload->>'injury_warning')::boolean,false) where id = sid and user_id = caller;\r\n    update public.workout_session_sets st set completed = (payload->'completion'->st.exercise_position->>(st.set_number-1))::boolean where st.session_id = sid;\r\n  end if;\r\n  return sid;\r\nend;\r\n$function$\n",
+      "anon_execute": false,
+      "authenticated_execute": true
+    },
+    {
+      "nspname": "public",
+      "proname": "save_workout_session",
+      "prosecdef": false,
+      "proconfig": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION public.save_workout_session(payload jsonb)\n RETURNS uuid\n LANGUAGE sql\n SET search_path TO ''\nAS $function$ select arc_private.save_workout_session(payload); $function$\n",
+      "anon_execute": false,
+      "authenticated_execute": true
+    }
+  ],
+  "triggers": [
+    {
+      "event_object_table": "workout_plans",
+      "trigger_name": "workout_plans_updated_at",
+      "action_statement": "EXECUTE FUNCTION set_updated_at()"
+    },
+    {
+      "event_object_table": "workout_alternative_mappings",
+      "trigger_name": "mapping_definition_frozen",
+      "action_statement": "EXECUTE FUNCTION arc_private.freeze_mapping()"
+    }
+  ],
+  "catalog_rows": [
+    {
+      "id": "30c1fe31-f22d-4821-9f70-0628f49da414",
+      "name": "assisted hanging knee raise with throw down",
+      "body_part": "waist",
+      "target_muscle": "abs",
+      "secondary_muscles": [
+        "hip flexors",
+        "lower back"
+      ],
+      "equipment": "assisted",
+      "difficulty": null,
+      "instructions": [
+        "Hang from a pull-up bar with your arms fully extended and your palms facing away from you.",
+        "Engage your core and lift your knees towards your chest, keeping your legs together.",
+        "Once your knees are at chest level, explosively throw your legs down towards the ground, extending them fully.",
+        "Allow your legs to swing back up and repeat the movement for the desired number of repetitions."
+      ],
+      "gif_path": "8K0w2yA.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "cc72ca3c-848c-42d1-8728-23f8cada7be2",
+      "name": "cable seated crunch",
+      "body_part": "waist",
+      "target_muscle": "abs",
+      "secondary_muscles": [
+        "obliques"
+      ],
+      "equipment": "cable",
+      "difficulty": null,
+      "instructions": [
+        "Sit on a cable machine with your feet flat on the ground and your knees bent.",
+        "Hold the cable handle with both hands and position it behind your head.",
+        "Engage your abs and slowly curl your upper body forward, bringing your chest towards your knees.",
+        "Pause for a moment at the top, then slowly return to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "8xUv4J7.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "3d1f40ee-6a24-4d58-8134-d59fe3b0a27c",
+      "name": "weighted side bend (on stability ball)",
+      "body_part": "waist",
+      "target_muscle": "abs",
+      "secondary_muscles": [
+        "obliques",
+        "lower back"
+      ],
+      "equipment": "weighted",
+      "difficulty": null,
+      "instructions": [
+        "Sit on a stability ball with your feet shoulder-width apart and flat on the ground.",
+        "Hold a weight in one hand and place your other hand on your hip.",
+        "Engage your core and slowly bend sideways towards the weighted side, keeping your back straight.",
+        "Pause for a moment at the bottom, then slowly return to the starting position.",
+        "Repeat for the desired number of repetitions, then switch sides."
+      ],
+      "gif_path": "6bOA1Oi.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "a715b3a3-e897-4822-81cb-5821c1e2ae89",
+      "name": "barbell standing close grip curl",
+      "body_part": "upper arms",
+      "target_muscle": "biceps",
+      "secondary_muscles": [
+        "forearms"
+      ],
+      "equipment": "barbell",
+      "difficulty": null,
+      "instructions": [
+        "Stand up straight with your feet shoulder-width apart and hold a barbell with an underhand grip, hands close together.",
+        "Keep your elbows close to your torso and your upper arms stationary throughout the movement.",
+        "Exhale as you curl the weights while contracting your biceps. Continue to raise the bar until your biceps are fully contracted and the bar is at shoulder level.",
+        "Hold the contracted position for a brief pause as you squeeze your biceps.",
+        "Inhale as you slowly begin to bring the barbell back to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "4dUn2iv.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "12fd053b-c9d7-4de4-b9f5-61c0f6d8afdf",
+      "name": "cable seated curl",
+      "body_part": "upper arms",
+      "target_muscle": "biceps",
+      "secondary_muscles": [
+        "forearms"
+      ],
+      "equipment": "cable",
+      "difficulty": null,
+      "instructions": [
+        "Sit on a cable machine with your feet flat on the ground and your back straight.",
+        "Grasp the cable attachment with an underhand grip, palms facing up, and your arms fully extended.",
+        "Keeping your upper arms stationary, exhale and curl the cable attachment towards your shoulders, contracting your biceps.",
+        "Pause for a moment at the top of the movement, squeezing your biceps.",
+        "Inhale and slowly lower the cable attachment back to the starting position, fully extending your arms.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "8oYqOt9.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "e697f3d3-a910-4575-8a78-c1ad2185cdcf",
+      "name": "cable squatting curl",
+      "body_part": "upper arms",
+      "target_muscle": "biceps",
+      "secondary_muscles": [
+        "forearms"
+      ],
+      "equipment": "cable",
+      "difficulty": null,
+      "instructions": [
+        "Attach a cable handle to the lowest setting on a cable machine.",
+        "Stand facing the machine with your feet shoulder-width apart.",
+        "Hold the cable handle with an underhand grip, palms facing up, and arms fully extended.",
+        "Lower your body into a squat position, keeping your back straight and knees behind your toes.",
+        "As you squat down, curl the cable handle towards your shoulders, keeping your elbows close to your sides.",
+        "Pause for a moment at the top of the curl, squeezing your biceps.",
+        "Slowly lower the cable handle back to the starting position, fully extending your arms.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "3XFdb1Z.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "72e03dae-36f9-475a-9714-1dcb1c3da181",
+      "name": "dumbbell one arm hammer preacher curl",
+      "body_part": "upper arms",
+      "target_muscle": "biceps",
+      "secondary_muscles": [
+        "forearms"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Sit on a preacher bench with a dumbbell in one hand and your upper arm resting on the pad.",
+        "Hold the dumbbell with a neutral grip (palms facing your body).",
+        "Keeping your upper arm stationary, exhale and curl the dumbbell up towards your shoulder.",
+        "Pause for a moment at the top, squeezing your biceps.",
+        "Inhale and slowly lower the dumbbell back to the starting position.",
+        "Repeat for the desired number of repetitions, then switch arms."
+      ],
+      "gif_path": "4dF3maG.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "0ea5d284-ad3a-4165-ad92-2dbb912606d5",
+      "name": "dumbbell reverse spider curl",
+      "body_part": "upper arms",
+      "target_muscle": "biceps",
+      "secondary_muscles": [
+        "forearms"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Stand up straight with a dumbbell in each hand, palms facing your body and arms fully extended.",
+        "Keeping your upper arms stationary, exhale and curl the weights while contracting your biceps.",
+        "Continue to raise the dumbbells until your biceps are fully contracted and the dumbbells are at shoulder level.",
+        "Hold the contracted position for a brief pause as you squeeze your biceps.",
+        "Inhale and slowly begin to lower the dumbbells back to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "6sMAmNv.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+      "name": "dumbbell standing concentration curl",
+      "body_part": "upper arms",
+      "target_muscle": "biceps",
+      "secondary_muscles": [
+        "forearms"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Stand with your feet shoulder-width apart and hold a dumbbell in one hand, with your arm fully extended and palm facing inwards.",
+        "Place your opposite hand on your thigh for support.",
+        "Keeping your upper arm stationary, exhale and curl the dumbbell towards your shoulder by contracting your biceps.",
+        "Continue to raise the dumbbell until your biceps are fully contracted and the dumbbell is at shoulder level.",
+        "Hold the contracted position for a brief pause as you squeeze your biceps.",
+        "Inhale and slowly lower the dumbbell back to the starting position.",
+        "Repeat for the desired number of repetitions, then switch arms."
+      ],
+      "gif_path": "7inpWch.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "8520a765-1ea0-43e0-b58b-21ada3a872bd",
+      "name": "barbell standing calf raise",
+      "body_part": "lower legs",
+      "target_muscle": "calves",
+      "secondary_muscles": [
+        "hamstrings",
+        "glutes"
+      ],
+      "equipment": "barbell",
+      "difficulty": null,
+      "instructions": [
+        "Stand with your feet shoulder-width apart and place a barbell across your upper back.",
+        "Raise your heels off the ground as high as possible, using only your toes.",
+        "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "8ozhUIZ.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "2e02012f-ca9b-43c6-888f-1b02321cc32d",
+      "name": "barbell standing rocking leg calf raise",
+      "body_part": "lower legs",
+      "target_muscle": "calves",
+      "secondary_muscles": [
+        "hamstrings",
+        "quadriceps"
+      ],
+      "equipment": "barbell",
+      "difficulty": null,
+      "instructions": [
+        "Stand with your feet shoulder-width apart and hold a barbell across your upper back.",
+        "Raise your heels off the ground as high as possible, balancing on the balls of your feet.",
+        "Slowly lower your heels back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "6HiHHe0.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "20746830-37b0-48be-9c63-06d280fe2059",
+      "name": "hack calf raise",
+      "body_part": "lower legs",
+      "target_muscle": "calves",
+      "secondary_muscles": [
+        "hamstrings",
+        "glutes"
+      ],
+      "equipment": "sled machine",
+      "difficulty": null,
+      "instructions": [
+        "Adjust the sled machine to a comfortable weight.",
+        "Stand on the sled machine with your toes on the platform and your heels hanging off.",
+        "Hold onto the handles for stability.",
+        "Raise your heels as high as possible by pushing through the balls of your feet.",
+        "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "2ORFMoR.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "39839277-9273-4e7d-bfbc-200f2c1b737a",
+      "name": "dumbbell front raise",
+      "body_part": "shoulders",
+      "target_muscle": "delts",
+      "secondary_muscles": [
+        "biceps",
+        "trapezius"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Stand with your feet shoulder-width apart, holding a dumbbell in each hand with your palms facing your thighs.",
+        "Keeping your arms straight, exhale and lift the dumbbells in front of you until they are at shoulder level.",
+        "Pause for a moment at the top, then inhale and slowly lower the dumbbells back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "3eGE2JC.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "6fff19c8-5719-4f82-8d0d-97755e2e76a8",
+      "name": "dumbbell one arm upright row",
+      "body_part": "shoulders",
+      "target_muscle": "delts",
+      "secondary_muscles": [
+        "traps",
+        "biceps"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Stand with your feet shoulder-width apart, holding a dumbbell in one hand with an overhand grip.",
+        "Let the dumbbell hang at arm's length in front of your thighs, with your palm facing your body.",
+        "Keeping your back straight and your core engaged, exhale and lift the dumbbell straight up towards your chin, leading with your elbow.",
+        "Pause for a moment at the top, then inhale and slowly lower the dumbbell back down to the starting position.",
+        "Repeat for the desired number of repetitions, then switch to the other arm."
+      ],
+      "gif_path": "6cKQC5E.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "d156dad6-bfba-490f-9940-e9480df84fd7",
+      "name": "barbell wrist curl v. 2",
+      "body_part": "lower arms",
+      "target_muscle": "forearms",
+      "secondary_muscles": [
+        "biceps",
+        "brachialis"
+      ],
+      "equipment": "barbell",
+      "difficulty": null,
+      "instructions": [
+        "Sit on a bench with your feet flat on the ground and your knees bent.",
+        "Hold a barbell with an underhand grip, palms facing up, and your hands shoulder-width apart.",
+        "Rest your forearms on your thighs, allowing your wrists to hang off the edge.",
+        "Slowly curl your wrists upward, bringing the barbell towards your forearms.",
+        "Pause for a moment at the top, then slowly lower the barbell back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "6kSxYnw.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "f5baf31f-c322-43c3-9d74-c073786729bc",
+      "name": "dumbbell over bench revers wrist curl",
+      "body_part": "lower arms",
+      "target_muscle": "forearms",
+      "secondary_muscles": [
+        "biceps",
+        "brachialis"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Sit on a bench with your feet flat on the ground and hold a dumbbell in each hand, palms facing down.",
+        "Rest your forearms on the bench, allowing your wrists to hang off the edge.",
+        "Slowly curl your wrists upward, bringing the dumbbells towards your body.",
+        "Pause for a moment at the top, then slowly lower the dumbbells back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "3tAXPQ6.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "d1c0b977-182a-4f24-a2f9-edd92f95dbc1",
+      "name": "bent knee lying twist (male)",
+      "body_part": "upper legs",
+      "target_muscle": "glutes",
+      "secondary_muscles": [
+        "obliques",
+        "hip flexors"
+      ],
+      "equipment": "body weight",
+      "difficulty": null,
+      "instructions": [
+        "Lie flat on your back with your knees bent and feet flat on the ground.",
+        "Extend your arms out to the sides, perpendicular to your body.",
+        "Keeping your knees together, slowly lower them to one side, aiming to touch the ground with your knees.",
+        "Pause for a moment, then engage your core and slowly lift your knees back to the starting position.",
+        "Repeat the movement to the other side.",
+        "Continue alternating sides for the desired number of repetitions."
+      ],
+      "gif_path": "6sYyrRX.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "9562e46c-0f61-482f-b2e9-455baf75e12d",
+      "name": "kettlebell pistol squat",
+      "body_part": "upper legs",
+      "target_muscle": "glutes",
+      "secondary_muscles": [
+        "quadriceps",
+        "hamstrings",
+        "calves"
+      ],
+      "equipment": "kettlebell",
+      "difficulty": null,
+      "instructions": [
+        "Stand with your feet shoulder-width apart, holding a kettlebell in front of your chest with both hands.",
+        "Lift your left foot off the ground and extend it forward, keeping it parallel to the ground.",
+        "Slowly lower your body down into a squat position, keeping your right foot flat on the ground and your left leg extended.",
+        "Pause for a moment at the bottom of the squat, then push through your right heel to return to the starting position.",
+        "Repeat for the desired number of repetitions, then switch legs."
+      ],
+      "gif_path": "5bpPTHv.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+      "name": "sled 45° leg press (side pov)",
+      "body_part": "upper legs",
+      "target_muscle": "glutes",
+      "secondary_muscles": [
+        "quadriceps",
+        "hamstrings",
+        "calves"
+      ],
+      "equipment": "sled machine",
+      "difficulty": null,
+      "instructions": [
+        "Adjust the seat of the sled machine so that your knees are at a 90-degree angle when your feet are on the footplate.",
+        "Sit on the sled machine with your back flat against the backrest and your feet shoulder-width apart on the footplate.",
+        "Grip the handles on the sides of the seat for stability.",
+        "Push against the footplate to extend your legs, straightening them completely.",
+        "Pause for a moment at the top, then slowly bend your knees to lower the footplate back to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "2Qh2J1e.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "ced4a610-bb28-47d2-82f0-39d2f9c0f958",
+      "name": "smith leg press",
+      "body_part": "upper legs",
+      "target_muscle": "glutes",
+      "secondary_muscles": [
+        "quadriceps",
+        "hamstrings",
+        "calves"
+      ],
+      "equipment": "smith machine",
+      "difficulty": null,
+      "instructions": [
+        "Adjust the seat and footplate of the smith machine to a comfortable position.",
+        "Sit on the machine with your back against the backrest and your feet shoulder-width apart on the footplate.",
+        "Grasp the handles or sides of the machine for stability.",
+        "Push the footplate away from you by extending your legs, keeping your back against the backrest.",
+        "Pause for a moment at the fully extended position.",
+        "Slowly bend your knees and lower the footplate back towards you, returning to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "7zdxRTl.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+      "name": "lever front pulldown",
+      "body_part": "back",
+      "target_muscle": "lats",
+      "secondary_muscles": [
+        "biceps",
+        "rhomboids",
+        "rear deltoids"
+      ],
+      "equipment": "leverage machine",
+      "difficulty": null,
+      "instructions": [
+        "Adjust the seat height and position yourself on the machine with your knees under the pads and your feet flat on the ground.",
+        "Grasp the handles with an overhand grip, slightly wider than shoulder-width apart.",
+        "Sit upright with your chest lifted and your shoulders back, maintaining a slight arch in your lower back.",
+        "Engage your lats and pull the handles down towards your chest, squeezing your shoulder blades together.",
+        "Pause for a moment at the bottom of the movement, then slowly release the handles back to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "7F1DVzn.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+      "name": "barbell incline bench press",
+      "body_part": "chest",
+      "target_muscle": "pectorals",
+      "secondary_muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": "barbell",
+      "difficulty": null,
+      "instructions": [
+        "Set up an incline bench at a 45-degree angle.",
+        "Lie down on the bench with your feet flat on the ground.",
+        "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+        "Unrack the barbell and lower it slowly towards your chest, keeping your elbows at a 45-degree angle.",
+        "Pause for a moment at the bottom, then push the barbell back up to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "3TZduzM.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "800750ec-bbfd-4975-901c-c0096d10d916",
+      "name": "cable decline fly",
+      "body_part": "chest",
+      "target_muscle": "pectorals",
+      "secondary_muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": "cable",
+      "difficulty": null,
+      "instructions": [
+        "Adjust the cable machine to a decline position.",
+        "Stand facing away from the machine with your feet shoulder-width apart.",
+        "Hold the handles with your palms facing forward and your arms extended straight out in front of you.",
+        "Keeping a slight bend in your elbows, open your arms out to the sides in a controlled motion.",
+        "Pause for a moment at the fully extended position, then slowly return to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "7saC5zz.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "395adbe1-e031-44fb-9f56-b5ae04542344",
+      "name": "smith incline bench press",
+      "body_part": "chest",
+      "target_muscle": "pectorals",
+      "secondary_muscles": [
+        "shoulders",
+        "triceps"
+      ],
+      "equipment": "smith machine",
+      "difficulty": null,
+      "instructions": [
+        "Adjust the bench to a 30-45 degree incline.",
+        "Sit on the bench with your back flat against the pad and feet firmly on the ground.",
+        "Grasp the barbell with an overhand grip slightly wider than shoulder-width apart.",
+        "Unrack the barbell and lower it slowly towards your upper chest, keeping your elbows slightly tucked in.",
+        "Pause for a moment at the bottom, then push the barbell back up to the starting position, fully extending your arms.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "5v7KYld.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "e2babc7f-3504-4aeb-ba09-115247015d97",
+      "name": "weighted hyperextension (on stability ball)",
+      "body_part": "back",
+      "target_muscle": "spine",
+      "secondary_muscles": [
+        "glutes",
+        "hamstrings"
+      ],
+      "equipment": "weighted",
+      "difficulty": null,
+      "instructions": [
+        "Position yourself face down on a stability ball with your hips resting on the ball and your feet against a wall for stability.",
+        "Place your hands behind your head or cross them over your chest.",
+        "Engage your core and slowly lift your upper body off the ball, extending your back until your body forms a straight line.",
+        "Pause for a moment at the top, then slowly lower your upper body back down to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "8urJS9b.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "f74c409e-933e-48e7-88ce-cd5faae596b5",
+      "name": "barbell seated overhead triceps extension",
+      "body_part": "upper arms",
+      "target_muscle": "triceps",
+      "secondary_muscles": [
+        "shoulders"
+      ],
+      "equipment": "barbell",
+      "difficulty": null,
+      "instructions": [
+        "Sit on a bench with your back straight and feet flat on the ground.",
+        "Hold a barbell with an overhand grip, hands shoulder-width apart, and raise it overhead.",
+        "Lower the barbell behind your head by bending your elbows, keeping your upper arms close to your head.",
+        "Pause for a moment, then extend your arms to raise the barbell back to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "5uFK1xr.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "7b9ede8f-7b18-47a3-84a1-e6b42b7865a4",
+      "name": "dumbbell lying single extension",
+      "body_part": "upper arms",
+      "target_muscle": "triceps",
+      "secondary_muscles": [
+        "shoulders"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Lie flat on a bench with a dumbbell in one hand and your arm fully extended above your chest.",
+        "Lower the dumbbell in a controlled manner towards your forehead, keeping your upper arm stationary.",
+        "Pause briefly at the bottom of the movement, then extend your arm back to the starting position.",
+        "Repeat for the desired number of repetitions, then switch arms."
+      ],
+      "gif_path": "6MfS53i.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "85cf7bab-b5cc-42a0-a871-f16c9bef2063",
+      "name": "dumbbell palms in incline bench press",
+      "body_part": "upper arms",
+      "target_muscle": "triceps",
+      "secondary_muscles": [
+        "chest",
+        "shoulders"
+      ],
+      "equipment": "dumbbell",
+      "difficulty": null,
+      "instructions": [
+        "Set up an incline bench at a 45-degree angle.",
+        "Sit on the bench with your back against the backrest and feet flat on the ground.",
+        "Hold a dumbbell in each hand with an overhand grip, palms facing inwards.",
+        "Extend your arms straight up above your chest, keeping a slight bend in your elbows.",
+        "Lower the dumbbells slowly towards your shoulders, keeping your elbows close to your body.",
+        "Pause for a moment at the bottom, then press the dumbbells back up to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "8eqjhOl.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "53a23e04-0c16-46fb-af1c-92fe6f3e400a",
+      "name": "impossible dips",
+      "body_part": "upper arms",
+      "target_muscle": "triceps",
+      "secondary_muscles": [
+        "chest",
+        "shoulders"
+      ],
+      "equipment": "body weight",
+      "difficulty": null,
+      "instructions": [
+        "Position yourself between two parallel bars with your arms fully extended and your body suspended in the air.",
+        "Bend your knees and cross your ankles.",
+        "Lower your body by bending your elbows until your upper arms are parallel to the ground.",
+        "Pause for a moment, then push yourself back up to the starting position by straightening your arms.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "05Cf2v8.gif",
+      "tags": [],
+      "is_published": true
+    },
+    {
+      "id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+      "name": "lever seated row",
+      "body_part": "back",
+      "target_muscle": "upper back",
+      "secondary_muscles": [
+        "biceps",
+        "forearms"
+      ],
+      "equipment": "leverage machine",
+      "difficulty": null,
+      "instructions": [
+        "Adjust the seat height and footrests to a comfortable position.",
+        "Sit on the machine with your chest against the pad and your feet on the footrests.",
+        "Grasp the handles with an overhand grip, shoulder-width apart.",
+        "Keep your back straight and your core engaged.",
+        "Pull the handles towards your body, squeezing your shoulder blades together.",
+        "Pause for a moment at the peak of the movement.",
+        "Slowly release the handles and return to the starting position.",
+        "Repeat for the desired number of repetitions."
+      ],
+      "gif_path": "7I6LNUG.gif",
+      "tags": [],
+      "is_published": true
+    }
+  ]
+}

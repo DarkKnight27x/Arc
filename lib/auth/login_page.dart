@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/auth_service.dart';
+import '../data/auth_diagnostics.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -9,11 +11,13 @@ class LoginPage extends StatefulWidget {
     required this.onLoggedIn,
     required this.onCreateAccount,
     required this.onForgot,
+    this.auth,
   });
 
   final VoidCallback onLoggedIn;
   final VoidCallback onCreateAccount;
   final VoidCallback onForgot;
+  final AuthService? auth;
 
   static const page = Color(0xFF050506);
   static const surface = Color(0xFF0C0E12);
@@ -48,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _submit() async {
+    if (busy) return;
     final e = email.text.trim();
     final p = password.text;
 
@@ -64,20 +69,16 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      await Supabase.instance.client.auth.signInWithPassword(
-        email: e,
-        password: p,
-      );
-
-      widget.onLoggedIn();
-    } on AuthException catch (err) {
+      await (widget.auth ?? AuthService(Supabase.instance.client))
+          .login(e, p)
+          .timeout(const Duration(seconds: 20));
+    } catch (err, stack) {
+      AuthDiagnostics.failure(AuthStage.loginUi, err, stack);
+      if (!mounted) return;
       setState(() {
-        error = err.message;
+        error = AuthDiagnostics.message(err);
       });
-    } catch (_) {
-      setState(() {
-        error = 'Something went wrong. Please try again.';
-      });
+      return;
     } finally {
       if (mounted) {
         setState(() {
@@ -85,12 +86,23 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
+    if (mounted) {
+      try {
+        widget.onLoggedIn();
+      } catch (err, stack) {
+        AuthDiagnostics.failure(AuthStage.navigation, err, stack);
+        if (mounted) {
+          setState(
+            () => error = 'Signed in, but could not open ARC. Please retry.',
+          );
+        }
+      }
+    }
   }
 
-    // --------------------------------------------------
-    // TEMPORARY LOCAL TEST ACCOUNT
-    // --------------------------------------------------
-
+  // --------------------------------------------------
+  // TEMPORARY LOCAL TEST ACCOUNT
+  // --------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -172,10 +184,7 @@ class _LoginPageState extends State<LoginPage> {
 
               const Text(
                 'You choose the goal. ARC builds the path.',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: LoginPage.muted,
-                ),
+                style: TextStyle(fontSize: 15, color: LoginPage.muted),
               ),
 
               const SizedBox(height: 24),
@@ -185,19 +194,14 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(
                   color: LoginPage.surface,
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(
-                    color: const Color(0x14FFFFFF),
-                  ),
+                  border: Border.all(color: const Color(0x14FFFFFF)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
                       'Email',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: LoginPage.muted,
-                      ),
+                      style: TextStyle(fontSize: 13, color: LoginPage.muted),
                     ),
 
                     const SizedBox(height: 6),
@@ -212,10 +216,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     const Text(
                       'Password',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: LoginPage.muted,
-                      ),
+                      style: TextStyle(fontSize: 13, color: LoginPage.muted),
                     ),
 
                     const SizedBox(height: 6),
@@ -248,7 +249,6 @@ class _LoginPageState extends State<LoginPage> {
                     // ------------------------------------------
                     // PRIMARY CTA
                     // ------------------------------------------
-
                     Container(
                       width: double.infinity,
                       height: 52,
@@ -261,11 +261,7 @@ class _LoginPageState extends State<LoginPage> {
                             LoginPage.ctaMid,
                             LoginPage.ctaBottom,
                           ],
-                          stops: [
-                            0.0,
-                            0.35,
-                            1.0,
-                          ],
+                          stops: [0.0, 0.35, 1.0],
                         ),
                         borderRadius: BorderRadius.circular(999),
 
@@ -305,25 +301,20 @@ class _LoginPageState extends State<LoginPage> {
               // ------------------------------------------
               // SECONDARY CTA
               // ------------------------------------------
-
               SizedBox(
                 width: double.infinity,
                 height: 52,
                 child: OutlinedButton(
-                  onPressed: widget.onCreateAccount,
+                  onPressed: busy ? null : widget.onCreateAccount,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: LoginPage.ink,
-                    side: const BorderSide(
-                      color: LoginPage.line,
-                    ),
+                    side: const BorderSide(color: LoginPage.line),
                     backgroundColor: LoginPage.chip,
                     shape: const StadiumBorder(),
                   ),
                   child: const Text(
                     'Create an account',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -332,12 +323,10 @@ class _LoginPageState extends State<LoginPage> {
 
               Center(
                 child: TextButton(
-                  onPressed: widget.onForgot,
+                  onPressed: busy ? null : widget.onForgot,
                   child: const Text(
                     'Forgot password?',
-                    style: TextStyle(
-                      color: LoginPage.muted,
-                    ),
+                    style: TextStyle(color: LoginPage.muted),
                   ),
                 ),
               ),
@@ -346,10 +335,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'ARC does not diagnose injuries. Your choices stay yours.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: LoginPage.faint,
-                  ),
+                  style: TextStyle(fontSize: 12, color: LoginPage.faint),
                 ),
               ),
             ],
@@ -381,29 +367,25 @@ class _Field extends StatelessWidget {
       controller: controller,
       obscureText: obscure,
       keyboardType: keyboard,
-      style: const TextStyle(
-        color: LoginPage.ink,
-      ),
+      style: const TextStyle(color: LoginPage.ink),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(
-          color: LoginPage.faint,
-        ),
+        hintStyle: const TextStyle(color: LoginPage.faint),
         filled: true,
         fillColor: LoginPage.chip,
 
         suffixIcon: onToggle == null
             ? null
             : IconButton(
-          onPressed: onToggle,
-          icon: Icon(
-            obscure
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
-            color: LoginPage.muted,
-            size: 20,
-          ),
-        ),
+                onPressed: onToggle,
+                icon: Icon(
+                  obscure
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                  color: LoginPage.muted,
+                  size: 20,
+                ),
+              ),
 
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 14,
@@ -412,16 +394,12 @@ class _Field extends StatelessWidget {
 
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: LoginPage.line,
-          ),
+          borderSide: const BorderSide(color: LoginPage.line),
         ),
 
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: LoginPage.ctaTop,
-          ),
+          borderSide: const BorderSide(color: LoginPage.ctaTop),
         ),
       ),
     );

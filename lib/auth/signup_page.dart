@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/auth_service.dart';
+import '../data/auth_diagnostics.dart';
 import 'login_page.dart';
 
 class SignupPage extends StatefulWidget {
@@ -10,10 +11,12 @@ class SignupPage extends StatefulWidget {
     super.key,
     required this.onDone,
     required this.onHaveAccount,
+    this.auth,
   });
 
   final VoidCallback onDone;
   final VoidCallback onHaveAccount;
+  final AuthService? auth;
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -38,6 +41,7 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Future<void> _submit() async {
+    if (busy) return;
     final userName = name.text.trim();
     final userEmail = email.text.trim();
     final userPassword = password.text;
@@ -70,11 +74,14 @@ class _SignupPageState extends State<SignupPage> {
     });
 
     try {
-      final response = await AuthService(Supabase.instance.client).signup(
-        email: userEmail,
-        password: userPassword,
-        displayName: userName,
-      );
+      final response =
+          await (widget.auth ?? AuthService(Supabase.instance.client))
+              .signup(
+                email: userEmail,
+                password: userPassword,
+                displayName: userName,
+              )
+              .timeout(const Duration(seconds: 20));
 
       if (!mounted) return;
 
@@ -85,16 +92,13 @@ class _SignupPageState extends State<SignupPage> {
       }
 
       setState(() {
-        error =
-        'Account created. Check your email to verify your account.';
+        error = 'Check your email for a verification link, then return here to sign in. If you already have an account, sign in instead.';
       });
-    } on AuthException catch (err) {
+    } catch (err, stack) {
+      AuthDiagnostics.failure(AuthStage.signupUi, err, stack);
+      if (!mounted) return;
       setState(() {
-        error = err.message;
-      });
-    } catch (_) {
-      setState(() {
-        error = 'Something went wrong. Please try again.';
+        error = AuthDiagnostics.message(err, action: 'create your account');
       });
     } finally {
       if (mounted) {
@@ -157,45 +161,24 @@ class _SignupPageState extends State<SignupPage> {
 
               const Text(
                 'A file for training, food and recovery. Not a feed.',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: LoginPage.muted,
-                ),
+                style: TextStyle(fontSize: 15, color: LoginPage.muted),
               ),
 
               const SizedBox(height: 24),
 
-              _box(
-                'What should we call you?',
-                name,
-                'Saarthak',
-              ),
+              _box('What should we call you?', name, 'Saarthak'),
 
               const SizedBox(height: 12),
 
-              _box(
-                'Email',
-                email,
-                'you@example.com',
-              ),
+              _box('Email', email, 'you@example.com'),
 
               const SizedBox(height: 12),
 
-              _box(
-                'Password',
-                password,
-                'At least 8 characters',
-                hide: true,
-              ),
+              _box('Password', password, 'At least 8 characters', hide: true),
 
               const SizedBox(height: 12),
 
-              _box(
-                'Confirm password',
-                confirm,
-                'Repeat it',
-                hide: true,
-              ),
+              _box('Confirm password', confirm, 'Repeat it', hide: true),
 
               if (error != null) ...[
                 const SizedBox(height: 12),
@@ -214,7 +197,6 @@ class _SignupPageState extends State<SignupPage> {
               // ------------------------------------------
               // PRIMARY CTA
               // ------------------------------------------
-
               Container(
                 width: double.infinity,
                 height: 52,
@@ -227,11 +209,7 @@ class _SignupPageState extends State<SignupPage> {
                       LoginPage.ctaMid,
                       LoginPage.ctaBottom,
                     ],
-                    stops: [
-                      0.0,
-                      0.35,
-                      1.0,
-                    ],
+                    stops: [0.0, 0.35, 1.0],
                   ),
                   borderRadius: BorderRadius.circular(999),
 
@@ -266,24 +244,18 @@ class _SignupPageState extends State<SignupPage> {
               // ------------------------------------------
               // BACK TO LOGIN
               // ------------------------------------------
-
               TextButton(
-                onPressed: widget.onHaveAccount,
+                onPressed: busy ? null : widget.onHaveAccount,
                 child: const Text(
                   'I already have an account',
-                  style: TextStyle(
-                    color: LoginPage.muted,
-                  ),
+                  style: TextStyle(color: LoginPage.muted),
                 ),
               ),
 
               const Text(
                 'By continuing you get a client profile. ARC does not diagnose injuries.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: LoginPage.faint,
-                ),
+                style: TextStyle(fontSize: 12, color: LoginPage.faint),
               ),
             ],
           ),
@@ -293,20 +265,17 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget _box(
-      String label,
-      TextEditingController c,
-      String hint, {
-        bool hide = false,
-      }) {
+    String label,
+    TextEditingController c,
+    String hint, {
+    bool hide = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 13,
-            color: LoginPage.muted,
-          ),
+          style: const TextStyle(fontSize: 13, color: LoginPage.muted),
         ),
 
         const SizedBox(height: 6),
@@ -314,14 +283,10 @@ class _SignupPageState extends State<SignupPage> {
         TextField(
           controller: c,
           obscureText: hide,
-          style: const TextStyle(
-            color: LoginPage.ink,
-          ),
+          style: const TextStyle(color: LoginPage.ink),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: const TextStyle(
-              color: LoginPage.faint,
-            ),
+            hintStyle: const TextStyle(color: LoginPage.faint),
             filled: true,
             fillColor: LoginPage.chip,
 
@@ -332,16 +297,12 @@ class _SignupPageState extends State<SignupPage> {
 
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(
-                color: LoginPage.line,
-              ),
+              borderSide: const BorderSide(color: LoginPage.line),
             ),
 
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(
-                color: LoginPage.ctaTop,
-              ),
+              borderSide: const BorderSide(color: LoginPage.ctaTop),
             ),
           ),
         ),

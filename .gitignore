@@ -137,3 +137,21 @@ __pycache__/
 # Temporary clones
 temp_body_parts/
 temp_muscle_map/
+# Retain resolved dependencies for this Flutter application.
+!pubspec.lock
+
+# Supabase CLI link/version metadata is machine-local, not a migration.
+/supabase/.temp/
+
+# Local environment variants; keep example setup files available to Git.
+.env.*
+!.env.example
+!.env.sample
+
+# Repeated verification output (retain JSON inputs used by automated tests).
+/docs/*_verification.json
+/docs/*_android*.xml
+/docs/*_android*.png
+/docs/phase2c_checkpoint2_ui_checks/
+/tools/output/
+/test/sql/output/

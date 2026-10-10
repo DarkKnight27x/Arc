@@ -66,6 +66,14 @@
         let currentView = 'front';
         let selectedGroups = new Set(['chest', 'biceps', 'quadriceps']);
 
+        let prioritySelection = false;
+        let priorityAllowed = new Set();
+        function configurePrioritySelection(initial, allowed) {
+            prioritySelection = true;
+            priorityAllowed = new Set(allowed);
+            selectedGroups = new Set(initial.filter(id => priorityAllowed.has(id)).slice(0, 3));
+            renderAnatomy();
+        }
         function renderAnatomy() {
             if (!window.BODY_REGIONS) return;
             const data = window.BODY_REGIONS[currentGender][currentView];
@@ -99,6 +107,7 @@
         }
 
         function toggleMuscleGroup(group) {
+            if (prioritySelection && (!priorityAllowed.has(group) || (!selectedGroups.has(group) && selectedGroups.size >= 3))) return;
             if (selectedGroups.has(group)) {
                 selectedGroups.delete(group);
             } else {
@@ -112,7 +121,7 @@
                 }
             });
 
-            if (window.ArcMuscle) ArcMuscle.postMessage(group);
+            if (window.ArcMuscle) ArcMuscle.postMessage(prioritySelection ? JSON.stringify([...selectedGroups]) : group);
         }
 
         function setGender(gender) {
@@ -129,7 +138,7 @@
         function clearAll() {
             selectedGroups.clear();
             document.querySelectorAll('.fragment-path').forEach(p => p.classList.remove('active'));
-            if (window.ArcMuscle) ArcMuscle.postMessage('__clear__');
+            if (window.ArcMuscle) ArcMuscle.postMessage(prioritySelection ? '[]' : '__clear__');
         }
 
         // Initial setup

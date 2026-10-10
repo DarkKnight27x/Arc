@@ -1,5 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'auth_diagnostics.dart';
+
 class AuthService {
   AuthService(this._client);
 
@@ -10,10 +12,18 @@ class AuthService {
 
   Stream<AuthState> get onAuth => _client.auth.onAuthStateChange;
 
+  Future<AuthResponse> refresh() => AuthDiagnostics.trace(
+    AuthStage.sessionRefresh,
+    _client.auth.refreshSession,
+  );
+
   Future<AuthResponse> login(String email, String password) {
-    return _client.auth.signInWithPassword(
-      email: email.trim(),
-      password: password,
+    return AuthDiagnostics.trace(
+      AuthStage.loginRequest,
+      () => _client.auth.signInWithPassword(
+        email: email.trim(),
+        password: password,
+      ),
     );
   }
 
@@ -22,16 +32,23 @@ class AuthService {
     required String password,
     required String displayName,
   }) {
-    return _client.auth.signUp(
-      email: email.trim(),
-      password: password,
-      data: {'display_name': displayName.trim()},
+    return AuthDiagnostics.trace(
+      AuthStage.signupRequest,
+      () => _client.auth.signUp(
+        email: email.trim(),
+        password: password,
+        data: {'display_name': displayName.trim()},
+      ),
     );
   }
 
   Future<void> sendReset(String email) {
-    return _client.auth.resetPasswordForEmail(email.trim());
+    return AuthDiagnostics.trace(
+      AuthStage.passwordReset,
+      () => _client.auth.resetPasswordForEmail(email.trim()),
+    );
   }
 
-  Future<void> logout() => _client.auth.signOut();
+  Future<void> logout() =>
+      AuthDiagnostics.trace(AuthStage.logout, _client.auth.signOut);
 }

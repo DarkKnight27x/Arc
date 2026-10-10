@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,10 +11,12 @@ import 'theme_ctrl.dart';
 import 'widgets/location_label.dart';
 import 'widgets/health_metric_card.dart';
 import 'widgets/health_visuals.dart';
+import 'widgets/start_arc_entry.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
+    this.isActive = true,
     this.onOpenTrain,
     this.onOpenEat,
     this.onOpenRecover,
@@ -22,6 +25,7 @@ class HomePage extends StatefulWidget {
     this.onOpenRehab,
   });
 
+  final bool isActive;
   final VoidCallback? onOpenTrain;
   final VoidCallback? onOpenEat;
   final VoidCallback? onOpenRecover;
@@ -42,28 +46,56 @@ class _HomePageState extends State<HomePage> {
   bool _hasHealthAccess = false;
   ProfileRow? _profile;
   bool _profileLoading = true;
+  StreamSubscription? _profileAuth;
+  String? _profileUserId;
+  int _profileRequest = 0;
 
   @override
   void initState() {
     super.initState();
     // Health load kept, just not shown. Uncomment the call when the cards come back.
     // _loadHealth();
+    _profileUserId = Supabase.instance.client.auth.currentUser?.id;
+    ProfileService.changes.addListener(_loadProfile);
+    _profileAuth = Supabase.instance.client.auth.onAuthStateChange.listen((_) {
+      final userId = Supabase.instance.client.auth.currentUser?.id;
+      if (!mounted || userId == _profileUserId) return;
+      setState(() { _profile = null; _profileUserId = userId; });
+      _loadProfile();
+    });
     _loadProfile();
   }
 
+  @override
+  void dispose() {
+    _profileRequest++;
+    ProfileService.changes.removeListener(_loadProfile);
+    _profileAuth?.cancel();
+    super.dispose();
+  }
+
   Future<void> _loadProfile() async {
+    final request = ++_profileRequest;
+    final userId = Supabase.instance.client.auth.currentUser?.id;
     setState(() {
       _profileLoading = true;
+      if (_profile?.userId != userId) _profile = null;
     });
-
-    final profile = await ProfileService(Supabase.instance.client).fetchCurrentUser();
-
-    if (!mounted) return;
-
-    setState(() {
-      _profile = profile;
-      _profileLoading = false;
-    });
+    try {
+      final profile = await ProfileService(Supabase.instance.client)
+          .fetchCurrentUser().timeout(const Duration(seconds: 20));
+      if (!mounted || request != _profileRequest ||
+          userId != Supabase.instance.client.auth.currentUser?.id) {
+        return;
+      }
+      setState(() { _profile = profile; _profileLoading = false; });
+    } catch (_) {
+      if (!mounted || request != _profileRequest ||
+          userId != Supabase.instance.client.auth.currentUser?.id) {
+        return;
+      }
+      setState(() { _profile = null; _profileLoading = false; });
+    }
   }
 
   Future<void> _loadHealth() async {
@@ -203,7 +235,9 @@ class _HomePageState extends State<HomePage> {
                                   style: arcDisplay(c, size: 28).copyWith(color: c.ink),
                                 ),
                                 TextSpan(
-                                  text: _profileLoading || (_profile?.displayName ?? '').trim().isEmpty
+                                  text: _profileLoading ||
+                                      _profile?.userId != Supabase.instance.client.auth.currentUser?.id ||
+                                      (_profile?.displayName ?? '').trim().isEmpty
                                       ? ' Your profile.'
                                       : ' ${_profile!.displayName!.trim()}.',
                                   style: arcDisplay(c, size: 28, italic: true).copyWith(color: c.ink),
@@ -493,23 +527,16 @@ class _HomePageState extends State<HomePage> {
     return ValueListenableBuilder<InjuryScript?>(
       valueListenable: InjuryMode.current,
       builder: (_, injury, __) {
-        final shoulderOff = injury?.id == 'shoulder';
         return Container(
           padding: const EdgeInsets.all(20),
           decoration: metalPanel(c, glow: true, radius: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "TODAY",
-                style: TextStyle(fontSize: 10, letterSpacing: 1.0, fontWeight: FontWeight.w700, color: c.faint),
-              ),
-              const SizedBox(height: 10),
-              Text('Upper push', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: c.ink)),
-              const SizedBox(height: 4),
-              Text(
-                shoulderOff ? 'Chest, triceps · shoulders off' : 'Chest, shoulders, triceps · 45 min',
-                style: TextStyle(fontSize: 14, color: c.muted),
+              StartArcEntry(
+                isActive: widget.isActive,
+                onActivated: widget.onOpenTrain,
+                onOpenTrain: widget.onOpenTrain,
               ),
               const SizedBox(height: 18),
               Text('EAT', style: TextStyle(fontSize: 10, letterSpacing: 1.1, fontWeight: FontWeight.w700, color: c.faint)),

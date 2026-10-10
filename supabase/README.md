@@ -1,0 +1,15 @@
+# ARC migration workflow
+
+The existing database in project `nbojicqbpqgotdmdayku` is the baseline. This directory contains incremental training changes for that baseline; it does not provision an empty ARC database.
+
+Read-only checks on 10 October 2026 confirm remote history contains `20261009174458_arc_phase_2a_2b_training_variants`. Preserve that deployed migration. The obsolete versions `20260902000100`, `20260904000100`, and `20260922000100` have been removed from the repository. Do not replay them or mark them applied. No migration-history repair is proposed.
+
+`seeds/20261009174458_home_mapping_seed_disabled.sql` is a separate, manually reviewed operation after the schema migration. Do not include it in a schema push or automatic seeding. Its six rows are proposed and disabled; insertion does not authorize their use.
+
+The earlier deployment preparation is documented in [ARC_TRAINING_DEPLOYMENT_PLAN.md](../docs/ARC_TRAINING_DEPLOYMENT_PLAN.md); its pre-deployment history snapshot is historical. Any further production execution requires separate explicit approval. Never use `db reset`, an unqualified `db push`, or broad history repair. Stop if a pending-list/dry-run includes SQL outside the separately approved scope.
+
+Phase 2C Checkpoint 1 adds `review_only/20261010064421_arc_phase2c_exercise_generation_approval.sql`. The CLI-generated migration was moved outside `migrations/` so automatic migration discovery cannot include it. It is **unapplied and unused**, contains no seed or approvals, and defaults classification rows to proposed/disabled. Following the Checkpoint 2 decision, this is possible future governance only: generation reads exercise_library directly and does not require this table. Do not promote or execute it until its database changes are separately approved. It does not create an activation RPC or modify the Phase 2A/2B session contract. See [ARC_PHASE_2C_CHECKPOINT_2.md](../docs/ARC_PHASE_2C_CHECKPOINT_2.md).
+
+Do not apply `docs/sql/workout_session_progress.sql`; the consolidated training migration supersedes it. The consolidated sources in `docs/sql` are review copies, not additional migrations.
+
+Phase 2C Checkpoint 3 migration `migrations/20261010134016_arc_phase_2c_plan_activation.sql` was **deployed with explicit approval on 10 October 2026** after PostgreSQL 17 tests, recovery verification and a single-migration CLI dry-run. Its SHA-256 is `94f945ba0f0aeaa84972bf4171e3da43042add5ce156f4467ad859505490e0dc`. The identical `review_only/` copy is retained as review evidence, not another pending migration. Remote history now contains only `20261009174458` and `20261010134016`. The migration adds atomic activation, nullable plan metadata, an owner/idempotency index and client write hardening on the three plan tables. No seed was run and `save_workout_session` remains unchanged. See [ARC_PHASE_2C_CHECKPOINT_3_HOSTED_DEPLOYMENT.md](../docs/ARC_PHASE_2C_CHECKPOINT_3_HOSTED_DEPLOYMENT.md) for results and Android verification steps. The earlier classification proposal remains unapplied.

@@ -28,6 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  uuid: 4.6.0
+  shared_preferences: 2.5.5
   http: ^1.2.2
   flutter:
     sdk: flutter

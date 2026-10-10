@@ -1,0 +1,196 @@
+[
+  {
+    "id": "07915fa3-dad0-56de-a148-435f70d5b70b",
+    "source_exercise_id": "12fd053b-c9d7-4de4-b9f5-61c0f6d8afdf",
+    "alternative_exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+    "version": 1,
+    "primary_target": "biceps",
+    "secondary_targets": [
+      "forearms"
+    ],
+    "movement_pattern": "elbow_flexion",
+    "required_equipment": [
+      "dumbbells"
+    ],
+    "sets": 2,
+    "min_sets": 1,
+    "reps": "8-12 each arm",
+    "rest_seconds": 60,
+    "work_seconds_per_set": 90,
+    "priority": 10,
+    "limitations": "Curated volume proposal; loading and total volume differ from Gym. No injury clearance. Different support and resistance profile from the source curl.",
+    "review_status": "proposed",
+    "enabled": false,
+    "review_metadata": {
+      "status": "repository proposal, not production approval",
+      "catalog_audited_at": "2026-10-09",
+      "source_name": "cable seated curl",
+      "alternative_name": "dumbbell standing concentration curl",
+      "rationale": "Preserves primary target and the explicit movement pattern; equipment verified against catalog instructions.",
+      "reference": "https://www.acefitness.org/resources/pros/expert-articles/9033/building-better-biceps-evidence-based-exercises-for-strength-and-function/",
+      "needs_review": "Programming, suitability and loading require reviewer sign-off; no medical approval asserted"
+    }
+  },
+  {
+    "id": "62fd80b0-8e25-556e-90b4-57bf84f1895a",
+    "source_exercise_id": "a715b3a3-e897-4822-81cb-5821c1e2ae89",
+    "alternative_exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+    "version": 1,
+    "primary_target": "biceps",
+    "secondary_targets": [
+      "forearms"
+    ],
+    "movement_pattern": "elbow_flexion",
+    "required_equipment": [
+      "dumbbells"
+    ],
+    "sets": 2,
+    "min_sets": 1,
+    "reps": "8-12 each arm",
+    "rest_seconds": 60,
+    "work_seconds_per_set": 90,
+    "priority": 10,
+    "limitations": "Curated volume proposal; loading and total volume differ from Gym. No injury clearance. Different support and resistance profile from the source curl.",
+    "review_status": "proposed",
+    "enabled": false,
+    "review_metadata": {
+      "status": "repository proposal, not production approval",
+      "catalog_audited_at": "2026-10-09",
+      "source_name": "barbell standing close grip curl",
+      "alternative_name": "dumbbell standing concentration curl",
+      "rationale": "Preserves primary target and the explicit movement pattern; equipment verified against catalog instructions.",
+      "reference": "https://www.acefitness.org/resources/pros/expert-articles/9033/building-better-biceps-evidence-based-exercises-for-strength-and-function/",
+      "needs_review": "Programming, suitability and loading require reviewer sign-off; no medical approval asserted"
+    }
+  },
+  {
+    "id": "f327f41f-1796-50e5-a7f0-30ec08bcaffa",
+    "source_exercise_id": "e697f3d3-a910-4575-8a78-c1ad2185cdcf",
+    "alternative_exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+    "version": 1,
+    "primary_target": "biceps",
+    "secondary_targets": [
+      "forearms"
+    ],
+    "movement_pattern": "elbow_flexion",
+    "required_equipment": [
+      "dumbbells"
+    ],
+    "sets": 2,
+    "min_sets": 1,
+    "reps": "8-12 each arm",
+    "rest_seconds": 60,
+    "work_seconds_per_set": 90,
+    "priority": 10,
+    "limitations": "Curated volume proposal; loading and total volume differ from Gym. No injury clearance. Different support and resistance profile from the source curl.",
+    "review_status": "proposed",
+    "enabled": false,
+    "review_metadata": {
+      "status": "repository proposal, not production approval",
+      "catalog_audited_at": "2026-10-09",
+      "source_name": "cable squatting curl",
+      "alternative_name": "dumbbell standing concentration curl",
+      "rationale": "Preserves primary target and the explicit movement pattern; equipment verified against catalog instructions.",
+      "reference": "https://www.acefitness.org/resources/pros/expert-articles/9033/building-better-biceps-evidence-based-exercises-for-strength-and-function/",
+      "needs_review": "Programming, suitability and loading require reviewer sign-off; no medical approval asserted"
+    }
+  },
+  {
+    "id": "912e378f-946c-5d7e-b036-eaa236f75d74",
+    "source_exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+    "alternative_exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+    "version": 1,
+    "primary_target": "biceps",
+    "secondary_targets": [
+      "forearms"
+    ],
+    "movement_pattern": "elbow_flexion",
+    "required_equipment": [
+      "dumbbells"
+    ],
+    "sets": 2,
+    "min_sets": 1,
+    "reps": "8-12 each arm",
+    "rest_seconds": 60,
+    "work_seconds_per_set": 90,
+    "priority": 10,
+    "limitations": "Curated volume proposal; loading and total volume differ from Gym. No injury clearance. Same catalog movement, performed only with the listed equipment.",
+    "review_status": "proposed",
+    "enabled": false,
+    "review_metadata": {
+      "status": "repository proposal, not production approval",
+      "catalog_audited_at": "2026-10-09",
+      "source_name": "dumbbell standing concentration curl",
+      "alternative_name": "dumbbell standing concentration curl",
+      "rationale": "Preserves primary target and the explicit movement pattern; equipment verified against catalog instructions.",
+      "reference": "https://www.acefitness.org/resources/pros/expert-articles/9033/building-better-biceps-evidence-based-exercises-for-strength-and-function/",
+      "needs_review": "Programming, suitability and loading require reviewer sign-off; no medical approval asserted"
+    }
+  },
+  {
+    "id": "6ef7f301-66f3-51ec-a332-e66024304dc7",
+    "source_exercise_id": "39839277-9273-4e7d-bfbc-200f2c1b737a",
+    "alternative_exercise_id": "39839277-9273-4e7d-bfbc-200f2c1b737a",
+    "version": 1,
+    "primary_target": "delts",
+    "secondary_targets": [
+      "biceps",
+      "trapezius"
+    ],
+    "movement_pattern": "shoulder_flexion",
+    "required_equipment": [
+      "dumbbells"
+    ],
+    "sets": 2,
+    "min_sets": 1,
+    "reps": "8-12",
+    "rest_seconds": 60,
+    "work_seconds_per_set": 45,
+    "priority": 10,
+    "limitations": "Curated volume proposal; loading and total volume differ from Gym. No injury clearance. Same catalog movement, performed only with the listed equipment.",
+    "review_status": "proposed",
+    "enabled": false,
+    "review_metadata": {
+      "status": "repository proposal, not production approval",
+      "catalog_audited_at": "2026-10-09",
+      "source_name": "dumbbell front raise",
+      "alternative_name": "dumbbell front raise",
+      "rationale": "Preserves primary target and the explicit movement pattern; equipment verified against catalog instructions.",
+      "reference": "Catalog instructions reviewed; self-mapping only",
+      "needs_review": "Programming, suitability and loading require reviewer sign-off; no medical approval asserted"
+    }
+  },
+  {
+    "id": "f003333e-cece-52b4-a114-0c46be80be13",
+    "source_exercise_id": "6fff19c8-5719-4f82-8d0d-97755e2e76a8",
+    "alternative_exercise_id": "6fff19c8-5719-4f82-8d0d-97755e2e76a8",
+    "version": 1,
+    "primary_target": "delts",
+    "secondary_targets": [
+      "traps",
+      "biceps"
+    ],
+    "movement_pattern": "upright_row",
+    "required_equipment": [
+      "dumbbells"
+    ],
+    "sets": 2,
+    "min_sets": 1,
+    "reps": "8-12 each arm",
+    "rest_seconds": 60,
+    "work_seconds_per_set": 90,
+    "priority": 10,
+    "limitations": "Curated volume proposal; loading and total volume differ from Gym. No injury clearance. Same catalog movement, performed only with the listed equipment.",
+    "review_status": "proposed",
+    "enabled": false,
+    "review_metadata": {
+      "status": "repository proposal, not production approval",
+      "catalog_audited_at": "2026-10-09",
+      "source_name": "dumbbell one arm upright row",
+      "alternative_name": "dumbbell one arm upright row",
+      "rationale": "Preserves primary target and the explicit movement pattern; equipment verified against catalog instructions.",
+      "reference": "Catalog instructions reviewed; self-mapping only",
+      "needs_review": "Programming, suitability and loading require reviewer sign-off; no medical approval asserted"
+    }
+  }
+]

@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'login_page.dart';
+import '../data/auth_diagnostics.dart';
 
 class ForgotPage extends StatefulWidget {
-  const ForgotPage({
-    super.key,
-    required this.onBack,
-  });
+  const ForgotPage({super.key, required this.onBack});
 
   final VoidCallback onBack;
 
@@ -37,23 +35,18 @@ class _ForgotPageState extends State<ForgotPage> {
     }
 
     try {
-      await Supabase.instance.client.auth.resetPasswordForEmail(
-        userEmail,
-      );
+      await Supabase.instance.client.auth.resetPasswordForEmail(userEmail);
 
       if (!mounted) return;
 
       setState(() {
-        note =
-        'If that email exists, a reset link has been sent.';
+        note = 'If that email exists, a reset link has been sent.';
       });
-    } on AuthException catch (err) {
+    } catch (err, stack) {
+      AuthDiagnostics.failure(AuthStage.passwordReset, err, stack);
+      if (!mounted) return;
       setState(() {
-        note = err.message;
-      });
-    } catch (_) {
-      setState(() {
-        note = 'Something went wrong. Please try again.';
+        note = AuthDiagnostics.message(err, action: 'send a reset link');
       });
     }
   }
@@ -68,10 +61,7 @@ class _ForgotPageState extends State<ForgotPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextButton(
-                onPressed: widget.onBack,
-                child: const Text('Back'),
-              ),
+              TextButton(onPressed: widget.onBack, child: const Text('Back')),
 
               const SizedBox(height: 24),
 
@@ -88,38 +78,28 @@ class _ForgotPageState extends State<ForgotPage> {
 
               const Text(
                 'If that inbox exists, a reset mail is on the way.',
-                style: TextStyle(
-                  color: LoginPage.muted,
-                ),
+                style: TextStyle(color: LoginPage.muted),
               ),
 
               const SizedBox(height: 20),
 
               TextField(
                 controller: email,
-                style: const TextStyle(
-                  color: LoginPage.ink,
-                ),
+                style: const TextStyle(color: LoginPage.ink),
                 decoration: InputDecoration(
                   hintText: 'you@example.com',
-                  hintStyle: const TextStyle(
-                    color: LoginPage.faint,
-                  ),
+                  hintStyle: const TextStyle(color: LoginPage.faint),
                   filled: true,
                   fillColor: LoginPage.chip,
 
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(
-                      color: LoginPage.line,
-                    ),
+                    borderSide: const BorderSide(color: LoginPage.line),
                   ),
 
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(
-                      color: LoginPage.ctaTop,
-                    ),
+                    borderSide: const BorderSide(color: LoginPage.ctaTop),
                   ),
 
                   contentPadding: const EdgeInsets.symmetric(
@@ -134,7 +114,6 @@ class _ForgotPageState extends State<ForgotPage> {
               // ------------------------------------------
               // PRIMARY CTA
               // ------------------------------------------
-
               Container(
                 width: double.infinity,
                 height: 52,
@@ -147,11 +126,7 @@ class _ForgotPageState extends State<ForgotPage> {
                       LoginPage.ctaMid,
                       LoginPage.ctaBottom,
                     ],
-                    stops: [
-                      0.0,
-                      0.35,
-                      1.0,
-                    ],
+                    stops: [0.0, 0.35, 1.0],
                   ),
                   borderRadius: BorderRadius.circular(999),
 
@@ -186,12 +161,7 @@ class _ForgotPageState extends State<ForgotPage> {
               if (note != null) ...[
                 const SizedBox(height: 12),
 
-                Text(
-                  note!,
-                  style: const TextStyle(
-                    color: LoginPage.muted,
-                  ),
-                ),
+                Text(note!, style: const TextStyle(color: LoginPage.muted)),
               ],
             ],
           ),

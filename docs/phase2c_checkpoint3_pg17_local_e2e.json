@@ -1,0 +1,1754 @@
+{
+  "local_only": true,
+  "postgres_version": "17.11",
+  "migration": "supabase\\review_only\\20261010134016_arc_phase_2c_plan_activation.sql",
+  "checks": [
+    "table/column ACL hardening, RLS retained, administrative writes retained, RPC exposure/search_path",
+    "successful activation, same-key replay, changed-payload conflict, active-plan conflict, caller mismatch, anonymous denial, cross-owner reads and direct writes denied",
+    "20 invalid/stale prescriptions and schedules reject atomically; committed retry survives publication change",
+    "concurrent same-key requests converge; different keys and competing replacements serialize with one conflict",
+    "day-2 and exercise-row failures roll back both first activation and replacement",
+    "real UUID prescription roundtrip, gym_original session save/completion, explicit replacement/version conflict, archived FK history and terminal retry preserved; unapproved Home denied",
+    "all nine available real-catalog preview cases activate locally"
+  ],
+  "activation_payload": {
+    "user_id": "14d84bb6-86f2-4e61-977d-c6336ccd224a",
+    "idempotency_key": "cd031385-a1c7-47eb-92e6-1e532b9a1292",
+    "contract_version": 1,
+    "plan_type": "training",
+    "rule_version": "arc-2c-direct-coverage-v2",
+    "generator_version": "arc-2c-generator-v1",
+    "block_weeks": 4,
+    "replace_active": false,
+    "config": {
+      "goal": "buildMuscle",
+      "experience": "beginner",
+      "location": "gym",
+      "weekdays": [
+        1,
+        4
+      ],
+      "equipment": [
+        "assisted",
+        "barbell",
+        "bodyweight",
+        "cable",
+        "dumbbells",
+        "kettlebell",
+        "leverage_machine",
+        "sled_machine",
+        "smith_machine",
+        "weighted"
+      ],
+      "priorities": [],
+      "session_minutes": 60,
+      "journey_days": 30
+    },
+    "days": [
+      {
+        "weekday": 1,
+        "title": "Full body",
+        "estimated_minutes": 47,
+        "exercises": [
+          {
+            "exercise_id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+            "sort_order": 0,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+            "sort_order": 1,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+            "sort_order": 2,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+            "sort_order": 3,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "20746830-37b0-48be-9c63-06d280fe2059",
+            "sort_order": 4,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+            "sort_order": 5,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+            "sort_order": 6,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+            "sort_order": 7,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+            "sort_order": 8,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+            "sort_order": 9,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+            "sort_order": 10,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          }
+        ]
+      },
+      {
+        "weekday": 4,
+        "title": "Full body",
+        "estimated_minutes": 47,
+        "exercises": [
+          {
+            "exercise_id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+            "sort_order": 0,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+            "sort_order": 1,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+            "sort_order": 2,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+            "sort_order": 3,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "20746830-37b0-48be-9c63-06d280fe2059",
+            "sort_order": 4,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+            "sort_order": 5,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+            "sort_order": 6,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+            "sort_order": 7,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+            "sort_order": 8,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+            "sort_order": 9,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          },
+          {
+            "exercise_id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+            "sort_order": 10,
+            "sets": 2,
+            "reps": "8-12",
+            "rest_seconds": 75
+          }
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "active",
+    "plan_id": "49d4bbcc-0d29-4de2-b0ab-a4e1e8dabafa",
+    "version": 1,
+    "replayed": false
+  },
+  "relations": [
+    {
+      "id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+      "notes": null,
+      "title": "Full body",
+      "weekday": 1,
+      "workout_plan_id": "49d4bbcc-0d29-4de2-b0ab-a4e1e8dabafa",
+      "estimated_minutes": 47,
+      "workout_day_exercises": [
+        {
+          "id": "e4da45b0-a459-4b7c-b424-9b46ccfe0ae8",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 0,
+          "exercise_id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+            "name": "sled 45° leg press (side pov)",
+            "tags": [],
+            "gif_path": "2Qh2J1e.gif",
+            "body_part": "upper legs",
+            "equipment": "sled machine",
+            "created_at": "2026-10-10T21:17:17.257064+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seat of the sled machine so that your knees are at a 90-degree angle when your feet are on the footplate.",
+              "Sit on the sled machine with your back flat against the backrest and your feet shoulder-width apart on the footplate.",
+              "Grip the handles on the sides of the seat for stability.",
+              "Push against the footplate to extend your legs, straightening them completely.",
+              "Pause for a moment at the top, then slowly bend your knees to lower the footplate back to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "glutes",
+            "secondary_muscles": [
+              "quadriceps",
+              "hamstrings",
+              "calves"
+            ],
+            "source_external_id": "2Qh2J1e"
+          }
+        },
+        {
+          "id": "b733cd28-d634-4a97-b9e6-dfc237254f5f",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 1,
+          "exercise_id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+            "name": "Walking Lunge",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "upper legs",
+            "equipment": "dumbbell",
+            "created_at": "2026-10-10T21:17:17.331653+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Clear a level walking lane and stand with dumbbells beside your thighs.",
+              "Step forward far enough to plant the leading foot securely and keep your torso upright.",
+              "Bend both knees to lower under control without dropping the rear knee onto the floor.",
+              "Press through the front foot to stand and bring the rear leg forward into the next stable step.",
+              "Continue alternating with controlled landings, then stop with both feet planted before putting down the weights."
+            ],
+            "is_published": true,
+            "target_muscle": "quadriceps",
+            "secondary_muscles": [
+              "glutes",
+              "hamstrings"
+            ],
+            "source_external_id": "arc_curated_v1_walking_lunge"
+          }
+        },
+        {
+          "id": "02e1f6fd-7c24-4a52-b2a0-854e0a71a294",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 2,
+          "exercise_id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+            "name": "barbell incline bench press",
+            "tags": [],
+            "gif_path": "3TZduzM.gif",
+            "body_part": "chest",
+            "equipment": "barbell",
+            "created_at": "2026-10-10T21:17:17.395487+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Set up an incline bench at a 45-degree angle.",
+              "Lie down on the bench with your feet flat on the ground.",
+              "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+              "Unrack the barbell and lower it slowly towards your chest, keeping your elbows at a 45-degree angle.",
+              "Pause for a moment at the bottom, then push the barbell back up to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "pectorals",
+            "secondary_muscles": [
+              "shoulders",
+              "triceps"
+            ],
+            "source_external_id": "3TZduzM"
+          }
+        },
+        {
+          "id": "3604c2e0-0fd8-4f1f-a916-c21ab12a3081",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 3,
+          "exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+            "name": "dumbbell standing concentration curl",
+            "tags": [],
+            "gif_path": "7inpWch.gif",
+            "body_part": "upper arms",
+            "equipment": "dumbbell",
+            "created_at": "2026-10-10T21:17:17.463426+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Stand with your feet shoulder-width apart and hold a dumbbell in one hand, with your arm fully extended and palm facing inwards.",
+              "Place your opposite hand on your thigh for support.",
+              "Keeping your upper arm stationary, exhale and curl the dumbbell towards your shoulder by contracting your biceps.",
+              "Continue to raise the dumbbell until your biceps are fully contracted and the dumbbell is at shoulder level.",
+              "Hold the contracted position for a brief pause as you squeeze your biceps.",
+              "Inhale and slowly lower the dumbbell back to the starting position.",
+              "Repeat for the desired number of repetitions, then switch arms."
+            ],
+            "is_published": true,
+            "target_muscle": "biceps",
+            "secondary_muscles": [
+              "forearms"
+            ],
+            "source_external_id": "7inpWch"
+          }
+        },
+        {
+          "id": "61777482-e1a1-444d-8e68-f64dbc84ad00",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 4,
+          "exercise_id": "20746830-37b0-48be-9c63-06d280fe2059",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "20746830-37b0-48be-9c63-06d280fe2059",
+            "name": "hack calf raise",
+            "tags": [],
+            "gif_path": "2ORFMoR.gif",
+            "body_part": "lower legs",
+            "equipment": "sled machine",
+            "created_at": "2026-10-10T21:17:17.827767+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the sled machine to a comfortable weight.",
+              "Stand on the sled machine with your toes on the platform and your heels hanging off.",
+              "Hold onto the handles for stability.",
+              "Raise your heels as high as possible by pushing through the balls of your feet.",
+              "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "calves",
+            "secondary_muscles": [
+              "hamstrings",
+              "glutes"
+            ],
+            "source_external_id": "2ORFMoR"
+          }
+        },
+        {
+          "id": "c0709992-9808-4d68-ac82-5003cff05b2c",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 5,
+          "exercise_id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+            "name": "Seated Leg Curl",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "upper legs",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:18.001869+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seated-curl machine so your knees align with its pivot and the lower roller sits above your heels.",
+              "Sit with your back supported and secure the thigh pad as the machine requires.",
+              "Bend the knees to draw the lower roller downward and back without lifting your hips.",
+              "Extend the knees slowly to return through a comfortable range.",
+              "Let the machine settle before releasing the thigh support and getting up."
+            ],
+            "is_published": true,
+            "target_muscle": "hamstrings",
+            "secondary_muscles": [
+              "calves"
+            ],
+            "source_external_id": "arc_curated_v1_seated_leg_curl"
+          }
+        },
+        {
+          "id": "e86cb61a-bb1c-4f4e-b88a-0a4eea150fbc",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 6,
+          "exercise_id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+            "name": "Reverse Pec Deck",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "shoulders",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:18.061666+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the reverse pec-deck seat so the handles line up near shoulder height.",
+              "Face the pad, plant your feet and take the handles with your chest supported.",
+              "Open your arms outward and backward through a comfortable range without lifting your chest off the pad.",
+              "Bring the handles forward slowly while keeping your shoulders controlled.",
+              "Allow the machine to settle before releasing the handles."
+            ],
+            "is_published": true,
+            "target_muscle": "delts",
+            "secondary_muscles": [
+              "upper back"
+            ],
+            "source_external_id": "arc_curated_v1_reverse_pec_deck"
+          }
+        },
+        {
+          "id": "ba9fde62-2c8f-42a0-b950-0a9793395ac4",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 7,
+          "exercise_id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+            "name": "Hanging Knee Raise",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "waist",
+            "equipment": "body weight",
+            "created_at": "2026-10-10T21:17:18.269886+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Use a secure overhead bar and a stable step to take an even grip.",
+              "Settle into a controlled hang with your torso braced and legs still.",
+              "Bend your knees and draw them upward toward your torso without kicking or swinging.",
+              "Lower the legs slowly back to the starting hang while controlling your pelvis.",
+              "Return to the step or floor carefully before releasing the bar."
+            ],
+            "is_published": true,
+            "target_muscle": "abs",
+            "secondary_muscles": [
+              "hip flexors"
+            ],
+            "source_external_id": "arc_curated_v1_hanging_knee_raise"
+          }
+        },
+        {
+          "id": "b634471f-f091-4bcc-aec3-799a1b91af70",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 8,
+          "exercise_id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+            "name": "Cable Triceps Pushdown",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "upper arms",
+            "equipment": "cable",
+            "created_at": "2026-10-10T21:17:18.655213+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Attach a bar or rope to a high cable and stand facing the station.",
+              "Plant your feet, hold the attachment and place your elbows beside your torso.",
+              "Straighten your elbows to move the attachment downward without rocking your body.",
+              "Bend the elbows slowly to bring the attachment back while keeping the upper arms still.",
+              "Let the stack settle before releasing the attachment."
+            ],
+            "is_published": true,
+            "target_muscle": "triceps",
+            "secondary_muscles": [],
+            "source_external_id": "arc_curated_v1_cable_triceps_pushdown"
+          }
+        },
+        {
+          "id": "e0420413-e5e7-449b-88ee-056694c3d294",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 9,
+          "exercise_id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+            "name": "lever seated row",
+            "tags": [],
+            "gif_path": "7I6LNUG.gif",
+            "body_part": "back",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:18.825054+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seat height and footrests to a comfortable position.",
+              "Sit on the machine with your chest against the pad and your feet on the footrests.",
+              "Grasp the handles with an overhand grip, shoulder-width apart.",
+              "Keep your back straight and your core engaged.",
+              "Pull the handles towards your body, squeezing your shoulder blades together.",
+              "Pause for a moment at the peak of the movement.",
+              "Slowly release the handles and return to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "upper back",
+            "secondary_muscles": [
+              "biceps",
+              "forearms"
+            ],
+            "source_external_id": "7I6LNUG"
+          }
+        },
+        {
+          "id": "3256a59d-3090-4ed5-81ba-ded025fd274b",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 10,
+          "exercise_id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+          "rest_seconds": 75,
+          "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+          "exercise_library": {
+            "id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+            "name": "lever front pulldown",
+            "tags": [],
+            "gif_path": "7F1DVzn.gif",
+            "body_part": "back",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:20.073548+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seat height and position yourself on the machine with your knees under the pads and your feet flat on the ground.",
+              "Grasp the handles with an overhand grip, slightly wider than shoulder-width apart.",
+              "Sit upright with your chest lifted and your shoulders back, maintaining a slight arch in your lower back.",
+              "Engage your lats and pull the handles down towards your chest, squeezing your shoulder blades together.",
+              "Pause for a moment at the bottom of the movement, then slowly release the handles back to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "lats",
+            "secondary_muscles": [
+              "biceps",
+              "rhomboids",
+              "rear deltoids"
+            ],
+            "source_external_id": "7F1DVzn"
+          }
+        }
+      ]
+    },
+    {
+      "id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+      "notes": null,
+      "title": "Full body",
+      "weekday": 4,
+      "workout_plan_id": "49d4bbcc-0d29-4de2-b0ab-a4e1e8dabafa",
+      "estimated_minutes": 47,
+      "workout_day_exercises": [
+        {
+          "id": "5c39ebb2-1707-4f26-8f2e-59316d5dc24b",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 0,
+          "exercise_id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+            "name": "sled 45° leg press (side pov)",
+            "tags": [],
+            "gif_path": "2Qh2J1e.gif",
+            "body_part": "upper legs",
+            "equipment": "sled machine",
+            "created_at": "2026-10-10T21:17:17.257064+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seat of the sled machine so that your knees are at a 90-degree angle when your feet are on the footplate.",
+              "Sit on the sled machine with your back flat against the backrest and your feet shoulder-width apart on the footplate.",
+              "Grip the handles on the sides of the seat for stability.",
+              "Push against the footplate to extend your legs, straightening them completely.",
+              "Pause for a moment at the top, then slowly bend your knees to lower the footplate back to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "glutes",
+            "secondary_muscles": [
+              "quadriceps",
+              "hamstrings",
+              "calves"
+            ],
+            "source_external_id": "2Qh2J1e"
+          }
+        },
+        {
+          "id": "aec96cb4-e9bd-4852-80ef-781366f08130",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 1,
+          "exercise_id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+            "name": "Walking Lunge",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "upper legs",
+            "equipment": "dumbbell",
+            "created_at": "2026-10-10T21:17:17.331653+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Clear a level walking lane and stand with dumbbells beside your thighs.",
+              "Step forward far enough to plant the leading foot securely and keep your torso upright.",
+              "Bend both knees to lower under control without dropping the rear knee onto the floor.",
+              "Press through the front foot to stand and bring the rear leg forward into the next stable step.",
+              "Continue alternating with controlled landings, then stop with both feet planted before putting down the weights."
+            ],
+            "is_published": true,
+            "target_muscle": "quadriceps",
+            "secondary_muscles": [
+              "glutes",
+              "hamstrings"
+            ],
+            "source_external_id": "arc_curated_v1_walking_lunge"
+          }
+        },
+        {
+          "id": "51ddd69b-dc71-4b80-8112-666abda1a10d",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 2,
+          "exercise_id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+            "name": "barbell incline bench press",
+            "tags": [],
+            "gif_path": "3TZduzM.gif",
+            "body_part": "chest",
+            "equipment": "barbell",
+            "created_at": "2026-10-10T21:17:17.395487+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Set up an incline bench at a 45-degree angle.",
+              "Lie down on the bench with your feet flat on the ground.",
+              "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+              "Unrack the barbell and lower it slowly towards your chest, keeping your elbows at a 45-degree angle.",
+              "Pause for a moment at the bottom, then push the barbell back up to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "pectorals",
+            "secondary_muscles": [
+              "shoulders",
+              "triceps"
+            ],
+            "source_external_id": "3TZduzM"
+          }
+        },
+        {
+          "id": "e1b095db-31a7-491e-939e-8c3fceaab443",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 3,
+          "exercise_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+            "name": "dumbbell standing concentration curl",
+            "tags": [],
+            "gif_path": "7inpWch.gif",
+            "body_part": "upper arms",
+            "equipment": "dumbbell",
+            "created_at": "2026-10-10T21:17:17.463426+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Stand with your feet shoulder-width apart and hold a dumbbell in one hand, with your arm fully extended and palm facing inwards.",
+              "Place your opposite hand on your thigh for support.",
+              "Keeping your upper arm stationary, exhale and curl the dumbbell towards your shoulder by contracting your biceps.",
+              "Continue to raise the dumbbell until your biceps are fully contracted and the dumbbell is at shoulder level.",
+              "Hold the contracted position for a brief pause as you squeeze your biceps.",
+              "Inhale and slowly lower the dumbbell back to the starting position.",
+              "Repeat for the desired number of repetitions, then switch arms."
+            ],
+            "is_published": true,
+            "target_muscle": "biceps",
+            "secondary_muscles": [
+              "forearms"
+            ],
+            "source_external_id": "7inpWch"
+          }
+        },
+        {
+          "id": "122c0967-6d3a-406d-b1fd-852593e6c542",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 4,
+          "exercise_id": "20746830-37b0-48be-9c63-06d280fe2059",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "20746830-37b0-48be-9c63-06d280fe2059",
+            "name": "hack calf raise",
+            "tags": [],
+            "gif_path": "2ORFMoR.gif",
+            "body_part": "lower legs",
+            "equipment": "sled machine",
+            "created_at": "2026-10-10T21:17:17.827767+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the sled machine to a comfortable weight.",
+              "Stand on the sled machine with your toes on the platform and your heels hanging off.",
+              "Hold onto the handles for stability.",
+              "Raise your heels as high as possible by pushing through the balls of your feet.",
+              "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "calves",
+            "secondary_muscles": [
+              "hamstrings",
+              "glutes"
+            ],
+            "source_external_id": "2ORFMoR"
+          }
+        },
+        {
+          "id": "8945b8c3-0446-4bb5-b2cd-47e53586f021",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 5,
+          "exercise_id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+            "name": "Seated Leg Curl",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "upper legs",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:18.001869+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seated-curl machine so your knees align with its pivot and the lower roller sits above your heels.",
+              "Sit with your back supported and secure the thigh pad as the machine requires.",
+              "Bend the knees to draw the lower roller downward and back without lifting your hips.",
+              "Extend the knees slowly to return through a comfortable range.",
+              "Let the machine settle before releasing the thigh support and getting up."
+            ],
+            "is_published": true,
+            "target_muscle": "hamstrings",
+            "secondary_muscles": [
+              "calves"
+            ],
+            "source_external_id": "arc_curated_v1_seated_leg_curl"
+          }
+        },
+        {
+          "id": "6adc2f64-e0cd-485c-884c-059d97d24760",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 6,
+          "exercise_id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+            "name": "Reverse Pec Deck",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "shoulders",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:18.061666+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the reverse pec-deck seat so the handles line up near shoulder height.",
+              "Face the pad, plant your feet and take the handles with your chest supported.",
+              "Open your arms outward and backward through a comfortable range without lifting your chest off the pad.",
+              "Bring the handles forward slowly while keeping your shoulders controlled.",
+              "Allow the machine to settle before releasing the handles."
+            ],
+            "is_published": true,
+            "target_muscle": "delts",
+            "secondary_muscles": [
+              "upper back"
+            ],
+            "source_external_id": "arc_curated_v1_reverse_pec_deck"
+          }
+        },
+        {
+          "id": "cde8373b-5153-48e9-91f1-39cc47847266",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 7,
+          "exercise_id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+            "name": "Hanging Knee Raise",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "waist",
+            "equipment": "body weight",
+            "created_at": "2026-10-10T21:17:18.269886+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Use a secure overhead bar and a stable step to take an even grip.",
+              "Settle into a controlled hang with your torso braced and legs still.",
+              "Bend your knees and draw them upward toward your torso without kicking or swinging.",
+              "Lower the legs slowly back to the starting hang while controlling your pelvis.",
+              "Return to the step or floor carefully before releasing the bar."
+            ],
+            "is_published": true,
+            "target_muscle": "abs",
+            "secondary_muscles": [
+              "hip flexors"
+            ],
+            "source_external_id": "arc_curated_v1_hanging_knee_raise"
+          }
+        },
+        {
+          "id": "90d97d4d-8a58-48df-b8ae-e16865b21fbf",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 8,
+          "exercise_id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+            "name": "Cable Triceps Pushdown",
+            "tags": [],
+            "gif_path": null,
+            "body_part": "upper arms",
+            "equipment": "cable",
+            "created_at": "2026-10-10T21:17:18.655213+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Attach a bar or rope to a high cable and stand facing the station.",
+              "Plant your feet, hold the attachment and place your elbows beside your torso.",
+              "Straighten your elbows to move the attachment downward without rocking your body.",
+              "Bend the elbows slowly to bring the attachment back while keeping the upper arms still.",
+              "Let the stack settle before releasing the attachment."
+            ],
+            "is_published": true,
+            "target_muscle": "triceps",
+            "secondary_muscles": [],
+            "source_external_id": "arc_curated_v1_cable_triceps_pushdown"
+          }
+        },
+        {
+          "id": "053d7b0d-66f3-4623-9e8a-31313c1f92e7",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 9,
+          "exercise_id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+            "name": "lever seated row",
+            "tags": [],
+            "gif_path": "7I6LNUG.gif",
+            "body_part": "back",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:18.825054+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seat height and footrests to a comfortable position.",
+              "Sit on the machine with your chest against the pad and your feet on the footrests.",
+              "Grasp the handles with an overhand grip, shoulder-width apart.",
+              "Keep your back straight and your core engaged.",
+              "Pull the handles towards your body, squeezing your shoulder blades together.",
+              "Pause for a moment at the peak of the movement.",
+              "Slowly release the handles and return to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "upper back",
+            "secondary_muscles": [
+              "biceps",
+              "forearms"
+            ],
+            "source_external_id": "7I6LNUG"
+          }
+        },
+        {
+          "id": "d70fa571-adb4-45af-aad9-af6d2b7e550f",
+          "reps": "8-12",
+          "sets": 2,
+          "notes": null,
+          "sort_order": 10,
+          "exercise_id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+          "rest_seconds": 75,
+          "workout_day_id": "b238ac7a-2ba3-4bdc-ab37-3f83e61a2375",
+          "exercise_library": {
+            "id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+            "name": "lever front pulldown",
+            "tags": [],
+            "gif_path": "7F1DVzn.gif",
+            "body_part": "back",
+            "equipment": "leverage machine",
+            "created_at": "2026-10-10T21:17:20.073548+05:30",
+            "difficulty": null,
+            "instructions": [
+              "Adjust the seat height and position yourself on the machine with your knees under the pads and your feet flat on the ground.",
+              "Grasp the handles with an overhand grip, slightly wider than shoulder-width apart.",
+              "Sit upright with your chest lifted and your shoulders back, maintaining a slight arch in your lower back.",
+              "Engage your lats and pull the handles down towards your chest, squeezing your shoulder blades together.",
+              "Pause for a moment at the bottom of the movement, then slowly release the handles back to the starting position.",
+              "Repeat for the desired number of repetitions."
+            ],
+            "is_published": true,
+            "target_muscle": "lats",
+            "secondary_muscles": [
+              "biceps",
+              "rhomboids",
+              "rear deltoids"
+            ],
+            "source_external_id": "7F1DVzn"
+          }
+        }
+      ]
+    }
+  ],
+  "gym_session_payload": {
+    "id": "30af6020-e0d7-49a5-be12-8a24ea4aca3d",
+    "user_id": "14d84bb6-86f2-4e61-977d-c6336ccd224a",
+    "workout_plan_id": "49d4bbcc-0d29-4de2-b0ab-a4e1e8dabafa",
+    "workout_day_id": "66fa55e9-6eed-48d1-b905-ce9a273cdf38",
+    "day_title": "Full body",
+    "started_at": "2026-10-10T00:00:00Z",
+    "completed_at": null,
+    "status": "in_progress",
+    "outcome": null,
+    "current_index": 0,
+    "injury_warning": false,
+    "contract_version": 2,
+    "training_location": "gym",
+    "session_variant": "gym_original",
+    "equipment_selection": [],
+    "requested_duration_minutes": null,
+    "estimated_duration_seconds": null,
+    "original_targets": [
+      "abs",
+      "biceps",
+      "calves",
+      "delts",
+      "glutes",
+      "hamstrings",
+      "lats",
+      "pectorals",
+      "quadriceps",
+      "triceps",
+      "upper back"
+    ],
+    "source_prescription": [
+      {
+        "source_workout_day_exercise_id": "e4da45b0-a459-4b7c-b424-9b46ccfe0ae8",
+        "actual_exercise_library_id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+        "exercise_position": 0,
+        "name": "sled 45° leg press (side pov)",
+        "equipment": "sled machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 0,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "2Qh2J1e.gif",
+        "instructions": [
+          "Adjust the seat of the sled machine so that your knees are at a 90-degree angle when your feet are on the footplate.",
+          "Sit on the sled machine with your back flat against the backrest and your feet shoulder-width apart on the footplate.",
+          "Grip the handles on the sides of the seat for stability.",
+          "Push against the footplate to extend your legs, straightening them completely.",
+          "Pause for a moment at the top, then slowly bend your knees to lower the footplate back to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "glutes",
+        "secondary_muscles": [
+          "quadriceps",
+          "hamstrings",
+          "calves"
+        ],
+        "body_part": "upper legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "b733cd28-d634-4a97-b9e6-dfc237254f5f",
+        "actual_exercise_library_id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+        "exercise_position": 1,
+        "name": "Walking Lunge",
+        "equipment": "dumbbell",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 1,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Clear a level walking lane and stand with dumbbells beside your thighs.",
+          "Step forward far enough to plant the leading foot securely and keep your torso upright.",
+          "Bend both knees to lower under control without dropping the rear knee onto the floor.",
+          "Press through the front foot to stand and bring the rear leg forward into the next stable step.",
+          "Continue alternating with controlled landings, then stop with both feet planted before putting down the weights."
+        ],
+        "primary_target": "quadriceps",
+        "secondary_muscles": [
+          "glutes",
+          "hamstrings"
+        ],
+        "body_part": "upper legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "02e1f6fd-7c24-4a52-b2a0-854e0a71a294",
+        "actual_exercise_library_id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+        "exercise_position": 2,
+        "name": "barbell incline bench press",
+        "equipment": "barbell",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 2,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "3TZduzM.gif",
+        "instructions": [
+          "Set up an incline bench at a 45-degree angle.",
+          "Lie down on the bench with your feet flat on the ground.",
+          "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+          "Unrack the barbell and lower it slowly towards your chest, keeping your elbows at a 45-degree angle.",
+          "Pause for a moment at the bottom, then push the barbell back up to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "pectorals",
+        "secondary_muscles": [
+          "shoulders",
+          "triceps"
+        ],
+        "body_part": "chest",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "3604c2e0-0fd8-4f1f-a916-c21ab12a3081",
+        "actual_exercise_library_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+        "exercise_position": 3,
+        "name": "dumbbell standing concentration curl",
+        "equipment": "dumbbell",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 3,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "7inpWch.gif",
+        "instructions": [
+          "Stand with your feet shoulder-width apart and hold a dumbbell in one hand, with your arm fully extended and palm facing inwards.",
+          "Place your opposite hand on your thigh for support.",
+          "Keeping your upper arm stationary, exhale and curl the dumbbell towards your shoulder by contracting your biceps.",
+          "Continue to raise the dumbbell until your biceps are fully contracted and the dumbbell is at shoulder level.",
+          "Hold the contracted position for a brief pause as you squeeze your biceps.",
+          "Inhale and slowly lower the dumbbell back to the starting position.",
+          "Repeat for the desired number of repetitions, then switch arms."
+        ],
+        "primary_target": "biceps",
+        "secondary_muscles": [
+          "forearms"
+        ],
+        "body_part": "upper arms",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "61777482-e1a1-444d-8e68-f64dbc84ad00",
+        "actual_exercise_library_id": "20746830-37b0-48be-9c63-06d280fe2059",
+        "exercise_position": 4,
+        "name": "hack calf raise",
+        "equipment": "sled machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 4,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "2ORFMoR.gif",
+        "instructions": [
+          "Adjust the sled machine to a comfortable weight.",
+          "Stand on the sled machine with your toes on the platform and your heels hanging off.",
+          "Hold onto the handles for stability.",
+          "Raise your heels as high as possible by pushing through the balls of your feet.",
+          "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "calves",
+        "secondary_muscles": [
+          "hamstrings",
+          "glutes"
+        ],
+        "body_part": "lower legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "c0709992-9808-4d68-ac82-5003cff05b2c",
+        "actual_exercise_library_id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+        "exercise_position": 5,
+        "name": "Seated Leg Curl",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 5,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Adjust the seated-curl machine so your knees align with its pivot and the lower roller sits above your heels.",
+          "Sit with your back supported and secure the thigh pad as the machine requires.",
+          "Bend the knees to draw the lower roller downward and back without lifting your hips.",
+          "Extend the knees slowly to return through a comfortable range.",
+          "Let the machine settle before releasing the thigh support and getting up."
+        ],
+        "primary_target": "hamstrings",
+        "secondary_muscles": [
+          "calves"
+        ],
+        "body_part": "upper legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "e86cb61a-bb1c-4f4e-b88a-0a4eea150fbc",
+        "actual_exercise_library_id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+        "exercise_position": 6,
+        "name": "Reverse Pec Deck",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 6,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Adjust the reverse pec-deck seat so the handles line up near shoulder height.",
+          "Face the pad, plant your feet and take the handles with your chest supported.",
+          "Open your arms outward and backward through a comfortable range without lifting your chest off the pad.",
+          "Bring the handles forward slowly while keeping your shoulders controlled.",
+          "Allow the machine to settle before releasing the handles."
+        ],
+        "primary_target": "delts",
+        "secondary_muscles": [
+          "upper back"
+        ],
+        "body_part": "shoulders",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "ba9fde62-2c8f-42a0-b950-0a9793395ac4",
+        "actual_exercise_library_id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+        "exercise_position": 7,
+        "name": "Hanging Knee Raise",
+        "equipment": "body weight",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 7,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Use a secure overhead bar and a stable step to take an even grip.",
+          "Settle into a controlled hang with your torso braced and legs still.",
+          "Bend your knees and draw them upward toward your torso without kicking or swinging.",
+          "Lower the legs slowly back to the starting hang while controlling your pelvis.",
+          "Return to the step or floor carefully before releasing the bar."
+        ],
+        "primary_target": "abs",
+        "secondary_muscles": [
+          "hip flexors"
+        ],
+        "body_part": "waist",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "b634471f-f091-4bcc-aec3-799a1b91af70",
+        "actual_exercise_library_id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+        "exercise_position": 8,
+        "name": "Cable Triceps Pushdown",
+        "equipment": "cable",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 8,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Attach a bar or rope to a high cable and stand facing the station.",
+          "Plant your feet, hold the attachment and place your elbows beside your torso.",
+          "Straighten your elbows to move the attachment downward without rocking your body.",
+          "Bend the elbows slowly to bring the attachment back while keeping the upper arms still.",
+          "Let the stack settle before releasing the attachment."
+        ],
+        "primary_target": "triceps",
+        "secondary_muscles": [],
+        "body_part": "upper arms",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "e0420413-e5e7-449b-88ee-056694c3d294",
+        "actual_exercise_library_id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+        "exercise_position": 9,
+        "name": "lever seated row",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 9,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "7I6LNUG.gif",
+        "instructions": [
+          "Adjust the seat height and footrests to a comfortable position.",
+          "Sit on the machine with your chest against the pad and your feet on the footrests.",
+          "Grasp the handles with an overhand grip, shoulder-width apart.",
+          "Keep your back straight and your core engaged.",
+          "Pull the handles towards your body, squeezing your shoulder blades together.",
+          "Pause for a moment at the peak of the movement.",
+          "Slowly release the handles and return to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "upper back",
+        "secondary_muscles": [
+          "biceps",
+          "forearms"
+        ],
+        "body_part": "back",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "3256a59d-3090-4ed5-81ba-ded025fd274b",
+        "actual_exercise_library_id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+        "exercise_position": 10,
+        "name": "lever front pulldown",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 10,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "7F1DVzn.gif",
+        "instructions": [
+          "Adjust the seat height and position yourself on the machine with your knees under the pads and your feet flat on the ground.",
+          "Grasp the handles with an overhand grip, slightly wider than shoulder-width apart.",
+          "Sit upright with your chest lifted and your shoulders back, maintaining a slight arch in your lower back.",
+          "Engage your lats and pull the handles down towards your chest, squeezing your shoulder blades together.",
+          "Pause for a moment at the bottom of the movement, then slowly release the handles back to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "lats",
+        "secondary_muscles": [
+          "biceps",
+          "rhomboids",
+          "rear deltoids"
+        ],
+        "body_part": "back",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      }
+    ],
+    "prescription": [
+      {
+        "source_workout_day_exercise_id": "e4da45b0-a459-4b7c-b424-9b46ccfe0ae8",
+        "actual_exercise_library_id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+        "exercise_position": 0,
+        "name": "sled 45° leg press (side pov)",
+        "equipment": "sled machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 0,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "2Qh2J1e.gif",
+        "instructions": [
+          "Adjust the seat of the sled machine so that your knees are at a 90-degree angle when your feet are on the footplate.",
+          "Sit on the sled machine with your back flat against the backrest and your feet shoulder-width apart on the footplate.",
+          "Grip the handles on the sides of the seat for stability.",
+          "Push against the footplate to extend your legs, straightening them completely.",
+          "Pause for a moment at the top, then slowly bend your knees to lower the footplate back to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "glutes",
+        "secondary_muscles": [
+          "quadriceps",
+          "hamstrings",
+          "calves"
+        ],
+        "body_part": "upper legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "b733cd28-d634-4a97-b9e6-dfc237254f5f",
+        "actual_exercise_library_id": "08f32434-43d5-44e0-ae3e-0e3f9d6ddffa",
+        "exercise_position": 1,
+        "name": "Walking Lunge",
+        "equipment": "dumbbell",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 1,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Clear a level walking lane and stand with dumbbells beside your thighs.",
+          "Step forward far enough to plant the leading foot securely and keep your torso upright.",
+          "Bend both knees to lower under control without dropping the rear knee onto the floor.",
+          "Press through the front foot to stand and bring the rear leg forward into the next stable step.",
+          "Continue alternating with controlled landings, then stop with both feet planted before putting down the weights."
+        ],
+        "primary_target": "quadriceps",
+        "secondary_muscles": [
+          "glutes",
+          "hamstrings"
+        ],
+        "body_part": "upper legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "02e1f6fd-7c24-4a52-b2a0-854e0a71a294",
+        "actual_exercise_library_id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+        "exercise_position": 2,
+        "name": "barbell incline bench press",
+        "equipment": "barbell",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 2,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "3TZduzM.gif",
+        "instructions": [
+          "Set up an incline bench at a 45-degree angle.",
+          "Lie down on the bench with your feet flat on the ground.",
+          "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+          "Unrack the barbell and lower it slowly towards your chest, keeping your elbows at a 45-degree angle.",
+          "Pause for a moment at the bottom, then push the barbell back up to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "pectorals",
+        "secondary_muscles": [
+          "shoulders",
+          "triceps"
+        ],
+        "body_part": "chest",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "3604c2e0-0fd8-4f1f-a916-c21ab12a3081",
+        "actual_exercise_library_id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+        "exercise_position": 3,
+        "name": "dumbbell standing concentration curl",
+        "equipment": "dumbbell",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 3,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "7inpWch.gif",
+        "instructions": [
+          "Stand with your feet shoulder-width apart and hold a dumbbell in one hand, with your arm fully extended and palm facing inwards.",
+          "Place your opposite hand on your thigh for support.",
+          "Keeping your upper arm stationary, exhale and curl the dumbbell towards your shoulder by contracting your biceps.",
+          "Continue to raise the dumbbell until your biceps are fully contracted and the dumbbell is at shoulder level.",
+          "Hold the contracted position for a brief pause as you squeeze your biceps.",
+          "Inhale and slowly lower the dumbbell back to the starting position.",
+          "Repeat for the desired number of repetitions, then switch arms."
+        ],
+        "primary_target": "biceps",
+        "secondary_muscles": [
+          "forearms"
+        ],
+        "body_part": "upper arms",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "61777482-e1a1-444d-8e68-f64dbc84ad00",
+        "actual_exercise_library_id": "20746830-37b0-48be-9c63-06d280fe2059",
+        "exercise_position": 4,
+        "name": "hack calf raise",
+        "equipment": "sled machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 4,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "2ORFMoR.gif",
+        "instructions": [
+          "Adjust the sled machine to a comfortable weight.",
+          "Stand on the sled machine with your toes on the platform and your heels hanging off.",
+          "Hold onto the handles for stability.",
+          "Raise your heels as high as possible by pushing through the balls of your feet.",
+          "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "calves",
+        "secondary_muscles": [
+          "hamstrings",
+          "glutes"
+        ],
+        "body_part": "lower legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "c0709992-9808-4d68-ac82-5003cff05b2c",
+        "actual_exercise_library_id": "229d7de0-e6d7-402d-9c2d-c7bdd7728109",
+        "exercise_position": 5,
+        "name": "Seated Leg Curl",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 5,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Adjust the seated-curl machine so your knees align with its pivot and the lower roller sits above your heels.",
+          "Sit with your back supported and secure the thigh pad as the machine requires.",
+          "Bend the knees to draw the lower roller downward and back without lifting your hips.",
+          "Extend the knees slowly to return through a comfortable range.",
+          "Let the machine settle before releasing the thigh support and getting up."
+        ],
+        "primary_target": "hamstrings",
+        "secondary_muscles": [
+          "calves"
+        ],
+        "body_part": "upper legs",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "e86cb61a-bb1c-4f4e-b88a-0a4eea150fbc",
+        "actual_exercise_library_id": "24d48411-dd56-4af4-ad19-020a4881a25c",
+        "exercise_position": 6,
+        "name": "Reverse Pec Deck",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 6,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Adjust the reverse pec-deck seat so the handles line up near shoulder height.",
+          "Face the pad, plant your feet and take the handles with your chest supported.",
+          "Open your arms outward and backward through a comfortable range without lifting your chest off the pad.",
+          "Bring the handles forward slowly while keeping your shoulders controlled.",
+          "Allow the machine to settle before releasing the handles."
+        ],
+        "primary_target": "delts",
+        "secondary_muscles": [
+          "upper back"
+        ],
+        "body_part": "shoulders",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "ba9fde62-2c8f-42a0-b950-0a9793395ac4",
+        "actual_exercise_library_id": "2d6185e6-ef00-4df3-8f7c-9e57debd8656",
+        "exercise_position": 7,
+        "name": "Hanging Knee Raise",
+        "equipment": "body weight",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 7,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Use a secure overhead bar and a stable step to take an even grip.",
+          "Settle into a controlled hang with your torso braced and legs still.",
+          "Bend your knees and draw them upward toward your torso without kicking or swinging.",
+          "Lower the legs slowly back to the starting hang while controlling your pelvis.",
+          "Return to the step or floor carefully before releasing the bar."
+        ],
+        "primary_target": "abs",
+        "secondary_muscles": [
+          "hip flexors"
+        ],
+        "body_part": "waist",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "b634471f-f091-4bcc-aec3-799a1b91af70",
+        "actual_exercise_library_id": "3c06ebc0-ea13-449f-847c-7a31f4c0ab98",
+        "exercise_position": 8,
+        "name": "Cable Triceps Pushdown",
+        "equipment": "cable",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 8,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": null,
+        "instructions": [
+          "Attach a bar or rope to a high cable and stand facing the station.",
+          "Plant your feet, hold the attachment and place your elbows beside your torso.",
+          "Straighten your elbows to move the attachment downward without rocking your body.",
+          "Bend the elbows slowly to bring the attachment back while keeping the upper arms still.",
+          "Let the stack settle before releasing the attachment."
+        ],
+        "primary_target": "triceps",
+        "secondary_muscles": [],
+        "body_part": "upper arms",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "e0420413-e5e7-449b-88ee-056694c3d294",
+        "actual_exercise_library_id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+        "exercise_position": 9,
+        "name": "lever seated row",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 9,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "7I6LNUG.gif",
+        "instructions": [
+          "Adjust the seat height and footrests to a comfortable position.",
+          "Sit on the machine with your chest against the pad and your feet on the footrests.",
+          "Grasp the handles with an overhand grip, shoulder-width apart.",
+          "Keep your back straight and your core engaged.",
+          "Pull the handles towards your body, squeezing your shoulder blades together.",
+          "Pause for a moment at the peak of the movement.",
+          "Slowly release the handles and return to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "upper back",
+        "secondary_muscles": [
+          "biceps",
+          "forearms"
+        ],
+        "body_part": "back",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      },
+      {
+        "source_workout_day_exercise_id": "3256a59d-3090-4ed5-81ba-ded025fd274b",
+        "actual_exercise_library_id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+        "exercise_position": 10,
+        "name": "lever front pulldown",
+        "equipment": "leverage machine",
+        "sets": 2,
+        "reps": "8-12",
+        "rest_seconds": 75,
+        "sort_order": 10,
+        "notes": null,
+        "gif_url": null,
+        "gif_path": "7F1DVzn.gif",
+        "instructions": [
+          "Adjust the seat height and position yourself on the machine with your knees under the pads and your feet flat on the ground.",
+          "Grasp the handles with an overhand grip, slightly wider than shoulder-width apart.",
+          "Sit upright with your chest lifted and your shoulders back, maintaining a slight arch in your lower back.",
+          "Engage your lats and pull the handles down towards your chest, squeezing your shoulder blades together.",
+          "Pause for a moment at the bottom of the movement, then slowly release the handles back to the starting position.",
+          "Repeat for the desired number of repetitions."
+        ],
+        "primary_target": "lats",
+        "secondary_muscles": [
+          "biceps",
+          "rhomboids",
+          "rear deltoids"
+        ],
+        "body_part": "back",
+        "mapping_id": null,
+        "mapping_version": null,
+        "movement_pattern": null
+      }
+    ],
+    "revision": 0,
+    "base_revision": -1,
+    "completion": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ]
+  }
+}

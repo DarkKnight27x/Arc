@@ -1,0 +1,736 @@
+[
+  {
+    "id": "007634de-692d-43e0-ac6b-250958ba0cf6",
+    "source_external_id": "2Qh2J1e",
+    "name": "sled 45\u00b0 leg press (side pov)",
+    "body_part": "upper legs",
+    "target_muscle": "glutes",
+    "secondary_muscles": [
+      "quadriceps",
+      "hamstrings",
+      "calves"
+    ],
+    "equipment": "sled machine",
+    "difficulty": null,
+    "instructions": [
+      "Adjust the seat of the sled machine so that your knees are at a 90-degree angle when your feet are on the footplate.",
+      "Sit on the sled machine with your back flat against the backrest and your feet shoulder-width apart on the footplate.",
+      "Grip the handles on the sides of the seat for stability.",
+      "Push against the footplate to extend your legs, straightening them completely.",
+      "Pause for a moment at the top, then slowly bend your knees to lower the footplate back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "2Qh2J1e.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "092547c4-ef33-494f-b09e-b8ae96c077fc",
+    "source_external_id": "3TZduzM",
+    "name": "barbell incline bench press",
+    "body_part": "chest",
+    "target_muscle": "pectorals",
+    "secondary_muscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "difficulty": null,
+    "instructions": [
+      "Set up an incline bench at a 45-degree angle.",
+      "Lie down on the bench with your feet flat on the ground.",
+      "Grasp the barbell with an overhand grip, slightly wider than shoulder-width apart.",
+      "Unrack the barbell and lower it slowly towards your chest, keeping your elbows at a 45-degree angle.",
+      "Pause for a moment at the bottom, then push the barbell back up to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "3TZduzM.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "0b68e9b2-7519-42ff-b45a-38ab2e7f8d5c",
+    "source_external_id": "7inpWch",
+    "name": "dumbbell standing concentration curl",
+    "body_part": "upper arms",
+    "target_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Stand with your feet shoulder-width apart and hold a dumbbell in one hand, with your arm fully extended and palm facing inwards.",
+      "Place your opposite hand on your thigh for support.",
+      "Keeping your upper arm stationary, exhale and curl the dumbbell towards your shoulder by contracting your biceps.",
+      "Continue to raise the dumbbell until your biceps are fully contracted and the dumbbell is at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale and slowly lower the dumbbell back to the starting position.",
+      "Repeat for the desired number of repetitions, then switch arms."
+    ],
+    "gif_path": "7inpWch.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "0ea5d284-ad3a-4165-ad92-2dbb912606d5",
+    "source_external_id": "6sMAmNv",
+    "name": "dumbbell reverse spider curl",
+    "body_part": "upper arms",
+    "target_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Stand up straight with a dumbbell in each hand, palms facing your body and arms fully extended.",
+      "Keeping your upper arms stationary, exhale and curl the weights while contracting your biceps.",
+      "Continue to raise the dumbbells until your biceps are fully contracted and the dumbbells are at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale and slowly begin to lower the dumbbells back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "6sMAmNv.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "12fd053b-c9d7-4de4-b9f5-61c0f6d8afdf",
+    "source_external_id": "8oYqOt9",
+    "name": "cable seated curl",
+    "body_part": "upper arms",
+    "target_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "equipment": "cable",
+    "difficulty": null,
+    "instructions": [
+      "Sit on a cable machine with your feet flat on the ground and your back straight.",
+      "Grasp the cable attachment with an underhand grip, palms facing up, and your arms fully extended.",
+      "Keeping your upper arms stationary, exhale and curl the cable attachment towards your shoulders, contracting your biceps.",
+      "Pause for a moment at the top of the movement, squeezing your biceps.",
+      "Inhale and slowly lower the cable attachment back to the starting position, fully extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "8oYqOt9.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "20746830-37b0-48be-9c63-06d280fe2059",
+    "source_external_id": "2ORFMoR",
+    "name": "hack calf raise",
+    "body_part": "lower legs",
+    "target_muscle": "calves",
+    "secondary_muscles": [
+      "hamstrings",
+      "glutes"
+    ],
+    "equipment": "sled machine",
+    "difficulty": null,
+    "instructions": [
+      "Adjust the sled machine to a comfortable weight.",
+      "Stand on the sled machine with your toes on the platform and your heels hanging off.",
+      "Hold onto the handles for stability.",
+      "Raise your heels as high as possible by pushing through the balls of your feet.",
+      "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "2ORFMoR.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "2e02012f-ca9b-43c6-888f-1b02321cc32d",
+    "source_external_id": "6HiHHe0",
+    "name": "barbell standing rocking leg calf raise",
+    "body_part": "lower legs",
+    "target_muscle": "calves",
+    "secondary_muscles": [
+      "hamstrings",
+      "quadriceps"
+    ],
+    "equipment": "barbell",
+    "difficulty": null,
+    "instructions": [
+      "Stand with your feet shoulder-width apart and hold a barbell across your upper back.",
+      "Raise your heels off the ground as high as possible, balancing on the balls of your feet.",
+      "Slowly lower your heels back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "6HiHHe0.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "30c1fe31-f22d-4821-9f70-0628f49da414",
+    "source_external_id": "8K0w2yA",
+    "name": "assisted hanging knee raise with throw down",
+    "body_part": "waist",
+    "target_muscle": "abs",
+    "secondary_muscles": [
+      "hip flexors",
+      "lower back"
+    ],
+    "equipment": "assisted",
+    "difficulty": null,
+    "instructions": [
+      "Hang from a pull-up bar with your arms fully extended and your palms facing away from you.",
+      "Engage your core and lift your knees towards your chest, keeping your legs together.",
+      "Once your knees are at chest level, explosively throw your legs down towards the ground, extending them fully.",
+      "Allow your legs to swing back up and repeat the movement for the desired number of repetitions."
+    ],
+    "gif_path": "8K0w2yA.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "395adbe1-e031-44fb-9f56-b5ae04542344",
+    "source_external_id": "5v7KYld",
+    "name": "smith incline bench press",
+    "body_part": "chest",
+    "target_muscle": "pectorals",
+    "secondary_muscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "smith machine",
+    "difficulty": null,
+    "instructions": [
+      "Adjust the bench to a 30-45 degree incline.",
+      "Sit on the bench with your back flat against the pad and feet firmly on the ground.",
+      "Grasp the barbell with an overhand grip slightly wider than shoulder-width apart.",
+      "Unrack the barbell and lower it slowly towards your upper chest, keeping your elbows slightly tucked in.",
+      "Pause for a moment at the bottom, then push the barbell back up to the starting position, fully extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "5v7KYld.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "39839277-9273-4e7d-bfbc-200f2c1b737a",
+    "source_external_id": "3eGE2JC",
+    "name": "dumbbell front raise",
+    "body_part": "shoulders",
+    "target_muscle": "delts",
+    "secondary_muscles": [
+      "biceps",
+      "trapezius"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Stand with your feet shoulder-width apart, holding a dumbbell in each hand with your palms facing your thighs.",
+      "Keeping your arms straight, exhale and lift the dumbbells in front of you until they are at shoulder level.",
+      "Pause for a moment at the top, then inhale and slowly lower the dumbbells back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "3eGE2JC.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "3d1f40ee-6a24-4d58-8134-d59fe3b0a27c",
+    "source_external_id": "6bOA1Oi",
+    "name": "weighted side bend (on stability ball)",
+    "body_part": "waist",
+    "target_muscle": "abs",
+    "secondary_muscles": [
+      "obliques",
+      "lower back"
+    ],
+    "equipment": "weighted",
+    "difficulty": null,
+    "instructions": [
+      "Sit on a stability ball with your feet shoulder-width apart and flat on the ground.",
+      "Hold a weight in one hand and place your other hand on your hip.",
+      "Engage your core and slowly bend sideways towards the weighted side, keeping your back straight.",
+      "Pause for a moment at the bottom, then slowly return to the starting position.",
+      "Repeat for the desired number of repetitions, then switch sides."
+    ],
+    "gif_path": "6bOA1Oi.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "3fa39823-cd8e-4afe-8ddd-9ab173be44f8",
+    "source_external_id": "7I6LNUG",
+    "name": "lever seated row",
+    "body_part": "back",
+    "target_muscle": "upper back",
+    "secondary_muscles": [
+      "biceps",
+      "forearms"
+    ],
+    "equipment": "leverage machine",
+    "difficulty": null,
+    "instructions": [
+      "Adjust the seat height and footrests to a comfortable position.",
+      "Sit on the machine with your chest against the pad and your feet on the footrests.",
+      "Grasp the handles with an overhand grip, shoulder-width apart.",
+      "Keep your back straight and your core engaged.",
+      "Pull the handles towards your body, squeezing your shoulder blades together.",
+      "Pause for a moment at the peak of the movement.",
+      "Slowly release the handles and return to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "7I6LNUG.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "53a23e04-0c16-46fb-af1c-92fe6f3e400a",
+    "source_external_id": "05Cf2v8",
+    "name": "impossible dips",
+    "body_part": "upper arms",
+    "target_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "shoulders"
+    ],
+    "equipment": "body weight",
+    "difficulty": null,
+    "instructions": [
+      "Position yourself between two parallel bars with your arms fully extended and your body suspended in the air.",
+      "Bend your knees and cross your ankles.",
+      "Lower your body by bending your elbows until your upper arms are parallel to the ground.",
+      "Pause for a moment, then push yourself back up to the starting position by straightening your arms.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "05Cf2v8.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "6a6cc073-01ef-4b08-9bb5-ff2267f2ba97",
+    "source_external_id": "7F1DVzn",
+    "name": "lever front pulldown",
+    "body_part": "back",
+    "target_muscle": "lats",
+    "secondary_muscles": [
+      "biceps",
+      "rhomboids",
+      "rear deltoids"
+    ],
+    "equipment": "leverage machine",
+    "difficulty": null,
+    "instructions": [
+      "Adjust the seat height and position yourself on the machine with your knees under the pads and your feet flat on the ground.",
+      "Grasp the handles with an overhand grip, slightly wider than shoulder-width apart.",
+      "Sit upright with your chest lifted and your shoulders back, maintaining a slight arch in your lower back.",
+      "Engage your lats and pull the handles down towards your chest, squeezing your shoulder blades together.",
+      "Pause for a moment at the bottom of the movement, then slowly release the handles back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "7F1DVzn.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "6fff19c8-5719-4f82-8d0d-97755e2e76a8",
+    "source_external_id": "6cKQC5E",
+    "name": "dumbbell one arm upright row",
+    "body_part": "shoulders",
+    "target_muscle": "delts",
+    "secondary_muscles": [
+      "traps",
+      "biceps"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Stand with your feet shoulder-width apart, holding a dumbbell in one hand with an overhand grip.",
+      "Let the dumbbell hang at arm's length in front of your thighs, with your palm facing your body.",
+      "Keeping your back straight and your core engaged, exhale and lift the dumbbell straight up towards your chin, leading with your elbow.",
+      "Pause for a moment at the top, then inhale and slowly lower the dumbbell back down to the starting position.",
+      "Repeat for the desired number of repetitions, then switch to the other arm."
+    ],
+    "gif_path": "6cKQC5E.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "72e03dae-36f9-475a-9714-1dcb1c3da181",
+    "source_external_id": "4dF3maG",
+    "name": "dumbbell one arm hammer preacher curl",
+    "body_part": "upper arms",
+    "target_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Sit on a preacher bench with a dumbbell in one hand and your upper arm resting on the pad.",
+      "Hold the dumbbell with a neutral grip (palms facing your body).",
+      "Keeping your upper arm stationary, exhale and curl the dumbbell up towards your shoulder.",
+      "Pause for a moment at the top, squeezing your biceps.",
+      "Inhale and slowly lower the dumbbell back to the starting position.",
+      "Repeat for the desired number of repetitions, then switch arms."
+    ],
+    "gif_path": "4dF3maG.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "7b9ede8f-7b18-47a3-84a1-e6b42b7865a4",
+    "source_external_id": "6MfS53i",
+    "name": "dumbbell lying single extension",
+    "body_part": "upper arms",
+    "target_muscle": "triceps",
+    "secondary_muscles": [
+      "shoulders"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Lie flat on a bench with a dumbbell in one hand and your arm fully extended above your chest.",
+      "Lower the dumbbell in a controlled manner towards your forehead, keeping your upper arm stationary.",
+      "Pause briefly at the bottom of the movement, then extend your arm back to the starting position.",
+      "Repeat for the desired number of repetitions, then switch arms."
+    ],
+    "gif_path": "6MfS53i.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "800750ec-bbfd-4975-901c-c0096d10d916",
+    "source_external_id": "7saC5zz",
+    "name": "cable decline fly",
+    "body_part": "chest",
+    "target_muscle": "pectorals",
+    "secondary_muscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "cable",
+    "difficulty": null,
+    "instructions": [
+      "Adjust the cable machine to a decline position.",
+      "Stand facing away from the machine with your feet shoulder-width apart.",
+      "Hold the handles with your palms facing forward and your arms extended straight out in front of you.",
+      "Keeping a slight bend in your elbows, open your arms out to the sides in a controlled motion.",
+      "Pause for a moment at the fully extended position, then slowly return to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "7saC5zz.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "8520a765-1ea0-43e0-b58b-21ada3a872bd",
+    "source_external_id": "8ozhUIZ",
+    "name": "barbell standing calf raise",
+    "body_part": "lower legs",
+    "target_muscle": "calves",
+    "secondary_muscles": [
+      "hamstrings",
+      "glutes"
+    ],
+    "equipment": "barbell",
+    "difficulty": null,
+    "instructions": [
+      "Stand with your feet shoulder-width apart and place a barbell across your upper back.",
+      "Raise your heels off the ground as high as possible, using only your toes.",
+      "Pause for a moment at the top, then slowly lower your heels back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "8ozhUIZ.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "85cf7bab-b5cc-42a0-a871-f16c9bef2063",
+    "source_external_id": "8eqjhOl",
+    "name": "dumbbell palms in incline bench press",
+    "body_part": "upper arms",
+    "target_muscle": "triceps",
+    "secondary_muscles": [
+      "chest",
+      "shoulders"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Set up an incline bench at a 45-degree angle.",
+      "Sit on the bench with your back against the backrest and feet flat on the ground.",
+      "Hold a dumbbell in each hand with an overhand grip, palms facing inwards.",
+      "Extend your arms straight up above your chest, keeping a slight bend in your elbows.",
+      "Lower the dumbbells slowly towards your shoulders, keeping your elbows close to your body.",
+      "Pause for a moment at the bottom, then press the dumbbells back up to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "8eqjhOl.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "9562e46c-0f61-482f-b2e9-455baf75e12d",
+    "source_external_id": "5bpPTHv",
+    "name": "kettlebell pistol squat",
+    "body_part": "upper legs",
+    "target_muscle": "glutes",
+    "secondary_muscles": [
+      "quadriceps",
+      "hamstrings",
+      "calves"
+    ],
+    "equipment": "kettlebell",
+    "difficulty": null,
+    "instructions": [
+      "Stand with your feet shoulder-width apart, holding a kettlebell in front of your chest with both hands.",
+      "Lift your left foot off the ground and extend it forward, keeping it parallel to the ground.",
+      "Slowly lower your body down into a squat position, keeping your right foot flat on the ground and your left leg extended.",
+      "Pause for a moment at the bottom of the squat, then push through your right heel to return to the starting position.",
+      "Repeat for the desired number of repetitions, then switch legs."
+    ],
+    "gif_path": "5bpPTHv.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "a715b3a3-e897-4822-81cb-5821c1e2ae89",
+    "source_external_id": "4dUn2iv",
+    "name": "barbell standing close grip curl",
+    "body_part": "upper arms",
+    "target_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "equipment": "barbell",
+    "difficulty": null,
+    "instructions": [
+      "Stand up straight with your feet shoulder-width apart and hold a barbell with an underhand grip, hands close together.",
+      "Keep your elbows close to your torso and your upper arms stationary throughout the movement.",
+      "Exhale as you curl the weights while contracting your biceps. Continue to raise the bar until your biceps are fully contracted and the bar is at shoulder level.",
+      "Hold the contracted position for a brief pause as you squeeze your biceps.",
+      "Inhale as you slowly begin to bring the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "4dUn2iv.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "cc72ca3c-848c-42d1-8728-23f8cada7be2",
+    "source_external_id": "8xUv4J7",
+    "name": "cable seated crunch",
+    "body_part": "waist",
+    "target_muscle": "abs",
+    "secondary_muscles": [
+      "obliques"
+    ],
+    "equipment": "cable",
+    "difficulty": null,
+    "instructions": [
+      "Sit on a cable machine with your feet flat on the ground and your knees bent.",
+      "Hold the cable handle with both hands and position it behind your head.",
+      "Engage your abs and slowly curl your upper body forward, bringing your chest towards your knees.",
+      "Pause for a moment at the top, then slowly return to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "8xUv4J7.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "ced4a610-bb28-47d2-82f0-39d2f9c0f958",
+    "source_external_id": "7zdxRTl",
+    "name": "smith leg press",
+    "body_part": "upper legs",
+    "target_muscle": "glutes",
+    "secondary_muscles": [
+      "quadriceps",
+      "hamstrings",
+      "calves"
+    ],
+    "equipment": "smith machine",
+    "difficulty": null,
+    "instructions": [
+      "Adjust the seat and footplate of the smith machine to a comfortable position.",
+      "Sit on the machine with your back against the backrest and your feet shoulder-width apart on the footplate.",
+      "Grasp the handles or sides of the machine for stability.",
+      "Push the footplate away from you by extending your legs, keeping your back against the backrest.",
+      "Pause for a moment at the fully extended position.",
+      "Slowly bend your knees and lower the footplate back towards you, returning to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "7zdxRTl.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "d156dad6-bfba-490f-9940-e9480df84fd7",
+    "source_external_id": "6kSxYnw",
+    "name": "barbell wrist curl v. 2",
+    "body_part": "lower arms",
+    "target_muscle": "forearms",
+    "secondary_muscles": [
+      "biceps",
+      "brachialis"
+    ],
+    "equipment": "barbell",
+    "difficulty": null,
+    "instructions": [
+      "Sit on a bench with your feet flat on the ground and your knees bent.",
+      "Hold a barbell with an underhand grip, palms facing up, and your hands shoulder-width apart.",
+      "Rest your forearms on your thighs, allowing your wrists to hang off the edge.",
+      "Slowly curl your wrists upward, bringing the barbell towards your forearms.",
+      "Pause for a moment at the top, then slowly lower the barbell back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "6kSxYnw.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "d1c0b977-182a-4f24-a2f9-edd92f95dbc1",
+    "source_external_id": "6sYyrRX",
+    "name": "bent knee lying twist (male)",
+    "body_part": "upper legs",
+    "target_muscle": "glutes",
+    "secondary_muscles": [
+      "obliques",
+      "hip flexors"
+    ],
+    "equipment": "body weight",
+    "difficulty": null,
+    "instructions": [
+      "Lie flat on your back with your knees bent and feet flat on the ground.",
+      "Extend your arms out to the sides, perpendicular to your body.",
+      "Keeping your knees together, slowly lower them to one side, aiming to touch the ground with your knees.",
+      "Pause for a moment, then engage your core and slowly lift your knees back to the starting position.",
+      "Repeat the movement to the other side.",
+      "Continue alternating sides for the desired number of repetitions."
+    ],
+    "gif_path": "6sYyrRX.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "e2babc7f-3504-4aeb-ba09-115247015d97",
+    "source_external_id": "8urJS9b",
+    "name": "weighted hyperextension (on stability ball)",
+    "body_part": "back",
+    "target_muscle": "spine",
+    "secondary_muscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "weighted",
+    "difficulty": null,
+    "instructions": [
+      "Position yourself face down on a stability ball with your hips resting on the ball and your feet against a wall for stability.",
+      "Place your hands behind your head or cross them over your chest.",
+      "Engage your core and slowly lift your upper body off the ball, extending your back until your body forms a straight line.",
+      "Pause for a moment at the top, then slowly lower your upper body back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "8urJS9b.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "e697f3d3-a910-4575-8a78-c1ad2185cdcf",
+    "source_external_id": "3XFdb1Z",
+    "name": "cable squatting curl",
+    "body_part": "upper arms",
+    "target_muscle": "biceps",
+    "secondary_muscles": [
+      "forearms"
+    ],
+    "equipment": "cable",
+    "difficulty": null,
+    "instructions": [
+      "Attach a cable handle to the lowest setting on a cable machine.",
+      "Stand facing the machine with your feet shoulder-width apart.",
+      "Hold the cable handle with an underhand grip, palms facing up, and arms fully extended.",
+      "Lower your body into a squat position, keeping your back straight and knees behind your toes.",
+      "As you squat down, curl the cable handle towards your shoulders, keeping your elbows close to your sides.",
+      "Pause for a moment at the top of the curl, squeezing your biceps.",
+      "Slowly lower the cable handle back to the starting position, fully extending your arms.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "3XFdb1Z.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "f5baf31f-c322-43c3-9d74-c073786729bc",
+    "source_external_id": "3tAXPQ6",
+    "name": "dumbbell over bench revers wrist curl",
+    "body_part": "lower arms",
+    "target_muscle": "forearms",
+    "secondary_muscles": [
+      "biceps",
+      "brachialis"
+    ],
+    "equipment": "dumbbell",
+    "difficulty": null,
+    "instructions": [
+      "Sit on a bench with your feet flat on the ground and hold a dumbbell in each hand, palms facing down.",
+      "Rest your forearms on the bench, allowing your wrists to hang off the edge.",
+      "Slowly curl your wrists upward, bringing the dumbbells towards your body.",
+      "Pause for a moment at the top, then slowly lower the dumbbells back down to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "3tAXPQ6.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  },
+  {
+    "id": "f74c409e-933e-48e7-88ce-cd5faae596b5",
+    "source_external_id": "5uFK1xr",
+    "name": "barbell seated overhead triceps extension",
+    "body_part": "upper arms",
+    "target_muscle": "triceps",
+    "secondary_muscles": [
+      "shoulders"
+    ],
+    "equipment": "barbell",
+    "difficulty": null,
+    "instructions": [
+      "Sit on a bench with your back straight and feet flat on the ground.",
+      "Hold a barbell with an overhand grip, hands shoulder-width apart, and raise it overhead.",
+      "Lower the barbell behind your head by bending your elbows, keeping your upper arms close to your head.",
+      "Pause for a moment, then extend your arms to raise the barbell back to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "gif_path": "5uFK1xr.gif",
+    "tags": [],
+    "is_published": true,
+    "created_at": "2026-09-08T06:40:48.71807+00:00"
+  }
+]

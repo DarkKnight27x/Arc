@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'auth/auth_gate.dart';
+import 'data/auth_session_storage.dart';
 import 'eat_page.dart';
 import 'home_page.dart';
 import 'recover_page.dart';
@@ -14,10 +15,19 @@ import 'you_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final sessionStorage = AuthSessionStorage(
+    persistSessionKey: 'sb-nbojicqbpqgotdmdayku-auth-token',
+    readSession: () => Supabase.instance.client.auth.currentSession,
+  );
+
   await Supabase.initialize(
     url: 'https://nbojicqbpqgotdmdayku.supabase.co',
     publishableKey: 'sb_publishable_Ies5q2ep0It3CJPUoPYf0A_0J4O2azG',
+    // ARC emits sanitized diagnostics instead of raw SDK response messages.
+    debug: false,
+    authOptions: FlutterAuthClientOptions(localStorage: sessionStorage),
   );
+  sessionStorage.finishInitialization();
 
   runApp(const ArcApp());
 }
@@ -68,6 +78,7 @@ class _HomeShellState extends State<HomeShell> {
         index: index,
         children: [
           HomePage(
+            isActive: index == 0,
             onOpenTrain: () => _go(1),
             onOpenEat: () => _go(2),
             onOpenRecover: () => _go(3),
@@ -78,7 +89,7 @@ class _HomeShellState extends State<HomeShell> {
           const TrainPage(),
           const EatPage(),
           const RecoverPage(),
-          const YouPage(),
+          YouPage(isActive: index == 4),
         ],
       ),
       bottomNavigationBar: Container(
@@ -95,7 +106,13 @@ class _HomeShellState extends State<HomeShell> {
           height: 68,
           destinations: [
             _dest(c, Icons.home_outlined, Icons.home_rounded, 'Home', 0),
-            _dest(c, Icons.fitness_center_outlined, Icons.fitness_center, 'Train', 1),
+            _dest(
+              c,
+              Icons.fitness_center_outlined,
+              Icons.fitness_center,
+              'Train',
+              1,
+            ),
             _dest(c, Icons.restaurant_outlined, Icons.restaurant, 'Eat', 2),
             _dest(c, Icons.favorite_border, Icons.favorite, 'Recover', 3),
             _dest(c, Icons.person_outline, Icons.person, 'You', 4),
@@ -105,7 +122,13 @@ class _HomeShellState extends State<HomeShell> {
     );
   }
 
-  NavigationDestination _dest(ArcColors c, IconData off, IconData on, String label, int i) {
+  NavigationDestination _dest(
+    ArcColors c,
+    IconData off,
+    IconData on,
+    String label,
+    int i,
+  ) {
     final sel = index == i;
     return NavigationDestination(
       icon: Icon(off, color: c.muted),
